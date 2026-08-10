@@ -11,7 +11,7 @@ export default function MainFooter() {
     <footer className="bg-[#CC2529] text-white pt-14 pb-8 px-4 sm:px-8 border-t-4 border-[#D4AF37]">
       <div className="max-w-[1440px] mx-auto space-y-12">
         
-        {/* Top Section: Brand Info & 3 Main Link Columns (Terms & Schemes removed) */}
+        {/* Top Section: Brand Info & 3 Main Link Columns */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
           
           {/* Brand Info */}
@@ -89,20 +89,8 @@ export default function MainFooter() {
 
         </div>
 
-        {/* Middle Row: Certifications & Social Connect */}
-        <div className="pt-8 border-t border-red-800 flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-4 flex-wrap text-xs text-red-100">
-            <span className="bg-red-950/60 px-3 py-1.5 rounded border border-red-800 font-semibold">
-              ✓ BIS 100% Hallmarked Gold
-            </span>
-            <span className="bg-red-950/60 px-3 py-1.5 rounded border border-red-800 font-semibold">
-              ✓ 925 Pure Sterling Silver
-            </span>
-            <span className="bg-red-950/60 px-3 py-1.5 rounded border border-red-800 font-semibold">
-              ✓ Certified Natural Diamonds
-            </span>
-          </div>
-
+        {/* Middle Row: Social Connect */}
+        <div className="pt-8 border-t border-red-800 flex items-center justify-between gap-6">
           <div className="flex items-center gap-3">
             <span className="text-xs font-semibold text-[#F0D588]">Social Connect:</span>
             

@@ -234,10 +234,10 @@ export const SITE_DATA = {
   ],
 
   budgetRanges: [
-    { label: "Under ₹10,000", maxPrice: 10000, link: "/jewellery?maxPrice=10000", image: "https://images.unsplash.com/photo-1603561591411-07134e71a2a9?auto=format&fit=crop&w=500&q=80" },
-    { label: "₹10,000 - ₹25,000", minPrice: 10000, maxPrice: 25000, link: "/jewellery?minPrice=10000&maxPrice=25000", image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=500&q=80" },
-    { label: "₹25,000 - ₹50,000", minPrice: 25000, maxPrice: 50000, link: "/jewellery?minPrice=25000&maxPrice=50000", image: "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&w=500&q=80" },
-    { label: "Above ₹50,000", minPrice: 50000, maxPrice: 200000, link: "/jewellery?minPrice=50000", image: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=500&q=80" },
+    { label: "Under 10K", maxPrice: 10000, link: "/jewellery?maxPrice=10000", image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=800&q=80" },
+    { label: "10K - 25K", minPrice: 10000, maxPrice: 25000, link: "/jewellery?minPrice=10000&maxPrice=25000", image: "https://images.unsplash.com/photo-1630019852942-f89202989a59?auto=format&fit=crop&w=800&q=80" },
+    { label: "25K - 50K", minPrice: 25000, maxPrice: 50000, link: "/jewellery?minPrice=25000&maxPrice=50000", image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=800&q=80" },
+    { label: "50K Above", minPrice: 50000, maxPrice: 200000, link: "/jewellery?minPrice=50000", image: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=800&q=80" },
   ],
 
   bentoCollections: [

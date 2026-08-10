@@ -1,50 +1,131 @@
 "use client";
 
 import React, { useState } from "react";
-import { Gift, ArrowRight } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 export default function GiftsSection() {
-  const [activeTab, setActiveTab] = useState("Wedding");
+  const [startIndex, setStartIndex] = useState(0);
 
-  const tabs = ["Engagement", "Birthday", "Wedding", "Small Wonders", "Anniversary"];
+  const gifts = [
+    {
+      id: "engagement",
+      title: "Engagement",
+      image: "/images/gifts/engagement.png",
+      link: "/jewellery?category=gold-rings",
+    },
+    {
+      id: "birthday",
+      title: "Birthday",
+      image: "/images/gifts/birthday.png",
+      link: "/jewellery?category=gold-nosepin",
+    },
+    {
+      id: "wedding",
+      title: "Wedding",
+      image: "/images/gifts/wedding.png",
+      link: "/jewellery?category=gold-necklaces",
+    },
+    {
+      id: "small-wonders",
+      title: "Small Wonders",
+      image: "https://images.unsplash.com/photo-1603561591411-07134e71a2a9?auto=format&fit=crop&w=800&q=80",
+      link: "/jewellery?category=gold-earrings",
+    },
+    {
+      id: "anniversary",
+      title: "Anniversary",
+      image: "/images/gifts/anniversary.png",
+      link: "/jewellery?category=gold-rings",
+    },
+    {
+      id: "festive",
+      title: "Festive Gifting",
+      image: "https://images.unsplash.com/photo-1630019852942-f89202989a59?auto=format&fit=crop&w=800&q=80",
+      link: "/jewellery?category=gold-earrings",
+    },
+    {
+      id: "silver-gifts",
+      title: "Silver Coins & Utensils",
+      image: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=800&q=80",
+      link: "/jewellery?category=silver-bangles",
+    },
+  ];
+
+  const visibleCards = 5;
+
+  const handlePrev = () => {
+    setStartIndex((prev) => (prev === 0 ? gifts.length - visibleCards : prev - 1));
+  };
+
+  const handleNext = () => {
+    setStartIndex((prev) => (prev + 1) % (gifts.length - visibleCards + 1));
+  };
+
+  const visibleGifts = gifts.slice(startIndex, startIndex + visibleCards);
 
   return (
-    <section className="py-12 px-4 sm:px-8 max-w-[1440px] mx-auto bg-gradient-to-b from-[#FAF8F5] to-white border-y border-[#E8E3DA]">
-      <div className="text-center mb-8 space-y-2">
-        <div className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#C8232A] uppercase tracking-wider bg-red-50 py-1 px-3 rounded-full">
-          <Gift className="w-3.5 h-3.5" />
-          <span>Curated Presents</span>
-        </div>
-        <h2 className="text-2xl sm:text-4xl font-serif-title font-bold text-[#1A1A1A]">
+    <section className="py-12 sm:py-16 px-4 sm:px-8 max-w-[1440px] mx-auto overflow-hidden">
+      {/* Title Header */}
+      <div className="text-center mb-10 space-y-2">
+        <h2 className="text-3xl sm:text-4xl font-serif-title font-bold text-[#1A1A1A]">
           A Perfect Gift
         </h2>
+        <p className="text-xs sm:text-sm text-gray-500 max-w-xl mx-auto">
+          Celebrate life&apos;s precious moments with handcrafted 22KT gold & certified solitaire gifts.
+        </p>
       </div>
 
-      {/* Occasion Tabs */}
-      <div className="flex items-center justify-center gap-2 sm:gap-4 flex-wrap mb-10">
-        {tabs.map((tab) => (
-          <button
-            key={tab}
-            onClick={() => setActiveTab(tab)}
-            className={`py-2 px-5 rounded-full text-xs sm:text-sm font-semibold transition-all ${
-              activeTab === tab
-                ? "bg-[#C8232A] text-white shadow-md"
-                : "bg-white text-gray-700 hover:bg-gray-100 border border-[#E8E3DA]"
-            }`}
-          >
-            {tab}
-          </button>
-        ))}
-      </div>
-
-      <div className="text-center">
-        <a
-          href="#all-gifts"
-          className="inline-flex items-center gap-2 border-1.5 border-[#C8232A] text-[#C8232A] hover:bg-[#C8232A] hover:text-white font-semibold text-sm py-3 px-8 rounded-full transition-all shadow-sm"
+      {/* 5-Card Full-Bleed Slider Strip matching Senco Screenshot */}
+      <div className="relative w-full flex items-center justify-center">
+        
+        {/* Navigation Arrows */}
+        <button
+          onClick={handlePrev}
+          aria-label="Previous Gift Category"
+          className="absolute left-2 sm:left-4 z-40 w-10 h-10 rounded-full bg-black/50 hover:bg-[#C8232A] text-white backdrop-blur-md flex items-center justify-center transition-all shadow-lg hover:scale-110 border border-white/20"
         >
-          <span>Explore All Gifts for {activeTab}</span>
-          <ArrowRight className="w-4 h-4" />
-        </a>
+          <ChevronLeft className="w-5 h-5" />
+        </button>
+
+        <button
+          onClick={handleNext}
+          aria-label="Next Gift Category"
+          className="absolute right-2 sm:right-4 z-40 w-10 h-10 rounded-full bg-black/50 hover:bg-[#C8232A] text-white backdrop-blur-md flex items-center justify-center transition-all shadow-lg hover:scale-110 border border-white/20"
+        >
+          <ChevronRight className="w-5 h-5" />
+        </button>
+
+        {/* 5-Card Grid Strip */}
+        <div className="w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 sm:gap-4 items-center">
+          {visibleGifts.map((gift) => (
+            <Link
+              key={gift.id}
+              href={gift.link}
+              className="group bg-white rounded-2xl overflow-hidden shadow-luxury shadow-luxury-hover border border-[#E8E3DA] transition-all flex flex-col justify-between h-[360px] sm:h-[430px]"
+            >
+              {/* Full Bleed Image Box */}
+              <div className="relative w-full h-full bg-gray-100 overflow-hidden">
+                <Image
+                  src={gift.image}
+                  alt={gift.title}
+                  fill
+                  className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  unoptimized
+                />
+              </div>
+
+              {/* Bottom White Label Box */}
+              <div className="py-3 px-3 text-center bg-white border-t border-[#F0EDE6] shrink-0">
+                <h3 className="font-serif-title font-bold text-sm sm:text-base text-[#1A1A1A] group-hover:text-[#C8232A] transition-colors">
+                  {gift.title}
+                </h3>
+              </div>
+            </Link>
+          ))}
+        </div>
+
       </div>
     </section>
   );
