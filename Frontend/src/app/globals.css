@@ -1,0 +1,97 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    /* Brand Primary Colors */
+    --primary-red: #C8232A;
+    --primary-red-hover: #B81D24;
+    --primary-red-dark: #9E1B21;
+    --footer-red: #CC2529;
+
+    /* Accent & Metallic Gold */
+    --gold-primary: #D4AF37;
+    --gold-light: #F0D588;
+    --gold-accent: #E5C365;
+    --gold-border: #C5A059;
+    --gold-bg-light: #FFFBF0;
+
+    /* Neutral Backgrounds */
+    --bg-main: #FAF8F5;
+    --bg-card: #FFFFFF;
+    --bg-topbar: #F4F6F9;
+    --bg-seo-footer: #F9F6F0;
+
+    /* Text & Neutral Colors */
+    --text-primary: #1A1A1A;
+    --text-secondary: #555555;
+    --text-muted: #777777;
+    --text-light: #FFFFFF;
+
+    /* Borders */
+    --border-light: #E8E3DA;
+    --border-subtle: #F0EDE6;
+
+    /* Elevation Shadows */
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.12);
+    --shadow-card-hover: 0 12px 28px rgba(200, 35, 42, 0.12);
+  }
+
+  body, h1, h2, h3, h4, h5, h6, input, button, select, textarea, .font-serif-title {
+    font-family: var(--font-poppins), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  }
+}
+
+/* Custom Utilities & Animations */
+.bg-primary-red {
+  background-color: #C8232A;
+}
+
+.bg-footer-red {
+  background-color: #CC2529;
+}
+
+.text-primary-red {
+  color: #C8232A;
+}
+
+.border-primary-red {
+  border-color: #C8232A;
+}
+
+.bg-gold-accent {
+  background-color: #E5C365;
+}
+
+.text-gold-primary {
+  color: #D4AF37;
+}
+
+.border-gold-accent {
+  border-color: #C5A059;
+}
+
+.shadow-luxury {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+}
+
+.shadow-luxury-hover:hover {
+  box-shadow: 0 12px 28px rgba(200, 35, 42, 0.12);
+  transform: translateY(-3px);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #F4F6F9;
+}
+::-webkit-scrollbar-thumb {
+  background: #C8232A;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #9E1B21;
+}

@@ -1,0 +1,21 @@
+# Node dependencies
+node_modules/
+Frontend/node_modules/
+Backend/node_modules/
+
+# Next.js build output
+Frontend/.next/
+Frontend/out/
+Frontend/build/
+
+# Environment files
+.env
+.env.local
+Frontend/.env
+Frontend/.env.local
+
+# Operating System & IDE files
+.DS_Store
+*.pem
+.vscode/
+.idea/
