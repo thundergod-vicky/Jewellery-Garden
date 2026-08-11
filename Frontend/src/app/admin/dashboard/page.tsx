@@ -13,30 +13,125 @@ import {
   ArrowUpRight,
 } from "lucide-react";
 
-interface MonthData {
+interface MonthStackedData {
   month: string;
   leftPercent: string;
   change: string;
-  status: "up" | "down" | "neutral";
-  gold: string;
-  silver: string;
-  diamond: string;
-  barHeight: string;
+  isPositive: boolean;
+  totalRevenue: string;
+  goldValue: string;
+  silverValue: string;
+  diamondValue: string;
+  goldPct: number; // e.g. 55%
+  silverPct: number; // e.g. 20%
+  diamondPct: number; // e.g. 25%
+  barHeight: string; // e.g. h-28
 }
 
 export default function AdminDashboardPage() {
   const [selectedMonth, setSelectedMonth] = useState("Month");
   const [activeHoverMonth, setActiveHoverMonth] = useState<string | null>(null);
 
-  // Clean 3-Color Logic: UP (Green), DOWN (Red), NEUTRAL (White)
-  const monthChartData: Record<string, MonthData> = {
-    Jan: { month: "Jan", leftPercent: "7%", change: "+8%", status: "up", gold: "₹62.0k", silver: "₹18.2k", diamond: "₹25.0k", barHeight: "h-20" },
-    Feb: { month: "Feb", leftPercent: "21%", change: "-5%", status: "down", gold: "₹48.5k", silver: "₹14.0k", diamond: "₹20.1k", barHeight: "h-12" },
-    Mar: { month: "Mar", leftPercent: "35%", change: "+3%", status: "up", gold: "₹71.2k", silver: "₹21.5k", diamond: "₹30.4k", barHeight: "h-24" },
-    Apr: { month: "Apr", leftPercent: "49%", change: "+2%", status: "up", gold: "₹75.5k", silver: "₹24.4k", diamond: "₹36.8k", barHeight: "h-28" },
-    May: { month: "May", leftPercent: "63%", change: "-10%", status: "down", gold: "₹42.0k", silver: "₹12.8k", diamond: "₹18.5k", barHeight: "h-14" },
-    Jun: { month: "Jun", leftPercent: "77%", change: "+5%", status: "up", gold: "₹82.0k", silver: "₹26.1k", diamond: "₹40.2k", barHeight: "h-28" },
-    Jul: { month: "Jul", leftPercent: "91%", change: "+3%", status: "up", gold: "₹69.4k", silver: "₹20.8k", diamond: "₹28.9k", barHeight: "h-24" },
+  // AWS Cost Explorer Style Stacked Bar Data (Gold, Silver, Diamond breakdown)
+  const monthChartData: Record<string, MonthStackedData> = {
+    Jan: {
+      month: "Jan",
+      leftPercent: "7%",
+      change: "+8%",
+      isPositive: true,
+      totalRevenue: "₹1,05,200",
+      goldValue: "₹62.0k",
+      silverValue: "₹18.2k",
+      diamondValue: "₹25.0k",
+      goldPct: 59,
+      silverPct: 17,
+      diamondPct: 24,
+      barHeight: "h-20",
+    },
+    Feb: {
+      month: "Feb",
+      leftPercent: "21%",
+      change: "-5%",
+      isPositive: false,
+      totalRevenue: "₹82,600",
+      goldValue: "₹48.5k",
+      silverValue: "₹14.0k",
+      diamondValue: "₹20.1k",
+      goldPct: 58,
+      silverPct: 17,
+      diamondPct: 25,
+      barHeight: "h-14",
+    },
+    Mar: {
+      month: "Mar",
+      leftPercent: "35%",
+      change: "+3%",
+      isPositive: true,
+      totalRevenue: "₹1,23,100",
+      goldValue: "₹71.2k",
+      silverValue: "₹21.5k",
+      diamondValue: "₹30.4k",
+      goldPct: 58,
+      silverPct: 17,
+      diamondPct: 25,
+      barHeight: "h-24",
+    },
+    Apr: {
+      month: "Apr",
+      leftPercent: "49%",
+      change: "+2%",
+      isPositive: true,
+      totalRevenue: "₹1,36,700",
+      goldValue: "₹75.5k",
+      silverValue: "₹24.4k",
+      diamondValue: "₹36.8k",
+      goldPct: 55,
+      silverPct: 18,
+      diamondPct: 27,
+      barHeight: "h-28",
+    },
+    May: {
+      month: "May",
+      leftPercent: "63%",
+      change: "-10%",
+      isPositive: false,
+      totalRevenue: "₹73,300",
+      goldValue: "₹42.0k",
+      silverValue: "₹12.8k",
+      diamondValue: "₹18.5k",
+      goldPct: 57,
+      silverPct: 17,
+      diamondPct: 26,
+      barHeight: "h-16",
+    },
+    Jun: {
+      month: "Jun",
+      leftPercent: "77%",
+      change: "+5%",
+      isPositive: true,
+      totalRevenue: "₹1,48,300",
+      goldValue: "₹82.0k",
+      silverValue: "₹26.1k",
+      diamondValue: "₹40.2k",
+      goldPct: 55,
+      silverPct: 18,
+      diamondPct: 27,
+      barHeight: "h-28",
+    },
+    Jul: {
+      month: "Jul",
+      leftPercent: "91%",
+      change: "+3%",
+      isPositive: true,
+      totalRevenue: "₹1,19,100",
+      goldValue: "₹69.4k",
+      silverValue: "₹20.8k",
+      diamondValue: "₹28.9k",
+      goldPct: 58,
+      silverPct: 17,
+      diamondPct: 25,
+      barHeight: "h-24",
+    },
   };
 
   const currentHoverData = activeHoverMonth ? monthChartData[activeHoverMonth] : null;
@@ -113,14 +208,14 @@ export default function AdminDashboardPage() {
   return (
     <div className="space-y-5 max-w-[1440px] mx-auto animate-in fade-in duration-300 font-sans text-[#1A1C1E] pb-6">
       
-      {/* Top Grid: Total Profit Overview (Left 2 Col) + Sales Performance Gauge (Right 1 Col) */}
+      {/* Top Grid: Total Profit Overview (AWS Stacked Bar Chart) + Sales Performance Gauge */}
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-5">
         
-        {/* Widget 1: Total Profit Overview (3-Color Up/Down/Neutral Logic) */}
+        {/* Widget 1: AWS Cost Explorer Style Stacked Bar Chart */}
         <div className="xl:col-span-2 bg-gradient-to-br from-[#FFF5F2] via-[#F5F8FF] to-[#E8F6F3] border border-white/80 rounded-[28px] p-5 shadow-sm flex flex-col justify-between space-y-4">
           
-          {/* Card Header */}
-          <div className="flex items-center justify-between">
+          {/* Card Header + AWS Category Legend */}
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
             <div className="flex items-center gap-2">
               <div className="w-7 h-7 rounded-xl bg-white/90 flex items-center justify-center shadow-2xs">
                 <TrendingUp className="w-3.5 h-3.5 text-[#1A1C1E]" />
@@ -130,14 +225,17 @@ export default function AdminDashboardPage() {
               </h3>
             </div>
 
-            <div className="flex items-center gap-2">
-              <button className="flex items-center gap-1.5 bg-white/90 hover:bg-white text-[11px] font-semibold px-2.5 py-1 rounded-full border border-gray-200 shadow-2xs">
-                <span>{selectedMonth}</span>
-                <ChevronDown className="w-3 h-3 text-gray-400" />
-              </button>
-              <button className="p-1 rounded-full bg-white/90 hover:bg-white text-gray-600 border border-gray-200">
-                <MoreHorizontal className="w-3.5 h-3.5" />
-              </button>
+            {/* AWS Style Stacked Color Legend */}
+            <div className="flex items-center gap-3 text-[10px] font-semibold bg-white/80 px-3 py-1 rounded-full border border-gray-200/80 shadow-2xs">
+              <span className="flex items-center gap-1 text-gray-700">
+                <span className="w-2 h-2 rounded-full bg-[#12B76A]" /> 22KT Gold
+              </span>
+              <span className="flex items-center gap-1 text-gray-700">
+                <span className="w-2 h-2 rounded-full bg-[#F59E0B]" /> 925 Silver
+              </span>
+              <span className="flex items-center gap-1 text-gray-700">
+                <span className="w-2 h-2 rounded-full bg-[#3B82F6]" /> Diamond
+              </span>
             </div>
           </div>
 
@@ -154,57 +252,51 @@ export default function AdminDashboardPage() {
             </div>
           </div>
 
-          {/* Hover-based Bar Chart with 3-Color Logic */}
+          {/* AWS Stacked Bar Chart with Hover Tooltip */}
           <div
             onMouseLeave={() => setActiveHoverMonth(null)}
             className="relative pt-12"
           >
             
-            {/* Carbon Tooltip Card (Appears ONLY when hovered) */}
+            {/* Hover Tooltip Card */}
             {currentHoverData && (
               <div
                 style={{ left: currentHoverData.leftPercent }}
-                className="absolute top-0 -translate-x-1/2 bg-[#1A1C1E] text-white p-2.5 rounded-2xl shadow-xl z-20 w-36 border border-gray-800 text-[10px] space-y-1 transition-all duration-200 pointer-events-none animate-in fade-in zoom-in-95"
+                className="absolute top-0 -translate-x-1/2 bg-[#1A1C1E] text-white p-2.5 rounded-2xl shadow-xl z-20 w-40 border border-gray-800 text-[10px] space-y-1 transition-all duration-200 pointer-events-none animate-in fade-in zoom-in-95"
               >
-                <div className="flex items-center justify-between text-gray-400 font-mono text-[9px]">
+                <div className="flex items-center justify-between text-gray-400 font-mono text-[9px] border-b border-gray-800 pb-1">
                   <span>{currentHoverData.month} 2026</span>
+                  <span className="text-white font-bold">{currentHoverData.totalRevenue}</span>
                 </div>
-                <div className="flex items-center justify-between">
-                  <span className="flex items-center gap-1 text-emerald-400">
+
+                <div className="flex items-center justify-between pt-0.5">
+                  <span className="flex items-center gap-1.5 text-emerald-400">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" /> 22KT Gold
                   </span>
-                  <span className="font-bold">{currentHoverData.gold}</span>
+                  <span className="font-bold">{currentHoverData.goldValue}</span>
                 </div>
+
                 <div className="flex items-center justify-between">
-                  <span className="flex items-center gap-1 text-amber-400">
+                  <span className="flex items-center gap-1.5 text-amber-400">
                     <span className="w-1.5 h-1.5 rounded-full bg-amber-400" /> 925 Silver
                   </span>
-                  <span className="font-bold">{currentHoverData.silver}</span>
+                  <span className="font-bold">{currentHoverData.silverValue}</span>
                 </div>
+
                 <div className="flex items-center justify-between">
-                  <span className="flex items-center gap-1 text-blue-400">
+                  <span className="flex items-center gap-1.5 text-blue-400">
                     <span className="w-1.5 h-1.5 rounded-full bg-blue-400" /> Diamond
                   </span>
-                  <span className="font-bold">{currentHoverData.diamond}</span>
+                  <span className="font-bold">{currentHoverData.diamondValue}</span>
                 </div>
               </div>
             )}
 
-            {/* 3-Color Bar Columns Grid: UP (Green), DOWN (Red), HOVER (Carbon Dark) */}
+            {/* AWS Multi-Segment Stacked Columns */}
             <div className="grid grid-cols-7 gap-3 items-end h-32 border-b border-gray-200/80 pb-2">
               {Object.keys(monthChartData).map((mKey) => {
                 const item = monthChartData[mKey];
                 const isHovered = activeHoverMonth === mKey;
-
-                // Determine 3-color column style
-                let colStyle = "bg-white/80 border-white text-gray-400";
-                if (isHovered) {
-                  colStyle = "bg-[#1A1C1E] border-black shadow-md text-white scale-105";
-                } else if (item.status === "up") {
-                  colStyle = "bg-[#E3F9ED] border-[#12B76A]/30 text-[#12B76A]";
-                } else if (item.status === "down") {
-                  colStyle = "bg-[#FEE4E2] border-[#F04438]/30 text-[#F04438]";
-                }
 
                 return (
                   <div
@@ -214,20 +306,40 @@ export default function AdminDashboardPage() {
                   >
                     <span
                       className={`text-[9px] font-bold px-1.5 py-0.2 rounded-full transition-all ${
-                        item.status === "up"
+                        item.isPositive
                           ? "bg-[#E3F9ED] text-[#12B76A]"
-                          : item.status === "down"
-                          ? "bg-[#FEE4E2] text-[#F04438]"
-                          : "bg-gray-100 text-gray-600"
+                          : "bg-[#FEE4E2] text-[#F04438]"
                       }`}
                     >
                       {item.change}
                     </span>
 
-                    {/* Column Bar */}
+                    {/* AWS Stacked Column Container */}
                     <div
-                      className={`w-full rounded-xl transition-all duration-200 border ${item.barHeight} ${colStyle}`}
-                    />
+                      className={`w-full rounded-xl overflow-hidden flex flex-col justify-end transition-all duration-200 border ${item.barHeight} ${
+                        isHovered
+                          ? "ring-2 ring-[#1A1C1E] shadow-lg scale-105"
+                          : "border-white/60 shadow-2xs hover:shadow"
+                      }`}
+                    >
+                      {/* Top Segment: Diamond (Blue) */}
+                      <div
+                        style={{ height: `${item.diamondPct}%` }}
+                        className="w-full bg-[#3B82F6] hover:bg-blue-400 transition-colors"
+                      />
+
+                      {/* Middle Segment: Silver (Amber) */}
+                      <div
+                        style={{ height: `${item.silverPct}%` }}
+                        className="w-full bg-[#F59E0B] hover:bg-amber-300 transition-colors"
+                      />
+
+                      {/* Bottom Segment: Gold (Emerald Green) */}
+                      <div
+                        style={{ height: `${item.goldPct}%` }}
+                        className="w-full bg-[#12B76A] hover:bg-emerald-400 transition-colors"
+                      />
+                    </div>
 
                     <span
                       className={`text-[11px] font-medium transition-colors ${
