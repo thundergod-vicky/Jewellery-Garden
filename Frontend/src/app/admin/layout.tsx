@@ -8,23 +8,32 @@ import {
   LayoutDashboard,
   Package,
   ShoppingBag,
+  BarChart3,
+  Users,
+  FileText,
+  Settings,
+  HelpCircle,
   LogOut,
-  ShieldCheck,
-  ChevronRight,
+  Search,
+  SlidersHorizontal,
+  Sun,
+  Moon,
+  Bell,
+  UserPlus,
+  ChevronDown,
+  Sparkles,
   Menu,
   X,
-  ExternalLink,
 } from "lucide-react";
 import { SITE_DATA } from "@/data/siteData";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
-  const [adminEmail, setAdminEmail] = useState("");
+  const [adminEmail, setAdminEmail] = useState("admin@jewellerygardenpvtltd.com");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    // If user is on the login page, render children directly without admin shell
     if (pathname === "/admin/login") return;
 
     const token = localStorage.getItem("admin_token");
@@ -32,8 +41,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
     if (!token) {
       router.push("/admin/login");
-    } else {
-      setAdminEmail(email || "admin@jewellerygardenpvtltd.com");
+    } else if (email) {
+      setAdminEmail(email);
     }
   }, [pathname, router]);
 
@@ -47,153 +56,240 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     return <>{children}</>;
   }
 
-  const navItems = [
+  const menuItems = [
     { label: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
-    { label: "Products & Stock", href: "/admin/products", icon: Package },
-    { label: "Orders & Fulfillment", href: "/admin/orders", icon: ShoppingBag },
+    { label: "Products", href: "/admin/products", icon: Package, badge: "5" },
+    { label: "Orders & Invoices", href: "/admin/orders", icon: ShoppingBag, badge: "3" },
+    { label: "Sales Analytics", href: "#", icon: BarChart3 },
+    { label: "Customer Insights", href: "#", icon: Users },
+    { label: "Reports", href: "#", icon: FileText, badge: "2" },
+  ];
+
+  const otherItems = [
+    { label: "Settings", href: "#", icon: Settings },
+    { label: "Team Members", href: "#", icon: Users, badge: "3" },
+    { label: "Help Center", href: "#", icon: HelpCircle },
   ];
 
   return (
-    <div className="min-h-screen bg-[#FAF8F5] text-gray-800 flex flex-col lg:flex-row">
+    // Outer Ambient Pastel Gradient Container (Matching Screenshot Background)
+    <div className="min-h-screen bg-gradient-to-br from-[#F5E6ED] via-[#E8EEF5] to-[#E6F5F0] p-2 sm:p-5 flex items-center justify-center font-sans antialiased text-[#1A1C1E]">
       
-      {/* Minimalist Sidebar (Desktop) */}
-      <aside className="hidden lg:flex w-64 bg-white border-r border-[#E8E3DA] flex-col justify-between p-6 shrink-0 shadow-sm">
-        <div className="space-y-8">
-          
-          {/* Logo Header */}
-          <div className="space-y-3">
-            <Link href="/" target="_blank" className="block relative w-40 h-10">
-              <Image
-                src={SITE_DATA.logoUrl}
-                alt={SITE_DATA.brandName}
-                fill
-                className="object-contain"
-                unoptimized
-              />
-            </Link>
-            <div className="flex items-center gap-1 text-[11px] text-emerald-700 font-semibold bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200 w-fit">
-              <ShieldCheck className="w-3 h-3" />
-              <span>Admin Subdomain Portal</span>
-            </div>
-          </div>
-
-          {/* Navigation Links */}
-          <nav className="space-y-1 text-xs font-medium">
-            {navItems.map((item) => {
-              const Icon = item.icon;
-              const isActive = pathname === item.href;
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={`flex items-center justify-between px-3.5 py-3 rounded-xl transition-all ${
-                    isActive
-                      ? "bg-[#1A1A1A] text-white shadow"
-                      : "text-gray-600 hover:bg-gray-100 hover:text-black"
-                  }`}
-                >
-                  <div className="flex items-center gap-3">
-                    <Icon className={`w-4 h-4 ${isActive ? "text-[#F0D588]" : "text-gray-400"}`} />
-                    <span>{item.label}</span>
-                  </div>
-                  <ChevronRight className={`w-3.5 h-3.5 ${isActive ? "opacity-100" : "opacity-0"}`} />
-                </Link>
-              );
-            })}
-          </nav>
-        </div>
-
-        {/* Bottom User Info & Logout */}
-        <div className="pt-6 border-t border-gray-200 space-y-4">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-full bg-[#C8232A] text-white font-bold text-xs flex items-center justify-center shadow">
-              A
-            </div>
-            <div className="overflow-hidden">
-              <p className="text-xs font-bold text-gray-800 truncate">{adminEmail}</p>
-              <span className="text-[10px] text-gray-400 font-medium">Master Admin</span>
-            </div>
-          </div>
-
-          <button
-            onClick={handleLogout}
-            className="w-full text-xs font-semibold text-red-600 hover:bg-red-50 py-2 px-3 rounded-xl flex items-center justify-center gap-2 border border-red-200 transition-all"
-          >
-            <LogOut className="w-3.5 h-3.5" />
-            <span>Sign Out</span>
-          </button>
-        </div>
-      </aside>
-
-      {/* Main Content Area */}
-      <div className="flex-1 flex flex-col min-w-0">
+      {/* Floating Main Glass Shell Container */}
+      <div className="w-full max-w-[1520px] bg-[#F7F9FC] border border-white/80 shadow-2xl rounded-[32px] lg:rounded-[36px] overflow-hidden flex flex-col min-h-[92vh]">
         
-        {/* Mobile Header Bar */}
-        <header className="lg:hidden bg-white border-b border-[#E8E3DA] px-4 py-3 flex items-center justify-between">
-          <Link href="/" target="_blank" className="relative w-36 h-8">
-            <Image
-              src={SITE_DATA.logoUrl}
-              alt={SITE_DATA.brandName}
-              fill
-              className="object-contain"
-              unoptimized
-            />
-          </Link>
-          <button
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="p-2 rounded-lg bg-gray-100 text-gray-700"
-          >
-            {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-          </button>
-        </header>
+        {/* Top Header Bar */}
+        <header className="bg-white/70 backdrop-blur-md px-6 py-3.5 border-b border-[#EAEFF5] flex items-center justify-between gap-4 sticky top-0 z-40">
+          
+          {/* Left Brand Selector Pill */}
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 bg-[#F1F4F8] hover:bg-[#E8EDF3] px-3.5 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer">
+              <div className="w-6 h-6 rounded-full bg-[#1A1C1E] text-white font-serif-title flex items-center justify-center text-xs">
+                JG
+              </div>
+              <span className="text-gray-900 font-semibold">Jewellery Garden</span>
+              <span className="bg-[#12B76A] text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full">
+                Pro
+              </span>
+              <ChevronDown className="w-3.5 h-3.5 text-gray-400" />
+            </div>
 
-        {/* Mobile Nav Drawer */}
-        {isMobileMenuOpen && (
-          <div className="lg:hidden bg-white border-b border-[#E8E3DA] p-4 space-y-2 text-xs font-medium">
-            {navItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={() => setIsMobileMenuOpen(false)}
-                className={`block px-3 py-2.5 rounded-lg ${
-                  pathname === item.href ? "bg-[#1A1A1A] text-white" : "text-gray-700"
-                }`}
-              >
-                {item.label}
-              </Link>
-            ))}
-            <button
-              onClick={handleLogout}
-              className="w-full text-left text-red-600 font-bold px-3 py-2.5"
-            >
-              Sign Out
+            <div className="hidden sm:flex items-center gap-1.5 text-xs text-gray-400 font-medium">
+              <span>Jewellery Garden</span>
+              <span>/</span>
+              <span className="text-gray-900 font-semibold capitalize">
+                {pathname.replace("/admin/", "") || "Dashboard"}
+              </span>
+            </div>
+          </div>
+
+          {/* Center Search Pill Bar */}
+          <div className="hidden md:flex items-center gap-2 bg-[#EEF1F5] focus-within:bg-white focus-within:ring-2 focus-within:ring-black/10 px-4 py-2 rounded-full w-80 lg:w-96 transition-all border border-transparent focus-within:border-gray-200">
+            <Search className="w-4 h-4 text-gray-400" />
+            <input
+              type="text"
+              placeholder="Search here..."
+              className="bg-transparent text-xs w-full focus:outline-none text-gray-800 placeholder-gray-400"
+            />
+            <kbd className="hidden lg:inline-block text-[10px] bg-white text-gray-400 font-mono px-1.5 py-0.5 rounded border border-gray-200 shadow-2xs">
+              ⌘S
+            </kbd>
+            <button className="p-1 rounded-full text-gray-400 hover:text-gray-600">
+              <SlidersHorizontal className="w-3.5 h-3.5" />
             </button>
           </div>
-        )}
 
-        {/* Top Navbar */}
-        <header className="hidden lg:flex bg-white border-b border-[#E8E3DA] px-8 py-4 items-center justify-between">
-          <div>
-            <h1 className="font-serif-title font-bold text-lg text-[#1A1A1A]">
-              Jewellery Garden Admin Console
-            </h1>
-            <p className="text-xs text-gray-400">Minimalist Management Portal • NestJS Backend Connected</p>
-          </div>
+          {/* Right Action Icons & User Avatars */}
+          <div className="flex items-center gap-2 sm:gap-3">
+            {/* Theme Toggle Pill */}
+            <div className="flex items-center bg-[#EEF1F5] p-1 rounded-full text-gray-500">
+              <button className="p-1.5 rounded-full bg-white text-gray-900 shadow-2xs">
+                <Sun className="w-3.5 h-3.5" />
+              </button>
+              <button className="p-1.5 rounded-full hover:text-gray-900">
+                <Moon className="w-3.5 h-3.5" />
+              </button>
+            </div>
 
-          <div className="flex items-center gap-4">
-            <Link
-              href="/"
-              target="_blank"
-              className="text-xs font-semibold text-gray-600 hover:text-[#C8232A] flex items-center gap-1.5 bg-gray-100 hover:bg-red-50 px-3 py-1.5 rounded-xl transition-all border border-gray-200"
+            {/* Notification Bell */}
+            <button className="relative p-2.5 rounded-full bg-[#EEF1F5] hover:bg-gray-200 text-gray-700 transition-all">
+              <Bell className="w-4 h-4" />
+              <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-[#F04438]" />
+            </button>
+
+            {/* Team Avatars */}
+            <div className="hidden sm:flex items-center -space-x-2">
+              <div className="w-7 h-7 rounded-full bg-amber-500 text-white font-bold text-[10px] flex items-center justify-center ring-2 ring-white">
+                SB
+              </div>
+              <div className="w-7 h-7 rounded-full bg-emerald-500 text-white font-bold text-[10px] flex items-center justify-center ring-2 ring-white">
+                AD
+              </div>
+              <div className="w-7 h-7 rounded-full bg-indigo-500 text-white font-bold text-[10px] flex items-center justify-center ring-2 ring-white">
+                KG
+              </div>
+              <div className="w-7 h-7 rounded-full bg-gray-200 text-gray-600 font-bold text-[10px] flex items-center justify-center ring-2 ring-white">
+                +6
+              </div>
+            </div>
+
+            {/* Invite Button */}
+            <button className="bg-[#1A1C1E] hover:bg-black text-white text-xs font-semibold px-4 py-2 rounded-full flex items-center gap-1.5 shadow-sm transition-all">
+              <UserPlus className="w-3.5 h-3.5" />
+              <span>Invite</span>
+            </button>
+
+            {/* Mobile Menu Toggle */}
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="lg:hidden p-2 rounded-full bg-gray-200 text-gray-800"
             >
-              <span>View Live Storefront</span>
-              <ExternalLink className="w-3.5 h-3.5" />
-            </Link>
+              {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
           </div>
         </header>
 
-        {/* Child Page Content */}
-        <main className="p-4 sm:p-8 flex-1 overflow-y-auto">{children}</main>
+        {/* Content Body Grid */}
+        <div className="flex-1 flex flex-col lg:flex-row min-w-0">
+          
+          {/* Left Navigation Sidebar */}
+          <aside
+            className={`${
+              isMobileMenuOpen ? "block" : "hidden"
+            } lg:block w-full lg:w-64 bg-white/50 backdrop-blur-sm border-r border-[#EAEFF5] p-5 flex-col justify-between shrink-0 space-y-6`}
+          >
+            <div className="space-y-6">
+              
+              {/* Admin Welcome Heading */}
+              <div className="space-y-1">
+                <h2 className="text-lg font-bold text-gray-900 font-serif-title">
+                  Welcome Back, Admin 👋
+                </h2>
+                <p className="text-[11px] text-gray-400 font-medium">
+                  Jewellery Garden Control Panel
+                </p>
+              </div>
+
+              {/* MENU Section */}
+              <div className="space-y-2">
+                <span className="text-[10px] font-bold text-gray-400 tracking-wider uppercase px-3">
+                  MENU
+                </span>
+                <nav className="space-y-1 text-xs font-medium">
+                  {menuItems.map((item) => {
+                    const Icon = item.icon;
+                    const isActive = pathname === item.href;
+                    return (
+                      <Link
+                        key={item.label}
+                        href={item.href}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className={`flex items-center justify-between px-3.5 py-3 rounded-2xl transition-all ${
+                          isActive
+                            ? "bg-gradient-to-r from-[#1A1C1E] to-[#2D3035] text-white shadow-md font-semibold"
+                            : "text-gray-600 hover:bg-[#EEF1F5] hover:text-gray-900"
+                        }`}
+                      >
+                        <div className="flex items-center gap-3">
+                          <Icon className={`w-4 h-4 ${isActive ? "text-[#F0D588]" : "text-gray-400"}`} />
+                          <span>{item.label}</span>
+                        </div>
+
+                        {item.badge && (
+                          <span
+                            className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                              isActive
+                                ? "bg-[#C8232A] text-white"
+                                : "bg-[#FEE4E2] text-[#C8232A]"
+                            }`}
+                          >
+                            {item.badge}
+                          </span>
+                        )}
+                      </Link>
+                    );
+                  })}
+                </nav>
+              </div>
+
+              {/* OTHERS Section */}
+              <div className="space-y-2">
+                <span className="text-[10px] font-bold text-gray-400 tracking-wider uppercase px-3">
+                  OTHERS
+                </span>
+                <nav className="space-y-1 text-xs font-medium">
+                  {otherItems.map((item) => {
+                    const Icon = item.icon;
+                    return (
+                      <Link
+                        key={item.label}
+                        href={item.href}
+                        className="flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-gray-600 hover:bg-[#EEF1F5] hover:text-gray-900 transition-all"
+                      >
+                        <div className="flex items-center gap-3">
+                          <Icon className="w-4 h-4 text-gray-400" />
+                          <span>{item.label}</span>
+                        </div>
+                        {item.badge && (
+                          <span className="text-[10px] font-bold bg-[#FEE4E2] text-[#C8232A] px-2 py-0.5 rounded-full">
+                            {item.badge}
+                          </span>
+                        )}
+                      </Link>
+                    );
+                  })}
+
+                  <button
+                    onClick={handleLogout}
+                    className="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-red-600 hover:bg-red-50 transition-all text-xs font-semibold"
+                  >
+                    <LogOut className="w-4 h-4 text-red-500" />
+                    <span>Logout</span>
+                  </button>
+                </nav>
+              </div>
+
+            </div>
+
+            {/* Bottom User Card Profile */}
+            <div className="pt-4 border-t border-[#EAEFF5] flex items-center gap-3">
+              <div className="w-9 h-9 rounded-full bg-[#1A1C1E] text-white font-bold text-xs flex items-center justify-center shadow shrink-0">
+                A
+              </div>
+              <div className="overflow-hidden leading-tight">
+                <h4 className="text-xs font-bold text-gray-900 truncate">Master Admin</h4>
+                <p className="text-[10px] text-gray-400 truncate">{adminEmail}</p>
+              </div>
+            </div>
+
+          </aside>
+
+          {/* Main Dashboard Canvas Area */}
+          <main className="flex-1 p-4 sm:p-6 overflow-y-auto bg-[#F7F9FC]">
+            {children}
+          </main>
+
+        </div>
 
       </div>
     </div>
