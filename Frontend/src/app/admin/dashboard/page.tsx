@@ -22,24 +22,25 @@ interface MonthData {
   silver: string;
   diamond: string;
   barHeight: string;
+  gradientBg: string;
 }
 
 export default function AdminDashboardPage() {
   const [selectedMonth, setSelectedMonth] = useState("Month");
-  const [activeHoverMonth, setActiveHoverMonth] = useState<string>("Apr");
+  const [activeHoverMonth, setActiveHoverMonth] = useState<string | null>(null);
 
-  // Dynamic Chart Data for Each Month (Hover Enabled)
+  // Colorful Bar Chart Data with custom gradients
   const monthChartData: Record<string, MonthData> = {
-    Jan: { month: "Jan", leftPercent: "7%", change: "+8%", isPositive: true, gold: "₹62.0k", silver: "₹18.2k", diamond: "₹25.0k", barHeight: "h-20" },
-    Feb: { month: "Feb", leftPercent: "21%", change: "-5%", isPositive: false, gold: "₹48.5k", silver: "₹14.0k", diamond: "₹20.1k", barHeight: "h-12" },
-    Mar: { month: "Mar", leftPercent: "35%", change: "+3%", isPositive: true, gold: "₹71.2k", silver: "₹21.5k", diamond: "₹30.4k", barHeight: "h-24" },
-    Apr: { month: "Apr", leftPercent: "49%", change: "+2%", isPositive: true, gold: "₹75.5k", silver: "₹24.4k", diamond: "₹36.8k", barHeight: "h-28" },
-    May: { month: "May", leftPercent: "63%", change: "-10%", isPositive: false, gold: "₹42.0k", silver: "₹12.8k", diamond: "₹18.5k", barHeight: "h-14" },
-    Jun: { month: "Jun", leftPercent: "77%", change: "+5%", isPositive: true, gold: "₹82.0k", silver: "₹26.1k", diamond: "₹40.2k", barHeight: "h-28" },
-    Jul: { month: "Jul", leftPercent: "91%", change: "+3%", isPositive: true, gold: "₹69.4k", silver: "₹20.8k", diamond: "₹28.9k", barHeight: "h-24" },
+    Jan: { month: "Jan", leftPercent: "7%", change: "+8%", isPositive: true, gold: "₹62.0k", silver: "₹18.2k", diamond: "₹25.0k", barHeight: "h-20", gradientBg: "bg-gradient-to-t from-emerald-400 via-emerald-300 to-emerald-200 border-emerald-300" },
+    Feb: { month: "Feb", leftPercent: "21%", change: "-5%", isPositive: false, gold: "₹48.5k", silver: "₹14.0k", diamond: "₹20.1k", barHeight: "h-12", gradientBg: "bg-gradient-to-t from-rose-400 via-rose-300 to-rose-200 border-rose-300" },
+    Mar: { month: "Mar", leftPercent: "35%", change: "+3%", isPositive: true, gold: "₹71.2k", silver: "₹21.5k", diamond: "₹30.4k", barHeight: "h-24", gradientBg: "bg-gradient-to-t from-amber-400 via-amber-300 to-amber-200 border-amber-300" },
+    Apr: { month: "Apr", leftPercent: "49%", change: "+2%", isPositive: true, gold: "₹75.5k", silver: "₹24.4k", diamond: "₹36.8k", barHeight: "h-28", gradientBg: "bg-gradient-to-t from-[#1A1C1E] via-gray-900 to-gray-700 border-black shadow-md" },
+    May: { month: "May", leftPercent: "63%", change: "-10%", isPositive: false, gold: "₹42.0k", silver: "₹12.8k", diamond: "₹18.5k", barHeight: "h-14", gradientBg: "bg-gradient-to-t from-[#C8232A] via-red-400 to-red-300 border-red-400" },
+    Jun: { month: "Jun", leftPercent: "77%", change: "+5%", isPositive: true, gold: "₹82.0k", silver: "₹26.1k", diamond: "₹40.2k", barHeight: "h-28", gradientBg: "bg-gradient-to-t from-cyan-500 via-cyan-400 to-cyan-200 border-cyan-300" },
+    Jul: { month: "Jul", leftPercent: "91%", change: "+3%", isPositive: true, gold: "₹69.4k", silver: "₹20.8k", diamond: "₹28.9k", barHeight: "h-24", gradientBg: "bg-gradient-to-t from-indigo-500 via-indigo-400 to-indigo-200 border-indigo-300" },
   };
 
-  const currentHoverData = monthChartData[activeHoverMonth] || monthChartData["Apr"];
+  const currentHoverData = activeHoverMonth ? monthChartData[activeHoverMonth] : null;
 
   // Recent Transactions Data
   const transactions = [
@@ -116,7 +117,7 @@ export default function AdminDashboardPage() {
       {/* Top Grid: Total Profit Overview (Left 2 Col) + Sales Performance Gauge (Right 1 Col) */}
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-5">
         
-        {/* Widget 1: Total Profit Overview (Interactive Dynamic Hover Chart) */}
+        {/* Widget 1: Total Profit Overview (Colorful Bars + Hover Tooltip) */}
         <div className="xl:col-span-2 bg-gradient-to-br from-[#FFF5F2] via-[#F5F8FF] to-[#E8F6F3] border border-white/80 rounded-[28px] p-5 shadow-sm flex flex-col justify-between space-y-4">
           
           {/* Card Header */}
@@ -155,37 +156,42 @@ export default function AdminDashboardPage() {
           </div>
 
           {/* Dynamic Hover-based Bar Chart */}
-          <div className="relative pt-12">
+          <div
+            onMouseLeave={() => setActiveHoverMonth(null)}
+            className="relative pt-12"
+          >
             
-            {/* Dynamic Carbon Active Tooltip Card (Moves dynamically to hovered month) */}
-            <div
-              style={{ left: currentHoverData.leftPercent }}
-              className="absolute top-0 -translate-x-1/2 bg-[#1A1C1E] text-white p-2.5 rounded-2xl shadow-xl z-20 w-36 border border-gray-800 text-[10px] space-y-1 transition-all duration-200 pointer-events-none"
-            >
-              <div className="flex items-center justify-between text-gray-400 font-mono text-[9px]">
-                <span>{currentHoverData.month} 2026</span>
+            {/* Dynamic Carbon Active Tooltip Card (Appears ONLY when hovered) */}
+            {currentHoverData && (
+              <div
+                style={{ left: currentHoverData.leftPercent }}
+                className="absolute top-0 -translate-x-1/2 bg-[#1A1C1E] text-white p-2.5 rounded-2xl shadow-xl z-20 w-36 border border-gray-800 text-[10px] space-y-1 transition-all duration-200 pointer-events-none animate-in fade-in zoom-in-95"
+              >
+                <div className="flex items-center justify-between text-gray-400 font-mono text-[9px]">
+                  <span>{currentHoverData.month} 2026</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="flex items-center gap-1 text-emerald-400">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" /> 22KT Gold
+                  </span>
+                  <span className="font-bold">{currentHoverData.gold}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="flex items-center gap-1 text-amber-400">
+                    <span className="w-1.5 h-1.5 rounded-full bg-amber-400" /> 925 Silver
+                  </span>
+                  <span className="font-bold">{currentHoverData.silver}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="flex items-center gap-1 text-blue-400">
+                    <span className="w-1.5 h-1.5 rounded-full bg-blue-400" /> Diamond
+                  </span>
+                  <span className="font-bold">{currentHoverData.diamond}</span>
+                </div>
               </div>
-              <div className="flex items-center justify-between">
-                <span className="flex items-center gap-1 text-emerald-400">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" /> 22KT Gold
-                </span>
-                <span className="font-bold">{currentHoverData.gold}</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="flex items-center gap-1 text-amber-400">
-                  <span className="w-1.5 h-1.5 rounded-full bg-amber-400" /> 925 Silver
-                </span>
-                <span className="font-bold">{currentHoverData.silver}</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="flex items-center gap-1 text-blue-400">
-                  <span className="w-1.5 h-1.5 rounded-full bg-blue-400" /> Diamond
-                </span>
-                <span className="font-bold">{currentHoverData.diamond}</span>
-              </div>
-            </div>
+            )}
 
-            {/* Interactive Bar Columns Grid */}
+            {/* Colorful Bar Columns Grid */}
             <div className="grid grid-cols-7 gap-3 items-end h-32 border-b border-gray-200/80 pb-2">
               {Object.keys(monthChartData).map((mKey) => {
                 const item = monthChartData[mKey];
@@ -206,11 +212,10 @@ export default function AdminDashboardPage() {
                       {item.change}
                     </span>
 
+                    {/* Colorful Gradient Column */}
                     <div
-                      className={`w-full rounded-xl transition-all duration-300 ${item.barHeight} ${
-                        isHovered
-                          ? "bg-[#1A1C1E] shadow-md border border-black scale-105"
-                          : "bg-white/70 hover:bg-white border border-white"
+                      className={`w-full rounded-xl transition-all duration-300 border ${item.barHeight} ${item.gradientBg} ${
+                        isHovered ? "scale-105 shadow-lg opacity-100 ring-2 ring-[#1A1C1E]/20" : "opacity-85 hover:opacity-100"
                       }`}
                     />
 
@@ -230,7 +235,7 @@ export default function AdminDashboardPage() {
 
         </div>
 
-        {/* Widget 2: Sales Performance SVG Arc Gauge (1 Column Wide) */}
+        {/* Widget 2: Sales Performance SVG Arc Gauge */}
         <div className="bg-white border border-[#EBEFF5] rounded-[28px] p-5 shadow-sm flex flex-col justify-between space-y-4">
           
           {/* Header */}
@@ -308,10 +313,10 @@ export default function AdminDashboardPage() {
 
       </div>
 
-      {/* Bottom Grid: Recent Transactions Data Table (NO Horizontal Scrollbar) + Top Market & Product */}
+      {/* Bottom Grid: Recent Transactions Data Table + Top Market & Product */}
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-5">
         
-        {/* Widget 3: Recent Transactions Data Table (Compact, Fits 100% without Horizontal Scrollbar) */}
+        {/* Widget 3: Recent Transactions Data Table */}
         <div className="xl:col-span-2 bg-white border border-[#EBEFF5] rounded-[28px] p-5 shadow-sm space-y-4 overflow-hidden">
           
           {/* Header Controls */}
@@ -337,7 +342,7 @@ export default function AdminDashboardPage() {
             </div>
           </div>
 
-          {/* Standard Clean Table (Fits 100% width, NO horizontal scrollbar) */}
+          {/* Clean Data Table */}
           <div className="w-full">
             <table className="w-full text-left text-[11px] border-collapse">
               <thead>
