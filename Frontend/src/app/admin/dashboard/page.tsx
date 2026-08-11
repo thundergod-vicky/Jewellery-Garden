@@ -32,7 +32,7 @@ export default function AdminDashboardPage() {
   const [selectedMonth, setSelectedMonth] = useState("Month");
   const [activeHoverMonth, setActiveHoverMonth] = useState<string | null>(null);
 
-  // AWS Cost Explorer Style Stacked Bar Data (Soft Pastel Light Palette)
+  // AWS Style Stacked Bar Data (Luxury Jewel & Slate Palette)
   const monthChartData: Record<string, MonthStackedData> = {
     Jan: {
       month: "Jan",
@@ -208,13 +208,13 @@ export default function AdminDashboardPage() {
   return (
     <div className="space-y-5 max-w-[1440px] mx-auto animate-in fade-in duration-300 font-sans text-[#1A1C1E] pb-6">
       
-      {/* Top Grid: Total Profit Overview (Soft Pastel Stacked Bar Chart) + Sales Performance Gauge */}
+      {/* Top Grid: Total Profit Overview (Luxury Palette Stacked Bar Chart) + Sales Performance Gauge */}
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-5">
         
-        {/* Widget 1: AWS Style Stacked Bar Chart with Light Pastel Palette */}
+        {/* Widget 1: AWS Style Stacked Bar Chart with Premium Luxury Palette */}
         <div className="xl:col-span-2 bg-gradient-to-br from-[#FFF5F2] via-[#F5F8FF] to-[#E8F6F3] border border-white/80 rounded-[28px] p-5 shadow-sm flex flex-col justify-between space-y-4">
           
-          {/* Card Header + Light Legend */}
+          {/* Card Header + Legend */}
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
             <div className="flex items-center gap-2">
               <div className="w-7 h-7 rounded-xl bg-white/90 flex items-center justify-center shadow-2xs">
@@ -225,16 +225,16 @@ export default function AdminDashboardPage() {
               </h3>
             </div>
 
-            {/* Light Pastel Category Legend */}
+            {/* Premium Category Legend */}
             <div className="flex items-center gap-3 text-[10px] font-semibold bg-white/90 px-3 py-1 rounded-full border border-gray-200/80 shadow-2xs">
               <span className="flex items-center gap-1.5 text-gray-700">
-                <span className="w-2.5 h-2.5 rounded-full bg-[#A7F3D0] border border-emerald-400" /> 22KT Gold
+                <span className="w-2.5 h-2.5 rounded-full bg-[#E5C158]" /> 22KT Gold
               </span>
               <span className="flex items-center gap-1.5 text-gray-700">
-                <span className="w-2.5 h-2.5 rounded-full bg-[#FDE68A] border border-amber-400" /> 925 Silver
+                <span className="w-2.5 h-2.5 rounded-full bg-[#64748B]" /> 925 Silver
               </span>
               <span className="flex items-center gap-1.5 text-gray-700">
-                <span className="w-2.5 h-2.5 rounded-full bg-[#BAE6FD] border border-sky-400" /> Diamond
+                <span className="w-2.5 h-2.5 rounded-full bg-[#6366F1]" /> Diamond
               </span>
             </div>
           </div>
@@ -252,7 +252,7 @@ export default function AdminDashboardPage() {
             </div>
           </div>
 
-          {/* AWS Stacked Bar Chart with Light Pastel Palette */}
+          {/* AWS Stacked Bar Chart with Premium Palette */}
           <div
             onMouseLeave={() => setActiveHoverMonth(null)}
             className="relative pt-12"
@@ -270,29 +270,29 @@ export default function AdminDashboardPage() {
                 </div>
 
                 <div className="flex items-center justify-between pt-0.5">
-                  <span className="flex items-center gap-1.5 text-emerald-300">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#A7F3D0]" /> 22KT Gold
+                  <span className="flex items-center gap-1.5 text-amber-300">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#E5C158]" /> 22KT Gold
                   </span>
                   <span className="font-bold">{currentHoverData.goldValue}</span>
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <span className="flex items-center gap-1.5 text-amber-200">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#FDE68A]" /> 925 Silver
+                  <span className="flex items-center gap-1.5 text-slate-300">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#64748B]" /> 925 Silver
                   </span>
                   <span className="font-bold">{currentHoverData.silverValue}</span>
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <span className="flex items-center gap-1.5 text-sky-200">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#BAE6FD]" /> Diamond
+                  <span className="flex items-center gap-1.5 text-indigo-300">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#6366F1]" /> Diamond
                   </span>
                   <span className="font-bold">{currentHoverData.diamondValue}</span>
                 </div>
               </div>
             )}
 
-            {/* Light Pastel Multi-Segment Stacked Columns */}
+            {/* Premium Multi-Segment Stacked Columns */}
             <div className="grid grid-cols-7 gap-3 items-end h-32 border-b border-gray-200/80 pb-2">
               {Object.keys(monthChartData).map((mKey) => {
                 const item = monthChartData[mKey];
@@ -314,7 +314,7 @@ export default function AdminDashboardPage() {
                       {item.change}
                     </span>
 
-                    {/* Light Pastel Stacked Bar Container */}
+                    {/* Premium Stacked Bar Container */}
                     <div
                       className={`w-full rounded-xl overflow-hidden flex flex-col justify-end transition-all duration-200 border border-white/80 shadow-2xs ${
                         item.barHeight
@@ -324,22 +324,22 @@ export default function AdminDashboardPage() {
                           : "hover:shadow"
                       }`}
                     >
-                      {/* Top Segment: Diamond (Soft Pastel Sky Blue) */}
+                      {/* Top Segment: Diamond (Royal Indigo) */}
                       <div
                         style={{ height: `${item.diamondPct}%` }}
-                        className="w-full bg-[#BAE6FD] hover:bg-[#93C5FD] transition-colors"
+                        className="w-full bg-[#6366F1] hover:bg-[#4F46E5] transition-colors"
                       />
 
-                      {/* Middle Segment: Silver (Soft Pastel Warm Amber) */}
+                      {/* Middle Segment: Silver (Slate Silver) */}
                       <div
                         style={{ height: `${item.silverPct}%` }}
-                        className="w-full bg-[#FDE68A] hover:bg-[#FCD34D] transition-colors"
+                        className="w-full bg-[#64748B] hover:bg-[#475569] transition-colors"
                       />
 
-                      {/* Bottom Segment: Gold (Soft Pastel Mint Emerald) */}
+                      {/* Bottom Segment: Gold (Warm Champagne Gold) */}
                       <div
                         style={{ height: `${item.goldPct}%` }}
-                        className="w-full bg-[#A7F3D0] hover:bg-[#6EE7B7] transition-colors"
+                        className="w-full bg-[#E5C158] hover:bg-[#D4AF37] transition-colors"
                       />
                     </div>
 
