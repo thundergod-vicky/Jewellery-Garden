@@ -17,27 +17,26 @@ interface MonthData {
   month: string;
   leftPercent: string;
   change: string;
-  isPositive: boolean;
+  status: "up" | "down" | "neutral";
   gold: string;
   silver: string;
   diamond: string;
   barHeight: string;
-  gradientBg: string;
 }
 
 export default function AdminDashboardPage() {
   const [selectedMonth, setSelectedMonth] = useState("Month");
   const [activeHoverMonth, setActiveHoverMonth] = useState<string | null>(null);
 
-  // Colorful Bar Chart Data with custom gradients
+  // Clean 3-Color Logic: UP (Green), DOWN (Red), NEUTRAL (White)
   const monthChartData: Record<string, MonthData> = {
-    Jan: { month: "Jan", leftPercent: "7%", change: "+8%", isPositive: true, gold: "₹62.0k", silver: "₹18.2k", diamond: "₹25.0k", barHeight: "h-20", gradientBg: "bg-gradient-to-t from-emerald-400 via-emerald-300 to-emerald-200 border-emerald-300" },
-    Feb: { month: "Feb", leftPercent: "21%", change: "-5%", isPositive: false, gold: "₹48.5k", silver: "₹14.0k", diamond: "₹20.1k", barHeight: "h-12", gradientBg: "bg-gradient-to-t from-rose-400 via-rose-300 to-rose-200 border-rose-300" },
-    Mar: { month: "Mar", leftPercent: "35%", change: "+3%", isPositive: true, gold: "₹71.2k", silver: "₹21.5k", diamond: "₹30.4k", barHeight: "h-24", gradientBg: "bg-gradient-to-t from-amber-400 via-amber-300 to-amber-200 border-amber-300" },
-    Apr: { month: "Apr", leftPercent: "49%", change: "+2%", isPositive: true, gold: "₹75.5k", silver: "₹24.4k", diamond: "₹36.8k", barHeight: "h-28", gradientBg: "bg-gradient-to-t from-[#1A1C1E] via-gray-900 to-gray-700 border-black shadow-md" },
-    May: { month: "May", leftPercent: "63%", change: "-10%", isPositive: false, gold: "₹42.0k", silver: "₹12.8k", diamond: "₹18.5k", barHeight: "h-14", gradientBg: "bg-gradient-to-t from-[#C8232A] via-red-400 to-red-300 border-red-400" },
-    Jun: { month: "Jun", leftPercent: "77%", change: "+5%", isPositive: true, gold: "₹82.0k", silver: "₹26.1k", diamond: "₹40.2k", barHeight: "h-28", gradientBg: "bg-gradient-to-t from-cyan-500 via-cyan-400 to-cyan-200 border-cyan-300" },
-    Jul: { month: "Jul", leftPercent: "91%", change: "+3%", isPositive: true, gold: "₹69.4k", silver: "₹20.8k", diamond: "₹28.9k", barHeight: "h-24", gradientBg: "bg-gradient-to-t from-indigo-500 via-indigo-400 to-indigo-200 border-indigo-300" },
+    Jan: { month: "Jan", leftPercent: "7%", change: "+8%", status: "up", gold: "₹62.0k", silver: "₹18.2k", diamond: "₹25.0k", barHeight: "h-20" },
+    Feb: { month: "Feb", leftPercent: "21%", change: "-5%", status: "down", gold: "₹48.5k", silver: "₹14.0k", diamond: "₹20.1k", barHeight: "h-12" },
+    Mar: { month: "Mar", leftPercent: "35%", change: "+3%", status: "up", gold: "₹71.2k", silver: "₹21.5k", diamond: "₹30.4k", barHeight: "h-24" },
+    Apr: { month: "Apr", leftPercent: "49%", change: "+2%", status: "up", gold: "₹75.5k", silver: "₹24.4k", diamond: "₹36.8k", barHeight: "h-28" },
+    May: { month: "May", leftPercent: "63%", change: "-10%", status: "down", gold: "₹42.0k", silver: "₹12.8k", diamond: "₹18.5k", barHeight: "h-14" },
+    Jun: { month: "Jun", leftPercent: "77%", change: "+5%", status: "up", gold: "₹82.0k", silver: "₹26.1k", diamond: "₹40.2k", barHeight: "h-28" },
+    Jul: { month: "Jul", leftPercent: "91%", change: "+3%", status: "up", gold: "₹69.4k", silver: "₹20.8k", diamond: "₹28.9k", barHeight: "h-24" },
   };
 
   const currentHoverData = activeHoverMonth ? monthChartData[activeHoverMonth] : null;
@@ -117,7 +116,7 @@ export default function AdminDashboardPage() {
       {/* Top Grid: Total Profit Overview (Left 2 Col) + Sales Performance Gauge (Right 1 Col) */}
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-5">
         
-        {/* Widget 1: Total Profit Overview (Colorful Bars + Hover Tooltip) */}
+        {/* Widget 1: Total Profit Overview (3-Color Up/Down/Neutral Logic) */}
         <div className="xl:col-span-2 bg-gradient-to-br from-[#FFF5F2] via-[#F5F8FF] to-[#E8F6F3] border border-white/80 rounded-[28px] p-5 shadow-sm flex flex-col justify-between space-y-4">
           
           {/* Card Header */}
@@ -155,13 +154,13 @@ export default function AdminDashboardPage() {
             </div>
           </div>
 
-          {/* Dynamic Hover-based Bar Chart */}
+          {/* Hover-based Bar Chart with 3-Color Logic */}
           <div
             onMouseLeave={() => setActiveHoverMonth(null)}
             className="relative pt-12"
           >
             
-            {/* Dynamic Carbon Active Tooltip Card (Appears ONLY when hovered) */}
+            {/* Carbon Tooltip Card (Appears ONLY when hovered) */}
             {currentHoverData && (
               <div
                 style={{ left: currentHoverData.leftPercent }}
@@ -191,11 +190,22 @@ export default function AdminDashboardPage() {
               </div>
             )}
 
-            {/* Colorful Bar Columns Grid */}
+            {/* 3-Color Bar Columns Grid: UP (Green), DOWN (Red), HOVER (Carbon Dark) */}
             <div className="grid grid-cols-7 gap-3 items-end h-32 border-b border-gray-200/80 pb-2">
               {Object.keys(monthChartData).map((mKey) => {
                 const item = monthChartData[mKey];
                 const isHovered = activeHoverMonth === mKey;
+
+                // Determine 3-color column style
+                let colStyle = "bg-white/80 border-white text-gray-400";
+                if (isHovered) {
+                  colStyle = "bg-[#1A1C1E] border-black shadow-md text-white scale-105";
+                } else if (item.status === "up") {
+                  colStyle = "bg-[#E3F9ED] border-[#12B76A]/30 text-[#12B76A]";
+                } else if (item.status === "down") {
+                  colStyle = "bg-[#FEE4E2] border-[#F04438]/30 text-[#F04438]";
+                }
+
                 return (
                   <div
                     key={mKey}
@@ -204,19 +214,19 @@ export default function AdminDashboardPage() {
                   >
                     <span
                       className={`text-[9px] font-bold px-1.5 py-0.2 rounded-full transition-all ${
-                        item.isPositive
+                        item.status === "up"
                           ? "bg-[#E3F9ED] text-[#12B76A]"
-                          : "bg-[#FEE4E2] text-[#F04438]"
+                          : item.status === "down"
+                          ? "bg-[#FEE4E2] text-[#F04438]"
+                          : "bg-gray-100 text-gray-600"
                       }`}
                     >
                       {item.change}
                     </span>
 
-                    {/* Colorful Gradient Column */}
+                    {/* Column Bar */}
                     <div
-                      className={`w-full rounded-xl transition-all duration-300 border ${item.barHeight} ${item.gradientBg} ${
-                        isHovered ? "scale-105 shadow-lg opacity-100 ring-2 ring-[#1A1C1E]/20" : "opacity-85 hover:opacity-100"
-                      }`}
+                      className={`w-full rounded-xl transition-all duration-200 border ${item.barHeight} ${colStyle}`}
                     />
 
                     <span
