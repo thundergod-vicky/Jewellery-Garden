@@ -23,8 +23,7 @@ export default function AdminDashboardPage() {
       productName: "Splendid Flower Diamond Nose Pin",
       subtext: "18KT Gold, Certified Solitaire",
       image: "/images/gifts/birthday.png",
-      date: "19 Nov 2025",
-      time: "10:32 AM",
+      date: "19 Nov 2025, 10:32 AM",
       customer: "Ethan Clarke",
       avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80",
       price: "₹12,796",
@@ -36,8 +35,7 @@ export default function AdminDashboardPage() {
       productName: "Crescent Wave 22KT Gold Ring",
       subtext: "22KT 916 BIS Hallmarked",
       image: "/images/gifts/engagement.png",
-      date: "19 Nov 2025",
-      time: "11:05 AM",
+      date: "19 Nov 2025, 11:05 AM",
       customer: "Ava Mitchell",
       avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=100&q=80",
       price: "₹12,521",
@@ -49,8 +47,7 @@ export default function AdminDashboardPage() {
       productName: "Handcrafted 925 Sterling Silver Bangle",
       subtext: "925 Gossip Silver",
       image: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=800&q=80",
-      date: "19 Nov 2025",
-      time: "11:44 AM",
+      date: "19 Nov 2025, 11:44 AM",
       customer: "Liam Parker",
       avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80",
       price: "₹4,850",
@@ -62,8 +59,7 @@ export default function AdminDashboardPage() {
       productName: "Royal Peacock 22KT Gold Jhumka",
       subtext: "22KT BIS Hallmarked",
       image: "https://images.unsplash.com/photo-1630019852942-f89202989a59?auto=format&fit=crop&w=800&q=80",
-      date: "19 Nov 2025",
-      time: "12:10 PM",
+      date: "19 Nov 2025, 12:10 PM",
       customer: "Sophia Hayes",
       avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=100&q=80",
       price: "₹34,800",
@@ -75,8 +71,7 @@ export default function AdminDashboardPage() {
       productName: "Bengali Traditional Sitahar Gold Necklace",
       subtext: "22KT Heavy Bridal Gold",
       image: "/images/gifts/wedding.png",
-      date: "19 Nov 2025",
-      time: "12:40 PM",
+      date: "19 Nov 2025, 12:40 PM",
       customer: "Noah Bennett",
       avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=100&q=80",
       price: "₹89,500",
@@ -86,9 +81,9 @@ export default function AdminDashboardPage() {
   ];
 
   return (
-    <div className="space-y-6 max-w-[1440px] mx-auto animate-in fade-in duration-300 text-[#1A1C1E] pb-8">
+    <div className="space-y-6 max-w-[1440px] mx-auto animate-in fade-in duration-300 font-sans text-[#1A1C1E] pb-10">
       
-      {/* Top Grid: Total Profit Overview (Left) + Sales Performance Gauge (Right) */}
+      {/* Top Grid: Total Profit Overview (Left 2 Col) + Sales Performance Gauge (Right 1 Col) */}
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
         
         {/* Widget 1: Total Profit Overview (2 Columns Wide) */}
@@ -97,20 +92,20 @@ export default function AdminDashboardPage() {
           {/* Card Header */}
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-xl bg-white/80 flex items-center justify-center shadow-2xs">
+              <div className="w-8 h-8 rounded-xl bg-white/90 flex items-center justify-center shadow-2xs">
                 <TrendingUp className="w-4 h-4 text-[#1A1C1E]" />
               </div>
-              <h3 className="font-serif-title font-bold text-base text-gray-900">
+              <h3 className="font-bold text-base text-gray-900">
                 Total Profit Overview
               </h3>
             </div>
 
             <div className="flex items-center gap-2">
-              <button className="flex items-center gap-1.5 bg-white/80 hover:bg-white text-xs font-semibold px-3 py-1.5 rounded-full border border-gray-200 shadow-2xs">
+              <button className="flex items-center gap-1.5 bg-white/90 hover:bg-white text-xs font-semibold px-3 py-1.5 rounded-full border border-gray-200 shadow-2xs">
                 <span>{selectedMonth}</span>
                 <ChevronDown className="w-3.5 h-3.5 text-gray-400" />
               </button>
-              <button className="p-1.5 rounded-full bg-white/80 hover:bg-white text-gray-600 border border-gray-200">
+              <button className="p-1.5 rounded-full bg-white/90 hover:bg-white text-gray-600 border border-gray-200">
                 <MoreHorizontal className="w-4 h-4" />
               </button>
             </div>
@@ -118,7 +113,7 @@ export default function AdminDashboardPage() {
 
           {/* Hero Big Metric */}
           <div className="space-y-1">
-            <h2 className="text-3xl sm:text-4xl font-bold font-serif-title text-[#1A1C1E]">
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-[#1A1C1E] tracking-tight">
               ₹ 1,36,821
             </h2>
             <div className="flex items-center gap-2 text-xs">
@@ -130,9 +125,9 @@ export default function AdminDashboardPage() {
           </div>
 
           {/* Bar Chart Visual Container */}
-          <div className="relative pt-12 pb-2">
+          <div className="relative pt-10">
             
-            {/* Floating Carbon Active Tooltip Card (Aligned over Apr Bar) */}
+            {/* Floating Carbon Active Tooltip Card (Positioned directly above Apr) */}
             <div className="absolute top-0 left-[50%] -translate-x-1/2 bg-[#1A1C1E] text-white p-3 rounded-2xl shadow-xl z-20 w-36 border border-gray-800 text-[11px] space-y-1">
               <div className="flex items-center justify-between text-gray-400 font-mono text-[10px]">
                 <span>Apr 2026</span>
@@ -157,15 +152,15 @@ export default function AdminDashboardPage() {
               </div>
             </div>
 
-            {/* Bar Columns Grid */}
-            <div className="grid grid-cols-7 gap-3 items-end h-40 border-b border-gray-200/60 pb-3">
+            {/* Bar Columns Container */}
+            <div className="grid grid-cols-7 gap-3 items-end h-36 border-b border-gray-200/80 pb-2">
               
               {/* Jan */}
               <div className="flex flex-col items-center gap-2 h-full justify-end">
                 <span className="text-[10px] font-bold text-[#12B76A] bg-[#E3F9ED] px-2 py-0.5 rounded-full">
                   +8%
                 </span>
-                <div className="w-full bg-white/70 rounded-2xl h-24 border border-white/80" />
+                <div className="w-full bg-white/80 rounded-2xl h-20 border border-white" />
                 <span className="text-xs text-gray-400 font-medium">Jan</span>
               </div>
 
@@ -174,7 +169,7 @@ export default function AdminDashboardPage() {
                 <span className="text-[10px] font-bold text-[#F04438] bg-[#FEE4E2] px-2 py-0.5 rounded-full">
                   -5%
                 </span>
-                <div className="w-full bg-white/70 rounded-2xl h-14 border border-white/80" />
+                <div className="w-full bg-white/80 rounded-2xl h-12 border border-white" />
                 <span className="text-xs text-gray-400 font-medium">Feb</span>
               </div>
 
@@ -183,14 +178,14 @@ export default function AdminDashboardPage() {
                 <span className="text-[10px] font-bold text-[#12B76A] bg-[#E3F9ED] px-2 py-0.5 rounded-full">
                   +3%
                 </span>
-                <div className="w-full bg-white/70 rounded-2xl h-28 border border-white/80" />
+                <div className="w-full bg-white/80 rounded-2xl h-24 border border-white" />
                 <span className="text-xs text-gray-400 font-medium">Mar</span>
               </div>
 
-              {/* Apr (Active Carbon Pillar) */}
+              {/* Apr (Dark Active Column - Strict Height Constraint) */}
               <div className="flex flex-col items-center gap-2 h-full justify-end">
-                <div className="w-full bg-[#1A1C1E] rounded-2xl h-32 border border-black shadow-lg relative overflow-hidden shrink-0">
-                  <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-white/10" />
+                <div className="w-full bg-[#1A1C1E] rounded-2xl h-28 border border-black shadow-md overflow-hidden shrink-0">
+                  <div className="w-full h-full bg-gradient-to-t from-black via-gray-900 to-gray-700" />
                 </div>
                 <span className="text-xs text-gray-900 font-bold">Apr</span>
               </div>
@@ -200,7 +195,7 @@ export default function AdminDashboardPage() {
                 <span className="text-[10px] font-bold text-[#F04438] bg-[#FEE4E2] px-2 py-0.5 rounded-full">
                   -10%
                 </span>
-                <div className="w-full bg-white/70 rounded-2xl h-16 border border-white/80" />
+                <div className="w-full bg-white/80 rounded-2xl h-14 border border-white" />
                 <span className="text-xs text-gray-400 font-medium">May</span>
               </div>
 
@@ -209,7 +204,7 @@ export default function AdminDashboardPage() {
                 <span className="text-[10px] font-bold text-[#12B76A] bg-[#E3F9ED] px-2 py-0.5 rounded-full">
                   +5%
                 </span>
-                <div className="w-full bg-white/70 rounded-2xl h-32 border border-white/80" />
+                <div className="w-full bg-white/80 rounded-2xl h-28 border border-white" />
                 <span className="text-xs text-gray-400 font-medium">Jun</span>
               </div>
 
@@ -218,7 +213,7 @@ export default function AdminDashboardPage() {
                 <span className="text-[10px] font-bold text-[#12B76A] bg-[#E3F9ED] px-2 py-0.5 rounded-full">
                   +3%
                 </span>
-                <div className="w-full bg-white/70 rounded-2xl h-28 border border-white/80" />
+                <div className="w-full bg-white/80 rounded-2xl h-24 border border-white" />
                 <span className="text-xs text-gray-400 font-medium">Jul</span>
               </div>
 
@@ -228,14 +223,14 @@ export default function AdminDashboardPage() {
 
         </div>
 
-        {/* Widget 2: Sales Performance Radial Gauge Chart (1 Column) */}
+        {/* Widget 2: Sales Performance SVG Semi-Circular Arc Gauge (1 Column Wide) */}
         <div className="bg-white border border-[#EBEFF5] rounded-[28px] p-6 shadow-sm flex flex-col justify-between space-y-6">
           
           {/* Header */}
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Sparkles className="w-4 h-4 text-[#12B76A]" />
-              <h3 className="font-serif-title font-bold text-base text-gray-900">
+              <h3 className="font-bold text-base text-gray-900">
                 Sales Performance
               </h3>
             </div>
@@ -244,49 +239,62 @@ export default function AdminDashboardPage() {
             </button>
           </div>
 
-          {/* Radial Arc Gauge Chart Container (Spacious layout, no clipping) */}
-          <div className="relative flex flex-col items-center justify-center pt-4 pb-2">
-            <div className="relative w-44 h-24 flex items-end justify-center overflow-hidden">
-              {/* Semi circle radial arcs */}
-              <div className="w-44 h-44 rounded-full border-[18px] border-emerald-500 border-b-transparent border-l-transparent -rotate-45 flex items-center justify-center">
-                <div className="rotate-45 text-center pt-8">
-                  <span className="text-3xl font-bold text-gray-900 font-serif-title block">80%</span>
-                  <p className="text-[11px] text-gray-400 font-medium">Sales Goal</p>
-                </div>
-              </div>
+          {/* SVG Semi-Circular Arc Meter (100% Perfect Curve, No Clipping) */}
+          <div className="flex flex-col items-center justify-center py-2 relative">
+            <svg viewBox="0 0 200 110" className="w-48 h-28 overflow-visible">
+              {/* Background Arc */}
+              <path
+                d="M 20 100 A 80 80 0 0 1 180 100"
+                fill="none"
+                stroke="#EAEFF5"
+                strokeWidth="18"
+                strokeLinecap="round"
+              />
+              {/* Active Emerald Arc (80% Gauge) */}
+              <path
+                d="M 20 100 A 80 80 0 0 1 155 42"
+                fill="none"
+                stroke="#12B76A"
+                strokeWidth="18"
+                strokeLinecap="round"
+              />
+            </svg>
+            <div className="text-center absolute bottom-2">
+              <span className="text-3xl font-extrabold text-gray-900 block leading-tight">80%</span>
+              <p className="text-[11px] text-gray-400 font-medium">Sales Goal</p>
             </div>
           </div>
 
-          {/* Numbers Grid */}
-          <div className="grid grid-cols-2 gap-4 pt-4 border-t border-gray-100">
+          {/* Metrics Grid */}
+          <div className="grid grid-cols-2 gap-4 pt-3 border-t border-gray-100">
             <div>
-              <div className="flex items-center gap-1 text-[10px] text-gray-400 font-medium mb-1">
+              <div className="flex items-center gap-1.5 text-[11px] text-gray-400 font-medium mb-1">
                 <span>Sales Number</span>
                 <span className="bg-[#E3F9ED] text-[#12B76A] font-bold px-1.5 py-0.5 rounded-full text-[9px]">
                   +6%
                 </span>
               </div>
-              <h4 className="text-xl font-bold text-gray-900">1,660</h4>
+              <h4 className="text-xl font-extrabold text-gray-900">1,660</h4>
             </div>
 
             <div>
-              <div className="flex items-center gap-1 text-[10px] text-gray-400 font-medium mb-1">
+              <div className="flex items-center gap-1.5 text-[11px] text-gray-400 font-medium mb-1">
                 <span>Total Revenue</span>
                 <span className="bg-[#FEE4E2] text-[#F04438] font-bold px-1.5 py-0.5 rounded-full text-[9px]">
                   -2%
                 </span>
               </div>
-              <h4 className="text-xl font-bold text-gray-900">₹92,120</h4>
+              <h4 className="text-xl font-extrabold text-gray-900">₹92,120</h4>
             </div>
           </div>
 
           {/* Bottom Dark Notification Strip */}
           <div className="bg-[#1A1C1E] text-white p-3 rounded-2xl flex items-center justify-between text-xs shadow-md">
             <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping" />
-              <span className="font-medium text-[11px]">Your daily customer has increased</span>
+              <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping shrink-0" />
+              <span className="font-medium text-[11px] truncate">Your daily customer has increased</span>
             </div>
-            <button className="text-gray-400 hover:text-white">
+            <button className="text-gray-400 hover:text-white shrink-0 ml-2">
               <X className="w-3.5 h-3.5" />
             </button>
           </div>
@@ -295,15 +303,15 @@ export default function AdminDashboardPage() {
 
       </div>
 
-      {/* Bottom Grid: Recent Transactions Table (Left 2 Col) + Top Market & Product (Right 1 Col) */}
+      {/* Bottom Grid: Recent Transactions Data Table (Left 2 Col) + Top Market & Product (Right 1 Col) */}
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
         
-        {/* Widget 3: Recent Transactions Data Table */}
+        {/* Widget 3: Recent Transactions Data Table (Uncrushed, Clean Spacing) */}
         <div className="xl:col-span-2 bg-white border border-[#EBEFF5] rounded-[28px] p-6 shadow-sm space-y-5">
           
           {/* Header Controls */}
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <h3 className="font-serif-title font-bold text-base text-gray-900">
+            <h3 className="font-bold text-base text-gray-900">
               Recent Transaction
             </h3>
 
@@ -324,27 +332,32 @@ export default function AdminDashboardPage() {
             </div>
           </div>
 
-          {/* Clean Table View with Explicit Column Widths */}
-          <div className="overflow-x-auto min-w-full">
-            <table className="w-full text-left text-xs border-collapse min-w-[640px]">
+          {/* Clean Data Table with whitespace-nowrap and exact column padding */}
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-xs border-collapse">
               <thead>
                 <tr className="text-[11px] font-bold text-gray-400 uppercase tracking-wider border-b border-gray-100">
-                  <th className="pb-3 w-[15%]">Order ID</th>
-                  <th className="pb-3 w-[35%]">Product Name</th>
-                  <th className="pb-3 w-[20%]">Date & Time</th>
-                  <th className="pb-3 w-[18%]">Customer</th>
-                  <th className="pb-3 w-[12%]">Price</th>
-                  <th className="pb-3 text-right">Status</th>
+                  <th className="pb-3 pr-4 whitespace-nowrap">Order ID</th>
+                  <th className="pb-3 pr-4 whitespace-nowrap">Product Name</th>
+                  <th className="pb-3 pr-4 whitespace-nowrap">Date & Time</th>
+                  <th className="pb-3 pr-4 whitespace-nowrap">Customer</th>
+                  <th className="pb-3 pr-4 whitespace-nowrap">Price</th>
+                  <th className="pb-3 text-right whitespace-nowrap">Status</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-100">
+              <tbody className="divide-y divide-gray-50">
                 {transactions.map((tx) => (
                   <tr key={tx.id} className="hover:bg-gray-50/80 transition-colors">
-                    <td className="py-4 font-bold font-mono text-gray-900">{tx.id}</td>
                     
-                    <td className="py-4 pr-3">
+                    {/* Order ID */}
+                    <td className="py-4 pr-4 font-bold font-mono text-gray-900 whitespace-nowrap">
+                      {tx.id}
+                    </td>
+                    
+                    {/* Product Name */}
+                    <td className="py-4 pr-4 min-w-[220px]">
                       <div className="flex items-center gap-3">
-                        <div className="relative w-9 h-9 rounded-xl overflow-hidden bg-gray-100 shrink-0 border border-gray-200">
+                        <div className="relative w-9 h-9 rounded-xl overflow-hidden bg-gray-100 border border-gray-200 shrink-0">
                           <Image
                             src={tx.image}
                             alt={tx.productName}
@@ -354,36 +367,41 @@ export default function AdminDashboardPage() {
                           />
                         </div>
                         <div className="overflow-hidden">
-                          <p className="font-bold text-gray-900 truncate text-xs">{tx.productName}</p>
+                          <p className="font-bold text-gray-900 text-xs truncate">{tx.productName}</p>
                           <span className="text-[10px] text-gray-400 font-medium block truncate">{tx.subtext}</span>
                         </div>
                       </div>
                     </td>
 
-                    <td className="py-4 text-gray-500 font-medium text-[11px]">
-                      <div>{tx.date}</div>
-                      <div className="text-[10px] text-gray-400">{tx.time}</div>
+                    {/* Date & Time */}
+                    <td className="py-4 pr-4 whitespace-nowrap text-gray-500 font-medium text-[11px]">
+                      {tx.date}
                     </td>
 
-                    <td className="py-4">
+                    {/* Customer */}
+                    <td className="py-4 pr-4 whitespace-nowrap">
                       <div className="flex items-center gap-2">
                         <Image
                           src={tx.avatar}
                           alt={tx.customer}
                           width={24}
                           height={24}
-                          className="rounded-full object-cover"
+                          className="rounded-full object-cover shrink-0"
                           unoptimized
                         />
-                        <span className="font-semibold text-gray-800 text-xs truncate">{tx.customer}</span>
+                        <span className="font-semibold text-gray-800 text-xs">{tx.customer}</span>
                       </div>
                     </td>
 
-                    <td className="py-4 font-bold text-gray-900 text-xs">{tx.price}</td>
+                    {/* Price */}
+                    <td className="py-4 pr-4 whitespace-nowrap font-bold text-gray-900 text-xs">
+                      {tx.price}
+                    </td>
 
-                    <td className="py-4 text-right">
+                    {/* Status */}
+                    <td className="py-4 text-right whitespace-nowrap">
                       <span
-                        className={`inline-block px-3 py-1 rounded-full text-[11px] font-semibold ${
+                        className={`inline-block px-3.5 py-1 rounded-full text-[11px] font-semibold ${
                           tx.statusType === "completed"
                             ? "bg-[#E3F9ED] text-[#12B76A]"
                             : tx.statusType === "cancelled"
@@ -394,6 +412,7 @@ export default function AdminDashboardPage() {
                         {tx.status}
                       </span>
                     </td>
+
                   </tr>
                 ))}
               </tbody>
@@ -408,7 +427,7 @@ export default function AdminDashboardPage() {
           {/* Top Market Card */}
           <div className="bg-white border border-[#EBEFF5] rounded-[28px] p-6 shadow-sm space-y-4">
             <div className="flex items-center justify-between">
-              <h3 className="font-serif-title font-bold text-base text-gray-900">
+              <h3 className="font-bold text-base text-gray-900">
                 Top Market
               </h3>
               <button className="p-1 text-gray-400 hover:text-gray-600">
@@ -461,7 +480,7 @@ export default function AdminDashboardPage() {
           {/* Top Product Preview Card */}
           <div className="bg-gradient-to-br from-[#E6F5F0] to-[#E8EEF5] border border-white/80 rounded-[28px] p-5 shadow-sm space-y-3">
             <div className="flex items-center justify-between">
-              <h3 className="font-serif-title font-bold text-sm text-gray-900">
+              <h3 className="font-bold text-sm text-gray-900">
                 Top Bestselling Product
               </h3>
             </div>
