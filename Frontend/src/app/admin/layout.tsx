@@ -85,7 +85,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             </div>
             <span className="text-gray-900 font-semibold">Jewellery Garden</span>
             <span className="bg-[#12B76A] text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full">
-              Pro
+              Admin
             </span>
             <ChevronDown className="w-3.5 h-3.5 text-gray-400" />
           </div>
@@ -179,7 +179,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             {/* Admin Welcome Heading */}
             <div className="space-y-1">
               <h2 className="text-lg font-bold text-gray-900 font-serif-title">
-                Welcome Back, Admin 👋
+                Welcome Back, Admin 
               </h2>
               <p className="text-[11px] text-gray-400 font-medium">
                 Jewellery Garden Control Panel

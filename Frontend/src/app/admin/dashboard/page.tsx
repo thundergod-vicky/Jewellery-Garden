@@ -11,20 +11,20 @@ import {
   X,
   Sparkles,
   ArrowUpRight,
-  ArrowDownRight,
 } from "lucide-react";
 
 export default function AdminDashboardPage() {
   const [selectedMonth, setSelectedMonth] = useState("Month");
 
-  // Recent Transactions Data matching screenshot
+  // Recent Transactions Data
   const transactions = [
     {
       id: "TK-98421",
       productName: "Splendid Flower Diamond Nose Pin",
       subtext: "18KT Gold, Certified Solitaire",
       image: "/images/gifts/birthday.png",
-      date: "19 Nov 2025, 10:32",
+      date: "19 Nov 2025",
+      time: "10:32 AM",
       customer: "Ethan Clarke",
       avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80",
       price: "₹12,796",
@@ -36,7 +36,8 @@ export default function AdminDashboardPage() {
       productName: "Crescent Wave 22KT Gold Ring",
       subtext: "22KT 916 BIS Hallmarked",
       image: "/images/gifts/engagement.png",
-      date: "19 Nov 2025, 11:05",
+      date: "19 Nov 2025",
+      time: "11:05 AM",
       customer: "Ava Mitchell",
       avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=100&q=80",
       price: "₹12,521",
@@ -48,7 +49,8 @@ export default function AdminDashboardPage() {
       productName: "Handcrafted 925 Sterling Silver Bangle",
       subtext: "925 Gossip Silver",
       image: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=800&q=80",
-      date: "19 Nov 2025, 11:44",
+      date: "19 Nov 2025",
+      time: "11:44 AM",
       customer: "Liam Parker",
       avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80",
       price: "₹4,850",
@@ -60,7 +62,8 @@ export default function AdminDashboardPage() {
       productName: "Royal Peacock 22KT Gold Jhumka",
       subtext: "22KT BIS Hallmarked",
       image: "https://images.unsplash.com/photo-1630019852942-f89202989a59?auto=format&fit=crop&w=800&q=80",
-      date: "19 Nov 2025, 12:10",
+      date: "19 Nov 2025",
+      time: "12:10 PM",
       customer: "Sophia Hayes",
       avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=100&q=80",
       price: "₹34,800",
@@ -72,7 +75,8 @@ export default function AdminDashboardPage() {
       productName: "Bengali Traditional Sitahar Gold Necklace",
       subtext: "22KT Heavy Bridal Gold",
       image: "/images/gifts/wedding.png",
-      date: "19 Nov 2025, 12:40",
+      date: "19 Nov 2025",
+      time: "12:40 PM",
       customer: "Noah Bennett",
       avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=100&q=80",
       price: "₹89,500",
@@ -82,13 +86,13 @@ export default function AdminDashboardPage() {
   ];
 
   return (
-    <div className="space-y-6 max-w-[1440px] mx-auto animate-in fade-in duration-300 text-[#1A1C1E]">
+    <div className="space-y-6 max-w-[1440px] mx-auto animate-in fade-in duration-300 text-[#1A1C1E] pb-8">
       
       {/* Top Grid: Total Profit Overview (Left) + Sales Performance Gauge (Right) */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
         
         {/* Widget 1: Total Profit Overview (2 Columns Wide) */}
-        <div className="lg:col-span-2 bg-gradient-to-br from-[#FFF5F2] via-[#F5F8FF] to-[#E8F6F3] border border-white/80 rounded-[28px] p-6 shadow-sm flex flex-col justify-between space-y-6">
+        <div className="xl:col-span-2 bg-gradient-to-br from-[#FFF5F2] via-[#F5F8FF] to-[#E8F6F3] border border-white/80 rounded-[28px] p-6 shadow-sm flex flex-col justify-between space-y-6">
           
           {/* Card Header */}
           <div className="flex items-center justify-between">
@@ -125,13 +129,13 @@ export default function AdminDashboardPage() {
             </div>
           </div>
 
-          {/* Bar Chart Visual with Floating Badges */}
-          <div className="relative pt-6">
+          {/* Bar Chart Visual Container */}
+          <div className="relative pt-12 pb-2">
             
-            {/* Floating Carbon Active Tooltip Card (May Column) */}
-            <div className="absolute top-0 left-[54%] -translate-x-1/2 bg-[#1A1C1E] text-white p-3 rounded-2xl shadow-xl z-20 w-36 border border-gray-800 text-[11px] space-y-1">
+            {/* Floating Carbon Active Tooltip Card (Aligned over Apr Bar) */}
+            <div className="absolute top-0 left-[50%] -translate-x-1/2 bg-[#1A1C1E] text-white p-3 rounded-2xl shadow-xl z-20 w-36 border border-gray-800 text-[11px] space-y-1">
               <div className="flex items-center justify-between text-gray-400 font-mono text-[10px]">
-                <span>May 2026</span>
+                <span>Apr 2026</span>
               </div>
               <div className="flex items-center justify-between">
                 <span className="flex items-center gap-1 text-emerald-400">
@@ -153,15 +157,15 @@ export default function AdminDashboardPage() {
               </div>
             </div>
 
-            {/* Bar Columns Container */}
-            <div className="grid grid-cols-7 gap-3 items-end h-44 border-b border-gray-200/60 pb-3">
+            {/* Bar Columns Grid */}
+            <div className="grid grid-cols-7 gap-3 items-end h-40 border-b border-gray-200/60 pb-3">
               
               {/* Jan */}
               <div className="flex flex-col items-center gap-2 h-full justify-end">
                 <span className="text-[10px] font-bold text-[#12B76A] bg-[#E3F9ED] px-2 py-0.5 rounded-full">
                   +8%
                 </span>
-                <div className="w-full bg-white/60 rounded-2xl h-24 border border-white/80" />
+                <div className="w-full bg-white/70 rounded-2xl h-24 border border-white/80" />
                 <span className="text-xs text-gray-400 font-medium">Jan</span>
               </div>
 
@@ -170,7 +174,7 @@ export default function AdminDashboardPage() {
                 <span className="text-[10px] font-bold text-[#F04438] bg-[#FEE4E2] px-2 py-0.5 rounded-full">
                   -5%
                 </span>
-                <div className="w-full bg-white/60 rounded-2xl h-16 border border-white/80" />
+                <div className="w-full bg-white/70 rounded-2xl h-14 border border-white/80" />
                 <span className="text-xs text-gray-400 font-medium">Feb</span>
               </div>
 
@@ -179,16 +183,13 @@ export default function AdminDashboardPage() {
                 <span className="text-[10px] font-bold text-[#12B76A] bg-[#E3F9ED] px-2 py-0.5 rounded-full">
                   +3%
                 </span>
-                <div className="w-full bg-white/60 rounded-2xl h-28 border border-white/80" />
+                <div className="w-full bg-white/70 rounded-2xl h-28 border border-white/80" />
                 <span className="text-xs text-gray-400 font-medium">Mar</span>
               </div>
 
-              {/* Apr */}
+              {/* Apr (Active Carbon Pillar) */}
               <div className="flex flex-col items-center gap-2 h-full justify-end">
-                <span className="text-[10px] font-bold text-[#12B76A] bg-[#E3F9ED] px-2 py-0.5 rounded-full">
-                  +2%
-                </span>
-                <div className="w-full bg-[#1A1C1E] rounded-2xl h-36 border border-black shadow-lg relative overflow-hidden">
+                <div className="w-full bg-[#1A1C1E] rounded-2xl h-32 border border-black shadow-lg relative overflow-hidden shrink-0">
                   <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-white/10" />
                 </div>
                 <span className="text-xs text-gray-900 font-bold">Apr</span>
@@ -199,7 +200,7 @@ export default function AdminDashboardPage() {
                 <span className="text-[10px] font-bold text-[#F04438] bg-[#FEE4E2] px-2 py-0.5 rounded-full">
                   -10%
                 </span>
-                <div className="w-full bg-white/60 rounded-2xl h-20 border border-white/80" />
+                <div className="w-full bg-white/70 rounded-2xl h-16 border border-white/80" />
                 <span className="text-xs text-gray-400 font-medium">May</span>
               </div>
 
@@ -208,7 +209,7 @@ export default function AdminDashboardPage() {
                 <span className="text-[10px] font-bold text-[#12B76A] bg-[#E3F9ED] px-2 py-0.5 rounded-full">
                   +5%
                 </span>
-                <div className="w-full bg-white/60 rounded-2xl h-32 border border-white/80" />
+                <div className="w-full bg-white/70 rounded-2xl h-32 border border-white/80" />
                 <span className="text-xs text-gray-400 font-medium">Jun</span>
               </div>
 
@@ -217,7 +218,7 @@ export default function AdminDashboardPage() {
                 <span className="text-[10px] font-bold text-[#12B76A] bg-[#E3F9ED] px-2 py-0.5 rounded-full">
                   +3%
                 </span>
-                <div className="w-full bg-white/60 rounded-2xl h-30 border border-white/80" />
+                <div className="w-full bg-white/70 rounded-2xl h-28 border border-white/80" />
                 <span className="text-xs text-gray-400 font-medium">Jul</span>
               </div>
 
@@ -243,13 +244,13 @@ export default function AdminDashboardPage() {
             </button>
           </div>
 
-          {/* Radial Arc Gauge Chart */}
-          <div className="relative flex flex-col items-center justify-center py-2">
-            <div className="w-44 h-24 relative flex items-end justify-center">
+          {/* Radial Arc Gauge Chart Container (Spacious layout, no clipping) */}
+          <div className="relative flex flex-col items-center justify-center pt-4 pb-2">
+            <div className="relative w-44 h-24 flex items-end justify-center overflow-hidden">
               {/* Semi circle radial arcs */}
-              <div className="w-44 h-44 rounded-full border-[18px] border-emerald-500 border-b-transparent border-l-transparent -rotate-45 relative flex items-center justify-center">
-                <div className="rotate-45 text-center space-y-0.5">
-                  <span className="text-3xl font-bold text-gray-900 font-serif-title">80%</span>
+              <div className="w-44 h-44 rounded-full border-[18px] border-emerald-500 border-b-transparent border-l-transparent -rotate-45 flex items-center justify-center">
+                <div className="rotate-45 text-center pt-8">
+                  <span className="text-3xl font-bold text-gray-900 font-serif-title block">80%</span>
                   <p className="text-[11px] text-gray-400 font-medium">Sales Goal</p>
                 </div>
               </div>
@@ -257,7 +258,7 @@ export default function AdminDashboardPage() {
           </div>
 
           {/* Numbers Grid */}
-          <div className="grid grid-cols-2 gap-4 pt-2 border-t border-gray-100">
+          <div className="grid grid-cols-2 gap-4 pt-4 border-t border-gray-100">
             <div>
               <div className="flex items-center gap-1 text-[10px] text-gray-400 font-medium mb-1">
                 <span>Sales Number</span>
@@ -295,21 +296,19 @@ export default function AdminDashboardPage() {
       </div>
 
       {/* Bottom Grid: Recent Transactions Table (Left 2 Col) + Top Market & Product (Right 1 Col) */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
         
         {/* Widget 3: Recent Transactions Data Table */}
-        <div className="lg:col-span-2 bg-white border border-[#EBEFF5] rounded-[28px] p-6 shadow-sm space-y-5">
+        <div className="xl:col-span-2 bg-white border border-[#EBEFF5] rounded-[28px] p-6 shadow-sm space-y-5">
           
           {/* Header Controls */}
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <div className="flex items-center gap-2">
-              <h3 className="font-serif-title font-bold text-base text-gray-900">
-                Recent Transaction
-              </h3>
-            </div>
+            <h3 className="font-serif-title font-bold text-base text-gray-900">
+              Recent Transaction
+            </h3>
 
             <div className="flex items-center gap-2 w-full sm:w-auto">
-              <div className="relative flex-1 sm:w-44">
+              <div className="relative flex-1 sm:w-48">
                 <Search className="w-3.5 h-3.5 text-gray-400 absolute left-3 top-2.5" />
                 <input
                   type="text"
@@ -325,26 +324,27 @@ export default function AdminDashboardPage() {
             </div>
           </div>
 
-          {/* Table View */}
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs border-collapse">
+          {/* Clean Table View with Explicit Column Widths */}
+          <div className="overflow-x-auto min-w-full">
+            <table className="w-full text-left text-xs border-collapse min-w-[640px]">
               <thead>
                 <tr className="text-[11px] font-bold text-gray-400 uppercase tracking-wider border-b border-gray-100">
-                  <th className="pb-3">Order ID</th>
-                  <th className="pb-3">Product Name</th>
-                  <th className="pb-3">Date & Time</th>
-                  <th className="pb-3">Customer</th>
-                  <th className="pb-3">Price</th>
+                  <th className="pb-3 w-[15%]">Order ID</th>
+                  <th className="pb-3 w-[35%]">Product Name</th>
+                  <th className="pb-3 w-[20%]">Date & Time</th>
+                  <th className="pb-3 w-[18%]">Customer</th>
+                  <th className="pb-3 w-[12%]">Price</th>
                   <th className="pb-3 text-right">Status</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-50">
+              <tbody className="divide-y divide-gray-100">
                 {transactions.map((tx) => (
                   <tr key={tx.id} className="hover:bg-gray-50/80 transition-colors">
-                    <td className="py-3.5 font-bold font-mono text-gray-800">{tx.id}</td>
-                    <td className="py-3.5">
-                      <div className="flex items-center gap-2.5">
-                        <div className="relative w-8 h-8 rounded-lg overflow-hidden bg-gray-100 shrink-0">
+                    <td className="py-4 font-bold font-mono text-gray-900">{tx.id}</td>
+                    
+                    <td className="py-4 pr-3">
+                      <div className="flex items-center gap-3">
+                        <div className="relative w-9 h-9 rounded-xl overflow-hidden bg-gray-100 shrink-0 border border-gray-200">
                           <Image
                             src={tx.image}
                             alt={tx.productName}
@@ -353,14 +353,19 @@ export default function AdminDashboardPage() {
                             unoptimized
                           />
                         </div>
-                        <div>
-                          <p className="font-semibold text-gray-900 line-clamp-1">{tx.productName}</p>
-                          <span className="text-[10px] text-gray-400">{tx.subtext}</span>
+                        <div className="overflow-hidden">
+                          <p className="font-bold text-gray-900 truncate text-xs">{tx.productName}</p>
+                          <span className="text-[10px] text-gray-400 font-medium block truncate">{tx.subtext}</span>
                         </div>
                       </div>
                     </td>
-                    <td className="py-3.5 text-gray-500 font-medium">{tx.date}</td>
-                    <td className="py-3.5">
+
+                    <td className="py-4 text-gray-500 font-medium text-[11px]">
+                      <div>{tx.date}</div>
+                      <div className="text-[10px] text-gray-400">{tx.time}</div>
+                    </td>
+
+                    <td className="py-4">
                       <div className="flex items-center gap-2">
                         <Image
                           src={tx.avatar}
@@ -370,11 +375,13 @@ export default function AdminDashboardPage() {
                           className="rounded-full object-cover"
                           unoptimized
                         />
-                        <span className="font-medium text-gray-800">{tx.customer}</span>
+                        <span className="font-semibold text-gray-800 text-xs truncate">{tx.customer}</span>
                       </div>
                     </td>
-                    <td className="py-3.5 font-bold text-gray-900">{tx.price}</td>
-                    <td className="py-3.5 text-right">
+
+                    <td className="py-4 font-bold text-gray-900 text-xs">{tx.price}</td>
+
+                    <td className="py-4 text-right">
                       <span
                         className={`inline-block px-3 py-1 rounded-full text-[11px] font-semibold ${
                           tx.statusType === "completed"
@@ -410,7 +417,7 @@ export default function AdminDashboardPage() {
             </div>
 
             <div className="space-y-3 text-xs">
-              <div className="flex items-center justify-between p-2.5 rounded-2xl bg-gray-50 border border-gray-100">
+              <div className="flex items-center justify-between p-3 rounded-2xl bg-gray-50/80 border border-gray-100">
                 <div className="flex items-center gap-2">
                   <span className="text-base">🇮🇳</span>
                   <span className="font-semibold text-gray-800">Durgapur Bazar</span>
@@ -423,7 +430,7 @@ export default function AdminDashboardPage() {
                 </div>
               </div>
 
-              <div className="flex items-center justify-between p-2.5 rounded-2xl bg-gray-50 border border-gray-100">
+              <div className="flex items-center justify-between p-3 rounded-2xl bg-gray-50/80 border border-gray-100">
                 <div className="flex items-center gap-2">
                   <span className="text-base">🇮🇳</span>
                   <span className="font-semibold text-gray-800">City Centre</span>
@@ -436,7 +443,7 @@ export default function AdminDashboardPage() {
                 </div>
               </div>
 
-              <div className="flex items-center justify-between p-2.5 rounded-2xl bg-gray-50 border border-gray-100">
+              <div className="flex items-center justify-between p-3 rounded-2xl bg-gray-50/80 border border-gray-100">
                 <div className="flex items-center gap-2">
                   <span className="text-base">🇮🇳</span>
                   <span className="font-semibold text-gray-800">Online Direct</span>
