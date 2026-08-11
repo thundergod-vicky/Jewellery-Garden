@@ -21,7 +21,6 @@ import {
   Bell,
   UserPlus,
   ChevronDown,
-  Sparkles,
   Menu,
   X,
 } from "lucide-react";
@@ -72,14 +71,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   ];
 
   return (
-    // Outer Ambient Pastel Gradient Container (Matching Screenshot Background)
-    <div className="min-h-screen bg-gradient-to-br from-[#F5E6ED] via-[#E8EEF5] to-[#E6F5F0] p-2 sm:p-5 flex items-center justify-center font-sans antialiased text-[#1A1C1E]">
+    // Fixed Viewport Height Screen (Prevents whole page scrolling)
+    <div className="h-screen max-h-screen overflow-hidden bg-gradient-to-br from-[#F5E6ED] via-[#E8EEF5] to-[#E6F5F0] p-2 sm:p-4 flex items-center justify-center font-sans antialiased text-[#1A1C1E]">
       
-      {/* Floating Main Glass Shell Container */}
-      <div className="w-full max-w-[1520px] bg-[#F7F9FC] border border-white/80 shadow-2xl rounded-[32px] lg:rounded-[36px] overflow-hidden flex flex-col min-h-[92vh]">
+      {/* Floating Main Glass Shell Container (Fixed Max Height) */}
+      <div className="w-full max-w-[1540px] h-full max-h-[96vh] bg-[#F7F9FC] border border-white/80 shadow-2xl rounded-[32px] lg:rounded-[36px] overflow-hidden flex flex-col">
         
-        {/* Top Header Bar */}
-        <header className="bg-white/70 backdrop-blur-md px-6 py-3.5 border-b border-[#EAEFF5] flex items-center justify-between gap-4 sticky top-0 z-40">
+        {/* Sticky Top Header Bar (Fixed at top) */}
+        <header className="shrink-0 bg-white/80 backdrop-blur-md px-6 py-3.5 border-b border-[#EAEFF5] flex items-center justify-between gap-4 z-40">
           
           {/* Left Brand Selector Pill */}
           <div className="flex items-center gap-3">
@@ -169,14 +168,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </div>
         </header>
 
-        {/* Content Body Grid */}
-        <div className="flex-1 flex flex-col lg:flex-row min-w-0">
+        {/* Content Flex Row (Fixed height layout) */}
+        <div className="flex-1 flex overflow-hidden min-h-0">
           
-          {/* Left Navigation Sidebar */}
+          {/* Fixed Sidebar (Scrolls independently if screen is short) */}
           <aside
             className={`${
               isMobileMenuOpen ? "block" : "hidden"
-            } lg:block w-full lg:w-64 bg-white/50 backdrop-blur-sm border-r border-[#EAEFF5] p-5 flex-col justify-between shrink-0 space-y-6`}
+            } lg:flex w-full lg:w-64 h-full shrink-0 overflow-y-auto bg-white/50 backdrop-blur-sm border-r border-[#EAEFF5] p-5 flex-col justify-between space-y-6`}
           >
             <div className="space-y-6">
               
@@ -272,7 +271,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             </div>
 
             {/* Bottom User Card Profile */}
-            <div className="pt-4 border-t border-[#EAEFF5] flex items-center gap-3">
+            <div className="pt-4 border-t border-[#EAEFF5] flex items-center gap-3 shrink-0">
               <div className="w-9 h-9 rounded-full bg-[#1A1C1E] text-white font-bold text-xs flex items-center justify-center shadow shrink-0">
                 A
               </div>
@@ -284,8 +283,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
           </aside>
 
-          {/* Main Dashboard Canvas Area */}
-          <main className="flex-1 p-4 sm:p-6 overflow-y-auto bg-[#F7F9FC]">
+          {/* Dedicated Scrolling Dashboard Canvas Area (ONLY this part scrolls) */}
+          <main className="flex-1 h-full overflow-y-auto p-4 sm:p-6 bg-[#F7F9FC]">
             {children}
           </main>
 
