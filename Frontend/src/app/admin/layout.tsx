@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
@@ -31,7 +31,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [theme, setTheme] = useState<"light" | "dark">("light");
 
-  // Synchronize theme with localStorage & document element
+  // Wave Ripple Animation States
+  const [isWaving, setIsWaving] = useState(false);
+  const [wavePos, setWavePos] = useState({ x: 0, y: 0 });
+  const [targetTheme, setTargetTheme] = useState<"light" | "dark">("light");
+  const toggleBtnRef = useRef<HTMLButtonElement>(null);
+
+  // Synchronize theme state with localStorage & HTML document class
   useEffect(() => {
     if (pathname === "/admin/login") return;
 
@@ -53,46 +59,21 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     }
   }, [pathname, router]);
 
-  // Smooth Circular Wave / Crawl Transition for Dark Mode Toggle
-  const toggleTheme = (targetTheme?: "light" | "dark", e?: React.MouseEvent) => {
-    const nextTheme = targetTheme || (theme === "light" ? "dark" : "light");
-    if (nextTheme === theme) return;
+  // Full-Screen Visible Wave Sweep Animation
+  const handleToggleTheme = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const nextTheme = theme === "light" ? "dark" : "light";
+    
+    // Get exact button click position for wave origin
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = rect.left + rect.width / 2;
+    const y = rect.top + rect.height / 2;
 
-    if (typeof document !== "undefined" && (document as any).startViewTransition) {
-      const x = e?.clientX ?? window.innerWidth / 2;
-      const y = e?.clientY ?? window.innerHeight / 2;
-      const endRadius = Math.hypot(
-        Math.max(x, window.innerWidth - x),
-        Math.max(y, window.innerHeight - y)
-      );
+    setWavePos({ x, y });
+    setTargetTheme(nextTheme);
+    setIsWaving(true);
 
-      const transition = (document as any).startViewTransition(() => {
-        setTheme(nextTheme);
-        localStorage.setItem("admin_theme", nextTheme);
-        if (nextTheme === "dark") {
-          document.documentElement.classList.add("dark");
-        } else {
-          document.documentElement.classList.remove("dark");
-        }
-      });
-
-      transition.ready.then(() => {
-        const clipPath = [
-          `circle(0px at ${x}px ${y}px)`,
-          `circle(${endRadius}px at ${x}px ${y}px)`
-        ];
-        document.documentElement.animate(
-          {
-            clipPath: nextTheme === "dark" ? clipPath : [...clipPath].reverse()
-          },
-          {
-            duration: 650,
-            easing: "cubic-bezier(0.4, 0, 0.2, 1)",
-            pseudoElement: nextTheme === "dark" ? "::view-transition-new(root)" : "::view-transition-old(root)"
-          }
-        );
-      });
-    } else {
+    // Mid-animation theme swap (400ms into 800ms wave)
+    setTimeout(() => {
       setTheme(nextTheme);
       localStorage.setItem("admin_theme", nextTheme);
       if (nextTheme === "dark") {
@@ -100,7 +81,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       } else {
         document.documentElement.classList.remove("dark");
       }
-    }
+    }, 400);
+
+    // End wave animation
+    setTimeout(() => {
+      setIsWaving(false);
+    }, 850);
   };
 
   const handleLogout = () => {
@@ -131,18 +117,32 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const isDark = theme === "dark";
 
   return (
-    // 100% Full Screen Edge-to-Edge Container with Smooth Theme Transition
+    // 100% Full Screen Edge-to-Edge Container with Unified Light/Dark Classes
     <div
-      className={`h-screen w-screen overflow-hidden flex flex-col font-sans antialiased admin-theme-transition ${
-        isDark ? "bg-[#0B0C0E] text-gray-100 dark" : "bg-[#F7F9FC] text-[#1A1C1E]"
+      className={`h-screen w-screen overflow-hidden flex flex-col font-sans antialiased relative transition-colors duration-500 ${
+        isDark ? "bg-[#0B0C0E] text-white dark" : "bg-[#F7F9FC] text-[#1A1C1E]"
       }`}
     >
-      
+      {/* Visual Wave Ripple Overlay Sweep Effect */}
+      {isWaving && (
+        <div
+          style={{
+            left: `${wavePos.x}px`,
+            top: `${wavePos.y}px`,
+          }}
+          className={`fixed -translate-x-1/2 -translate-y-1/2 rounded-full z-50 pointer-events-none animate-wave-expand ${
+            targetTheme === "dark"
+              ? "bg-gradient-to-r from-[#0B0C0E] via-[#121417] to-[#1A1D23] shadow-2xl border-4 border-indigo-500/40"
+              : "bg-gradient-to-r from-[#F7F9FC] via-white to-[#EEF1F5] shadow-2xl border-4 border-amber-400/40"
+          }`}
+        />
+      )}
+
       {/* Fixed Top Header Bar (Edge-to-Edge) */}
       <header
         className={`shrink-0 border-b px-5 py-3 flex items-center justify-between gap-4 z-40 transition-colors duration-500 ${
           isDark
-            ? "bg-[#121417] border-gray-800/80 text-white"
+            ? "bg-[#121417] border-gray-800 text-white"
             : "bg-white border-[#EAEFF5] text-gray-900"
         }`}
       >
@@ -154,7 +154,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               isDark ? "bg-gray-800/80 hover:bg-gray-700 text-white" : "bg-[#F1F4F8] hover:bg-[#E8EDF3] text-gray-900"
             }`}
           >
-            <div className="w-5 h-5 rounded-full bg-[#1A1C1E] text-white font-serif-title flex items-center justify-center text-[10px] ring-1 ring-gold-accent">
+            <div className="w-5 h-5 rounded-full bg-[#1A1C1E] text-white font-serif-title flex items-center justify-center text-[10px] ring-1 ring-amber-400">
               JG
             </div>
             <span className="font-semibold">Jewellery Garden</span>
@@ -177,8 +177,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <div
           className={`hidden md:flex items-center gap-2 px-3.5 py-1.5 rounded-full w-80 lg:w-96 transition-all border ${
             isDark
-              ? "bg-[#1A1D23] border-gray-700/60 focus-within:bg-[#20242C] focus-within:border-gray-600"
-              : "bg-[#EEF1F5] border-transparent focus-within:bg-white focus-within:border-gray-200"
+              ? "bg-[#1A1D23] border-gray-700 focus-within:bg-[#20242C] focus-within:border-gray-600 text-white"
+              : "bg-[#EEF1F5] border-transparent focus-within:bg-white focus-within:border-gray-200 text-gray-800"
           }`}
         >
           <Search className="w-3.5 h-3.5 text-gray-400" />
@@ -201,35 +201,34 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </button>
         </div>
 
-        {/* Right Action Icons & User Avatars */}
-        <div className="flex items-center gap-2 sm:gap-3">
+        {/* Right Action Icons & Highly Visible Sliding Theme Toggle */}
+        <div className="flex items-center gap-3">
           
-          {/* Smooth Crawling Dark Mode Switcher Pill */}
-          <div
-            className={`flex items-center p-1 rounded-full text-gray-500 transition-colors ${
-              isDark ? "bg-[#1A1D23] border border-gray-700/60" : "bg-[#EEF1F5]"
+          {/* HIGHLY VISIBLE THEME TOGGLE SWITCH BUTTON */}
+          <button
+            ref={toggleBtnRef}
+            onClick={handleToggleTheme}
+            title={isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}
+            className={`relative flex items-center gap-2 px-3 py-1.5 rounded-full font-bold text-xs shadow-md transition-all border shrink-0 ${
+              isDark
+                ? "bg-[#1E222B] text-amber-300 border-amber-500/40 hover:bg-gray-800 hover:border-amber-400 ring-2 ring-amber-500/20"
+                : "bg-gradient-to-r from-amber-100 via-amber-50 to-orange-100 text-gray-900 border-amber-300 hover:shadow-lg ring-2 ring-amber-400/20"
             }`}
           >
-            <button
-              onClick={(e) => toggleTheme("light", e)}
-              title="Light Mode"
-              className={`p-1 rounded-full transition-all ${
-                !isDark ? "bg-white text-amber-500 shadow-2xs font-bold" : "text-gray-400 hover:text-white"
-              }`}
-            >
-              <Sun className="w-3.5 h-3.5" />
-            </button>
-
-            <button
-              onClick={(e) => toggleTheme("dark", e)}
-              title="Dark Mode"
-              className={`p-1 rounded-full transition-all ${
-                isDark ? "bg-indigo-600 text-white shadow-2xs font-bold" : "text-gray-400 hover:text-gray-900"
-              }`}
-            >
-              <Moon className="w-3.5 h-3.5" />
-            </button>
-          </div>
+            {isDark ? (
+              <>
+                <Moon className="w-4 h-4 text-indigo-400 animate-pulse" />
+                <span className="text-[11px] font-semibold text-white">Dark</span>
+                <span className="w-2 h-2 rounded-full bg-indigo-400 shadow-glow" />
+              </>
+            ) : (
+              <>
+                <Sun className="w-4 h-4 text-amber-500 animate-spin-slow" />
+                <span className="text-[11px] font-semibold text-gray-900">Light</span>
+                <span className="w-2 h-2 rounded-full bg-amber-500 shadow-glow" />
+              </>
+            )}
+          </button>
 
           {/* Notification Bell */}
           <button
@@ -286,7 +285,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             isMobileMenuOpen ? "block" : "hidden"
           } lg:flex w-full lg:w-56 h-full shrink-0 overflow-y-auto lg:overflow-y-hidden border-r p-4 flex-col justify-between space-y-4 transition-colors duration-500 ${
             isDark
-              ? "bg-[#121417] border-gray-800/80 text-gray-200"
+              ? "bg-[#121417] border-gray-800 text-gray-200"
               : "bg-white border-[#EAEFF5] text-gray-800"
           }`}
         >
@@ -391,7 +390,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
           {/* Bottom User Card Profile */}
           <div className={`pt-3 border-t flex items-center gap-2.5 shrink-0 ${isDark ? "border-gray-800" : "border-[#EAEFF5]"}`}>
-            <div className="w-8 h-8 rounded-full bg-[#1A1C1E] text-white font-bold text-xs flex items-center justify-center shadow shrink-0 ring-1 ring-gold-accent">
+            <div className="w-8 h-8 rounded-full bg-[#1A1C1E] text-white font-bold text-xs flex items-center justify-center shadow shrink-0 ring-1 ring-amber-400">
               A
             </div>
             <div className="overflow-hidden leading-tight">
@@ -405,7 +404,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         {/* Dedicated Scrolling Canvas Area */}
         <main
           className={`flex-1 h-full overflow-y-auto p-5 transition-colors duration-500 ${
-            isDark ? "bg-[#0B0C0E] text-gray-100" : "bg-[#F7F9FC] text-[#1A1C1E]"
+            isDark ? "bg-[#0B0C0E] text-white" : "bg-[#F7F9FC] text-[#1A1C1E]"
           }`}
         >
           {children}
