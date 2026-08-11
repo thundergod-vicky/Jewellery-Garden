@@ -13,17 +13,43 @@ import {
   ArrowUpRight,
 } from "lucide-react";
 
+interface MonthData {
+  month: string;
+  leftPercent: string;
+  change: string;
+  isPositive: boolean;
+  gold: string;
+  silver: string;
+  diamond: string;
+  barHeight: string;
+}
+
 export default function AdminDashboardPage() {
   const [selectedMonth, setSelectedMonth] = useState("Month");
+  const [activeHoverMonth, setActiveHoverMonth] = useState<string>("Apr");
+
+  // Dynamic Chart Data for Each Month (Hover Enabled)
+  const monthChartData: Record<string, MonthData> = {
+    Jan: { month: "Jan", leftPercent: "7%", change: "+8%", isPositive: true, gold: "₹62.0k", silver: "₹18.2k", diamond: "₹25.0k", barHeight: "h-20" },
+    Feb: { month: "Feb", leftPercent: "21%", change: "-5%", isPositive: false, gold: "₹48.5k", silver: "₹14.0k", diamond: "₹20.1k", barHeight: "h-12" },
+    Mar: { month: "Mar", leftPercent: "35%", change: "+3%", isPositive: true, gold: "₹71.2k", silver: "₹21.5k", diamond: "₹30.4k", barHeight: "h-24" },
+    Apr: { month: "Apr", leftPercent: "49%", change: "+2%", isPositive: true, gold: "₹75.5k", silver: "₹24.4k", diamond: "₹36.8k", barHeight: "h-28" },
+    May: { month: "May", leftPercent: "63%", change: "-10%", isPositive: false, gold: "₹42.0k", silver: "₹12.8k", diamond: "₹18.5k", barHeight: "h-14" },
+    Jun: { month: "Jun", leftPercent: "77%", change: "+5%", isPositive: true, gold: "₹82.0k", silver: "₹26.1k", diamond: "₹40.2k", barHeight: "h-28" },
+    Jul: { month: "Jul", leftPercent: "91%", change: "+3%", isPositive: true, gold: "₹69.4k", silver: "₹20.8k", diamond: "₹28.9k", barHeight: "h-24" },
+  };
+
+  const currentHoverData = monthChartData[activeHoverMonth] || monthChartData["Apr"];
 
   // Recent Transactions Data
   const transactions = [
     {
       id: "TK-98421",
       productName: "Splendid Flower Diamond Nose Pin",
-      subtext: "18KT Gold, Certified Solitaire",
+      subtext: "18KT Gold Solitaire",
       image: "/images/gifts/birthday.png",
-      date: "19 Nov 2025, 10:32 AM",
+      date: "19 Nov 2025",
+      time: "10:32 AM",
       customer: "Ethan Clarke",
       avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80",
       price: "₹12,796",
@@ -33,9 +59,10 @@ export default function AdminDashboardPage() {
     {
       id: "TK-98422",
       productName: "Crescent Wave 22KT Gold Ring",
-      subtext: "22KT 916 BIS Hallmarked",
+      subtext: "22KT 916 BIS Hallmark",
       image: "/images/gifts/engagement.png",
-      date: "19 Nov 2025, 11:05 AM",
+      date: "19 Nov 2025",
+      time: "11:05 AM",
       customer: "Ava Mitchell",
       avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=100&q=80",
       price: "₹12,521",
@@ -47,7 +74,8 @@ export default function AdminDashboardPage() {
       productName: "Handcrafted 925 Sterling Silver Bangle",
       subtext: "925 Gossip Silver",
       image: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=800&q=80",
-      date: "19 Nov 2025, 11:44 AM",
+      date: "19 Nov 2025",
+      time: "11:44 AM",
       customer: "Liam Parker",
       avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80",
       price: "₹4,850",
@@ -59,7 +87,8 @@ export default function AdminDashboardPage() {
       productName: "Royal Peacock 22KT Gold Jhumka",
       subtext: "22KT BIS Hallmarked",
       image: "https://images.unsplash.com/photo-1630019852942-f89202989a59?auto=format&fit=crop&w=800&q=80",
-      date: "19 Nov 2025, 12:10 PM",
+      date: "19 Nov 2025",
+      time: "12:10 PM",
       customer: "Sophia Hayes",
       avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=100&q=80",
       price: "₹34,800",
@@ -71,7 +100,8 @@ export default function AdminDashboardPage() {
       productName: "Bengali Traditional Sitahar Gold Necklace",
       subtext: "22KT Heavy Bridal Gold",
       image: "/images/gifts/wedding.png",
-      date: "19 Nov 2025, 12:40 PM",
+      date: "19 Nov 2025",
+      time: "12:40 PM",
       customer: "Noah Bennett",
       avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=100&q=80",
       price: "₹89,500",
@@ -81,168 +111,144 @@ export default function AdminDashboardPage() {
   ];
 
   return (
-    <div className="space-y-6 max-w-[1440px] mx-auto animate-in fade-in duration-300 font-sans text-[#1A1C1E] pb-10">
+    <div className="space-y-5 max-w-[1440px] mx-auto animate-in fade-in duration-300 font-sans text-[#1A1C1E] pb-6">
       
       {/* Top Grid: Total Profit Overview (Left 2 Col) + Sales Performance Gauge (Right 1 Col) */}
-      <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-5">
         
-        {/* Widget 1: Total Profit Overview (2 Columns Wide) */}
-        <div className="xl:col-span-2 bg-gradient-to-br from-[#FFF5F2] via-[#F5F8FF] to-[#E8F6F3] border border-white/80 rounded-[28px] p-6 shadow-sm flex flex-col justify-between space-y-6">
+        {/* Widget 1: Total Profit Overview (Interactive Dynamic Hover Chart) */}
+        <div className="xl:col-span-2 bg-gradient-to-br from-[#FFF5F2] via-[#F5F8FF] to-[#E8F6F3] border border-white/80 rounded-[28px] p-5 shadow-sm flex flex-col justify-between space-y-4">
           
           {/* Card Header */}
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-xl bg-white/90 flex items-center justify-center shadow-2xs">
-                <TrendingUp className="w-4 h-4 text-[#1A1C1E]" />
+              <div className="w-7 h-7 rounded-xl bg-white/90 flex items-center justify-center shadow-2xs">
+                <TrendingUp className="w-3.5 h-3.5 text-[#1A1C1E]" />
               </div>
-              <h3 className="font-bold text-base text-gray-900">
+              <h3 className="font-bold text-sm text-gray-900">
                 Total Profit Overview
               </h3>
             </div>
 
             <div className="flex items-center gap-2">
-              <button className="flex items-center gap-1.5 bg-white/90 hover:bg-white text-xs font-semibold px-3 py-1.5 rounded-full border border-gray-200 shadow-2xs">
+              <button className="flex items-center gap-1.5 bg-white/90 hover:bg-white text-[11px] font-semibold px-2.5 py-1 rounded-full border border-gray-200 shadow-2xs">
                 <span>{selectedMonth}</span>
-                <ChevronDown className="w-3.5 h-3.5 text-gray-400" />
+                <ChevronDown className="w-3 h-3 text-gray-400" />
               </button>
-              <button className="p-1.5 rounded-full bg-white/90 hover:bg-white text-gray-600 border border-gray-200">
-                <MoreHorizontal className="w-4 h-4" />
+              <button className="p-1 rounded-full bg-white/90 hover:bg-white text-gray-600 border border-gray-200">
+                <MoreHorizontal className="w-3.5 h-3.5" />
               </button>
             </div>
           </div>
 
           {/* Hero Big Metric */}
-          <div className="space-y-1">
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-[#1A1C1E] tracking-tight">
+          <div className="space-y-0.5">
+            <h2 className="text-3xl font-extrabold text-[#1A1C1E] tracking-tight">
               ₹ 1,36,821
             </h2>
-            <div className="flex items-center gap-2 text-xs">
+            <div className="flex items-center gap-2 text-[11px]">
               <span className="text-[#12B76A] font-bold flex items-center gap-0.5">
-                <ArrowUpRight className="w-4 h-4" /> +₹10,250
+                <ArrowUpRight className="w-3.5 h-3.5" /> +₹10,250
               </span>
               <span className="text-gray-400 font-medium">Compare to last month</span>
             </div>
           </div>
 
-          {/* Bar Chart Visual Container */}
-          <div className="relative pt-10">
+          {/* Dynamic Hover-based Bar Chart */}
+          <div className="relative pt-12">
             
-            {/* Floating Carbon Active Tooltip Card (Positioned directly above Apr) */}
-            <div className="absolute top-0 left-[50%] -translate-x-1/2 bg-[#1A1C1E] text-white p-3 rounded-2xl shadow-xl z-20 w-36 border border-gray-800 text-[11px] space-y-1">
-              <div className="flex items-center justify-between text-gray-400 font-mono text-[10px]">
-                <span>Apr 2026</span>
+            {/* Dynamic Carbon Active Tooltip Card (Moves dynamically to hovered month) */}
+            <div
+              style={{ left: currentHoverData.leftPercent }}
+              className="absolute top-0 -translate-x-1/2 bg-[#1A1C1E] text-white p-2.5 rounded-2xl shadow-xl z-20 w-36 border border-gray-800 text-[10px] space-y-1 transition-all duration-200 pointer-events-none"
+            >
+              <div className="flex items-center justify-between text-gray-400 font-mono text-[9px]">
+                <span>{currentHoverData.month} 2026</span>
               </div>
               <div className="flex items-center justify-between">
                 <span className="flex items-center gap-1 text-emerald-400">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" /> 22KT Gold
                 </span>
-                <span className="font-bold">₹75.5k</span>
+                <span className="font-bold">{currentHoverData.gold}</span>
               </div>
               <div className="flex items-center justify-between">
                 <span className="flex items-center gap-1 text-amber-400">
                   <span className="w-1.5 h-1.5 rounded-full bg-amber-400" /> 925 Silver
                 </span>
-                <span className="font-bold">₹24.4k</span>
+                <span className="font-bold">{currentHoverData.silver}</span>
               </div>
               <div className="flex items-center justify-between">
                 <span className="flex items-center gap-1 text-blue-400">
                   <span className="w-1.5 h-1.5 rounded-full bg-blue-400" /> Diamond
                 </span>
-                <span className="font-bold">₹36.8k</span>
+                <span className="font-bold">{currentHoverData.diamond}</span>
               </div>
             </div>
 
-            {/* Bar Columns Container */}
-            <div className="grid grid-cols-7 gap-3 items-end h-36 border-b border-gray-200/80 pb-2">
-              
-              {/* Jan */}
-              <div className="flex flex-col items-center gap-2 h-full justify-end">
-                <span className="text-[10px] font-bold text-[#12B76A] bg-[#E3F9ED] px-2 py-0.5 rounded-full">
-                  +8%
-                </span>
-                <div className="w-full bg-white/80 rounded-2xl h-20 border border-white" />
-                <span className="text-xs text-gray-400 font-medium">Jan</span>
-              </div>
+            {/* Interactive Bar Columns Grid */}
+            <div className="grid grid-cols-7 gap-3 items-end h-32 border-b border-gray-200/80 pb-2">
+              {Object.keys(monthChartData).map((mKey) => {
+                const item = monthChartData[mKey];
+                const isHovered = activeHoverMonth === mKey;
+                return (
+                  <div
+                    key={mKey}
+                    onMouseEnter={() => setActiveHoverMonth(mKey)}
+                    className="flex flex-col items-center gap-1.5 h-full justify-end cursor-pointer group"
+                  >
+                    <span
+                      className={`text-[9px] font-bold px-1.5 py-0.2 rounded-full transition-all ${
+                        item.isPositive
+                          ? "bg-[#E3F9ED] text-[#12B76A]"
+                          : "bg-[#FEE4E2] text-[#F04438]"
+                      }`}
+                    >
+                      {item.change}
+                    </span>
 
-              {/* Feb */}
-              <div className="flex flex-col items-center gap-2 h-full justify-end">
-                <span className="text-[10px] font-bold text-[#F04438] bg-[#FEE4E2] px-2 py-0.5 rounded-full">
-                  -5%
-                </span>
-                <div className="w-full bg-white/80 rounded-2xl h-12 border border-white" />
-                <span className="text-xs text-gray-400 font-medium">Feb</span>
-              </div>
+                    <div
+                      className={`w-full rounded-xl transition-all duration-300 ${item.barHeight} ${
+                        isHovered
+                          ? "bg-[#1A1C1E] shadow-md border border-black scale-105"
+                          : "bg-white/70 hover:bg-white border border-white"
+                      }`}
+                    />
 
-              {/* Mar */}
-              <div className="flex flex-col items-center gap-2 h-full justify-end">
-                <span className="text-[10px] font-bold text-[#12B76A] bg-[#E3F9ED] px-2 py-0.5 rounded-full">
-                  +3%
-                </span>
-                <div className="w-full bg-white/80 rounded-2xl h-24 border border-white" />
-                <span className="text-xs text-gray-400 font-medium">Mar</span>
-              </div>
-
-              {/* Apr (Dark Active Column - Strict Height Constraint) */}
-              <div className="flex flex-col items-center gap-2 h-full justify-end">
-                <div className="w-full bg-[#1A1C1E] rounded-2xl h-28 border border-black shadow-md overflow-hidden shrink-0">
-                  <div className="w-full h-full bg-gradient-to-t from-black via-gray-900 to-gray-700" />
-                </div>
-                <span className="text-xs text-gray-900 font-bold">Apr</span>
-              </div>
-
-              {/* May */}
-              <div className="flex flex-col items-center gap-2 h-full justify-end">
-                <span className="text-[10px] font-bold text-[#F04438] bg-[#FEE4E2] px-2 py-0.5 rounded-full">
-                  -10%
-                </span>
-                <div className="w-full bg-white/80 rounded-2xl h-14 border border-white" />
-                <span className="text-xs text-gray-400 font-medium">May</span>
-              </div>
-
-              {/* Jun */}
-              <div className="flex flex-col items-center gap-2 h-full justify-end">
-                <span className="text-[10px] font-bold text-[#12B76A] bg-[#E3F9ED] px-2 py-0.5 rounded-full">
-                  +5%
-                </span>
-                <div className="w-full bg-white/80 rounded-2xl h-28 border border-white" />
-                <span className="text-xs text-gray-400 font-medium">Jun</span>
-              </div>
-
-              {/* Jul */}
-              <div className="flex flex-col items-center gap-2 h-full justify-end">
-                <span className="text-[10px] font-bold text-[#12B76A] bg-[#E3F9ED] px-2 py-0.5 rounded-full">
-                  +3%
-                </span>
-                <div className="w-full bg-white/80 rounded-2xl h-24 border border-white" />
-                <span className="text-xs text-gray-400 font-medium">Jul</span>
-              </div>
-
+                    <span
+                      className={`text-[11px] font-medium transition-colors ${
+                        isHovered ? "text-gray-900 font-bold" : "text-gray-400"
+                      }`}
+                    >
+                      {mKey}
+                    </span>
+                  </div>
+                );
+              })}
             </div>
 
           </div>
 
         </div>
 
-        {/* Widget 2: Sales Performance SVG Semi-Circular Arc Gauge (1 Column Wide) */}
-        <div className="bg-white border border-[#EBEFF5] rounded-[28px] p-6 shadow-sm flex flex-col justify-between space-y-6">
+        {/* Widget 2: Sales Performance SVG Arc Gauge (1 Column Wide) */}
+        <div className="bg-white border border-[#EBEFF5] rounded-[28px] p-5 shadow-sm flex flex-col justify-between space-y-4">
           
           {/* Header */}
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Sparkles className="w-4 h-4 text-[#12B76A]" />
-              <h3 className="font-bold text-base text-gray-900">
+              <h3 className="font-bold text-sm text-gray-900">
                 Sales Performance
               </h3>
             </div>
-            <button className="p-1.5 rounded-full hover:bg-gray-100 text-gray-400">
-              <MoreHorizontal className="w-4 h-4" />
+            <button className="p-1 rounded-full hover:bg-gray-100 text-gray-400">
+              <MoreHorizontal className="w-3.5 h-3.5" />
             </button>
           </div>
 
-          {/* SVG Semi-Circular Arc Meter (100% Perfect Curve, No Clipping) */}
-          <div className="flex flex-col items-center justify-center py-2 relative">
-            <svg viewBox="0 0 200 110" className="w-48 h-28 overflow-visible">
-              {/* Background Arc */}
+          {/* SVG Arc Meter */}
+          <div className="flex flex-col items-center justify-center py-1 relative">
+            <svg viewBox="0 0 200 110" className="w-40 h-24 overflow-visible">
               <path
                 d="M 20 100 A 80 80 0 0 1 180 100"
                 fill="none"
@@ -250,7 +256,6 @@ export default function AdminDashboardPage() {
                 strokeWidth="18"
                 strokeLinecap="round"
               />
-              {/* Active Emerald Arc (80% Gauge) */}
               <path
                 d="M 20 100 A 80 80 0 0 1 155 42"
                 fill="none"
@@ -259,43 +264,43 @@ export default function AdminDashboardPage() {
                 strokeLinecap="round"
               />
             </svg>
-            <div className="text-center absolute bottom-2">
-              <span className="text-3xl font-extrabold text-gray-900 block leading-tight">80%</span>
-              <p className="text-[11px] text-gray-400 font-medium">Sales Goal</p>
+            <div className="text-center absolute bottom-1">
+              <span className="text-2xl font-extrabold text-gray-900 block leading-tight">80%</span>
+              <p className="text-[10px] text-gray-400 font-medium">Sales Goal</p>
             </div>
           </div>
 
           {/* Metrics Grid */}
-          <div className="grid grid-cols-2 gap-4 pt-3 border-t border-gray-100">
+          <div className="grid grid-cols-2 gap-3 pt-2 border-t border-gray-100">
             <div>
-              <div className="flex items-center gap-1.5 text-[11px] text-gray-400 font-medium mb-1">
+              <div className="flex items-center gap-1 text-[10px] text-gray-400 font-medium mb-0.5">
                 <span>Sales Number</span>
-                <span className="bg-[#E3F9ED] text-[#12B76A] font-bold px-1.5 py-0.5 rounded-full text-[9px]">
+                <span className="bg-[#E3F9ED] text-[#12B76A] font-bold px-1 py-0.2 rounded-full text-[8px]">
                   +6%
                 </span>
               </div>
-              <h4 className="text-xl font-extrabold text-gray-900">1,660</h4>
+              <h4 className="text-lg font-extrabold text-gray-900">1,660</h4>
             </div>
 
             <div>
-              <div className="flex items-center gap-1.5 text-[11px] text-gray-400 font-medium mb-1">
+              <div className="flex items-center gap-1 text-[10px] text-gray-400 font-medium mb-0.5">
                 <span>Total Revenue</span>
-                <span className="bg-[#FEE4E2] text-[#F04438] font-bold px-1.5 py-0.5 rounded-full text-[9px]">
+                <span className="bg-[#FEE4E2] text-[#F04438] font-bold px-1 py-0.2 rounded-full text-[8px]">
                   -2%
                 </span>
               </div>
-              <h4 className="text-xl font-extrabold text-gray-900">₹92,120</h4>
+              <h4 className="text-lg font-extrabold text-gray-900">₹92,120</h4>
             </div>
           </div>
 
           {/* Bottom Dark Notification Strip */}
-          <div className="bg-[#1A1C1E] text-white p-3 rounded-2xl flex items-center justify-between text-xs shadow-md">
+          <div className="bg-[#1A1C1E] text-white p-2.5 rounded-xl flex items-center justify-between text-xs shadow-md">
             <div className="flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping shrink-0" />
-              <span className="font-medium text-[11px] truncate">Your daily customer has increased</span>
+              <span className="font-medium text-[10px] truncate">Your daily customer has increased</span>
             </div>
-            <button className="text-gray-400 hover:text-white shrink-0 ml-2">
-              <X className="w-3.5 h-3.5" />
+            <button className="text-gray-400 hover:text-white shrink-0 ml-1">
+              <X className="w-3 h-3" />
             </button>
           </div>
 
@@ -303,46 +308,45 @@ export default function AdminDashboardPage() {
 
       </div>
 
-      {/* Bottom Grid: Recent Transactions Data Table (Left 2 Col) + Top Market & Product (Right 1 Col) */}
-      <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
+      {/* Bottom Grid: Recent Transactions Data Table (NO Horizontal Scrollbar) + Top Market & Product */}
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-5">
         
-        {/* Widget 3: Recent Transactions Data Table (Uncrushed, Clean Spacing) */}
-        <div className="xl:col-span-2 bg-white border border-[#EBEFF5] rounded-[28px] p-6 shadow-sm space-y-5">
+        {/* Widget 3: Recent Transactions Data Table (Compact, Fits 100% without Horizontal Scrollbar) */}
+        <div className="xl:col-span-2 bg-white border border-[#EBEFF5] rounded-[28px] p-5 shadow-sm space-y-4 overflow-hidden">
           
           {/* Header Controls */}
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <h3 className="font-bold text-base text-gray-900">
+          <div className="flex items-center justify-between gap-2">
+            <h3 className="font-bold text-sm text-gray-900">
               Recent Transaction
             </h3>
 
-            <div className="flex items-center gap-2 w-full sm:w-auto">
-              <div className="relative flex-1 sm:w-48">
-                <Search className="w-3.5 h-3.5 text-gray-400 absolute left-3 top-2.5" />
+            <div className="flex items-center gap-2">
+              <div className="relative w-36 sm:w-44">
+                <Search className="w-3 h-3 text-gray-400 absolute left-2.5 top-2" />
                 <input
                   type="text"
                   placeholder="Search..."
-                  className="w-full text-xs pl-8 pr-3 py-1.5 bg-[#EEF1F5] rounded-full focus:outline-none"
+                  className="w-full text-[10px] pl-7 pr-2.5 py-1 bg-[#EEF1F5] rounded-full focus:outline-none"
                 />
               </div>
 
-              <button className="bg-[#1A1C1E] hover:bg-black text-white text-xs font-semibold px-4 py-2 rounded-full flex items-center gap-1.5 shadow-sm transition-all shrink-0">
-                <Download className="w-3.5 h-3.5" />
+              <button className="bg-[#1A1C1E] hover:bg-black text-white text-[10px] font-semibold px-3 py-1 rounded-full flex items-center gap-1 shadow-sm transition-all shrink-0">
+                <Download className="w-3 h-3" />
                 <span>Export</span>
               </button>
             </div>
           </div>
 
-          {/* Clean Data Table with whitespace-nowrap and exact column padding */}
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs border-collapse">
+          {/* Standard Clean Table (Fits 100% width, NO horizontal scrollbar) */}
+          <div className="w-full">
+            <table className="w-full text-left text-[11px] border-collapse">
               <thead>
-                <tr className="text-[11px] font-bold text-gray-400 uppercase tracking-wider border-b border-gray-100">
-                  <th className="pb-3 pr-4 whitespace-nowrap">Order ID</th>
-                  <th className="pb-3 pr-4 whitespace-nowrap">Product Name</th>
-                  <th className="pb-3 pr-4 whitespace-nowrap">Date & Time</th>
-                  <th className="pb-3 pr-4 whitespace-nowrap">Customer</th>
-                  <th className="pb-3 pr-4 whitespace-nowrap">Price</th>
-                  <th className="pb-3 text-right whitespace-nowrap">Status</th>
+                <tr className="text-[9px] font-bold text-gray-400 uppercase tracking-wider border-b border-gray-100">
+                  <th className="pb-2.5 pr-2 w-[12%]">ORDER ID</th>
+                  <th className="pb-2.5 pr-2 w-[42%]">PRODUCT NAME</th>
+                  <th className="pb-2.5 pr-2 w-[22%]">DATE & TIME</th>
+                  <th className="pb-2.5 pr-2 w-[14%]">CUSTOMER</th>
+                  <th className="pb-2.5 text-right w-[10%]">STATUS</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-50">
@@ -350,14 +354,14 @@ export default function AdminDashboardPage() {
                   <tr key={tx.id} className="hover:bg-gray-50/80 transition-colors">
                     
                     {/* Order ID */}
-                    <td className="py-4 pr-4 font-bold font-mono text-gray-900 whitespace-nowrap">
+                    <td className="py-2.5 pr-2 font-bold font-mono text-gray-800 text-[10px]">
                       {tx.id}
                     </td>
                     
-                    {/* Product Name */}
-                    <td className="py-4 pr-4 min-w-[220px]">
-                      <div className="flex items-center gap-3">
-                        <div className="relative w-9 h-9 rounded-xl overflow-hidden bg-gray-100 border border-gray-200 shrink-0">
+                    {/* Product Name & Subtext */}
+                    <td className="py-2.5 pr-2">
+                      <div className="flex items-center gap-2 overflow-hidden">
+                        <div className="relative w-7 h-7 rounded-lg overflow-hidden bg-gray-100 border border-gray-200 shrink-0">
                           <Image
                             src={tx.image}
                             alt={tx.productName}
@@ -366,42 +370,38 @@ export default function AdminDashboardPage() {
                             unoptimized
                           />
                         </div>
-                        <div className="overflow-hidden">
-                          <p className="font-bold text-gray-900 text-xs truncate">{tx.productName}</p>
-                          <span className="text-[10px] text-gray-400 font-medium block truncate">{tx.subtext}</span>
+                        <div className="overflow-hidden leading-tight">
+                          <p className="font-semibold text-gray-900 text-[11px] truncate">{tx.productName}</p>
+                          <span className="text-[9px] text-gray-400 block truncate">{tx.subtext}</span>
                         </div>
                       </div>
                     </td>
 
                     {/* Date & Time */}
-                    <td className="py-4 pr-4 whitespace-nowrap text-gray-500 font-medium text-[11px]">
-                      {tx.date}
+                    <td className="py-2.5 pr-2 text-gray-500 font-medium text-[10px] leading-tight">
+                      <p>{tx.date}</p>
+                      <span className="text-[9px] text-gray-400">{tx.time}</span>
                     </td>
 
                     {/* Customer */}
-                    <td className="py-4 pr-4 whitespace-nowrap">
-                      <div className="flex items-center gap-2">
+                    <td className="py-2.5 pr-2">
+                      <div className="flex items-center gap-1.5 overflow-hidden">
                         <Image
                           src={tx.avatar}
                           alt={tx.customer}
-                          width={24}
-                          height={24}
+                          width={20}
+                          height={20}
                           className="rounded-full object-cover shrink-0"
                           unoptimized
                         />
-                        <span className="font-semibold text-gray-800 text-xs">{tx.customer}</span>
+                        <span className="font-semibold text-gray-800 text-[10px] truncate">{tx.customer}</span>
                       </div>
                     </td>
 
-                    {/* Price */}
-                    <td className="py-4 pr-4 whitespace-nowrap font-bold text-gray-900 text-xs">
-                      {tx.price}
-                    </td>
-
-                    {/* Status */}
-                    <td className="py-4 text-right whitespace-nowrap">
+                    {/* Status Pill */}
+                    <td className="py-2.5 text-right">
                       <span
-                        className={`inline-block px-3.5 py-1 rounded-full text-[11px] font-semibold ${
+                        className={`inline-block px-2.5 py-0.5 rounded-full text-[9px] font-semibold ${
                           tx.statusType === "completed"
                             ? "bg-[#E3F9ED] text-[#12B76A]"
                             : tx.statusType === "cancelled"
@@ -422,54 +422,54 @@ export default function AdminDashboardPage() {
         </div>
 
         {/* Widget 4: Top Market & Top Product Stack */}
-        <div className="space-y-6">
+        <div className="space-y-5">
           
           {/* Top Market Card */}
-          <div className="bg-white border border-[#EBEFF5] rounded-[28px] p-6 shadow-sm space-y-4">
+          <div className="bg-white border border-[#EBEFF5] rounded-[28px] p-5 shadow-sm space-y-3">
             <div className="flex items-center justify-between">
-              <h3 className="font-bold text-base text-gray-900">
+              <h3 className="font-bold text-sm text-gray-900">
                 Top Market
               </h3>
               <button className="p-1 text-gray-400 hover:text-gray-600">
-                <MoreHorizontal className="w-4 h-4" />
+                <MoreHorizontal className="w-3.5 h-3.5" />
               </button>
             </div>
 
-            <div className="space-y-3 text-xs">
-              <div className="flex items-center justify-between p-3 rounded-2xl bg-gray-50/80 border border-gray-100">
+            <div className="space-y-2.5 text-xs">
+              <div className="flex items-center justify-between p-2.5 rounded-xl bg-gray-50/80 border border-gray-100">
                 <div className="flex items-center gap-2">
-                  <span className="text-base">🇮🇳</span>
-                  <span className="font-semibold text-gray-800">Durgapur Bazar</span>
+                  <span className="text-sm">🇮🇳</span>
+                  <span className="font-semibold text-gray-800 text-[11px]">Durgapur Bazar</span>
                 </div>
-                <div className="flex items-center gap-2 font-bold">
+                <div className="flex items-center gap-1.5 font-bold text-[11px]">
                   <span>₹62,100</span>
-                  <span className="bg-[#E3F9ED] text-[#12B76A] text-[10px] px-2 py-0.5 rounded-full">
+                  <span className="bg-[#E3F9ED] text-[#12B76A] text-[9px] px-1.5 py-0.2 rounded-full">
                     40%
                   </span>
                 </div>
               </div>
 
-              <div className="flex items-center justify-between p-3 rounded-2xl bg-gray-50/80 border border-gray-100">
+              <div className="flex items-center justify-between p-2.5 rounded-xl bg-gray-50/80 border border-gray-100">
                 <div className="flex items-center gap-2">
-                  <span className="text-base">🇮🇳</span>
-                  <span className="font-semibold text-gray-800">City Centre</span>
+                  <span className="text-sm">🇮🇳</span>
+                  <span className="font-semibold text-gray-800 text-[11px]">City Centre</span>
                 </div>
-                <div className="flex items-center gap-2 font-bold">
+                <div className="flex items-center gap-1.5 font-bold text-[11px]">
                   <span>₹24,500</span>
-                  <span className="bg-[#E3F9ED] text-[#12B76A] text-[10px] px-2 py-0.5 rounded-full">
+                  <span className="bg-[#E3F9ED] text-[#12B76A] text-[9px] px-1.5 py-0.2 rounded-full">
                     25%
                   </span>
                 </div>
               </div>
 
-              <div className="flex items-center justify-between p-3 rounded-2xl bg-gray-50/80 border border-gray-100">
+              <div className="flex items-center justify-between p-2.5 rounded-xl bg-gray-50/80 border border-gray-100">
                 <div className="flex items-center gap-2">
-                  <span className="text-base">🇮🇳</span>
-                  <span className="font-semibold text-gray-800">Online Direct</span>
+                  <span className="text-sm">🇮🇳</span>
+                  <span className="font-semibold text-gray-800 text-[11px]">Online Direct</span>
                 </div>
-                <div className="flex items-center gap-2 font-bold">
+                <div className="flex items-center gap-1.5 font-bold text-[11px]">
                   <span>₹15,500</span>
-                  <span className="bg-[#E3F9ED] text-[#12B76A] text-[10px] px-2 py-0.5 rounded-full">
+                  <span className="bg-[#E3F9ED] text-[#12B76A] text-[9px] px-1.5 py-0.2 rounded-full">
                     10%
                   </span>
                 </div>
@@ -478,15 +478,15 @@ export default function AdminDashboardPage() {
           </div>
 
           {/* Top Product Preview Card */}
-          <div className="bg-gradient-to-br from-[#E6F5F0] to-[#E8EEF5] border border-white/80 rounded-[28px] p-5 shadow-sm space-y-3">
+          <div className="bg-gradient-to-br from-[#E6F5F0] to-[#E8EEF5] border border-white/80 rounded-[28px] p-4 shadow-sm space-y-2.5">
             <div className="flex items-center justify-between">
-              <h3 className="font-bold text-sm text-gray-900">
+              <h3 className="font-bold text-xs text-gray-900">
                 Top Bestselling Product
               </h3>
             </div>
 
             <div className="flex items-center gap-3">
-              <div className="w-16 h-16 rounded-2xl bg-[#1A1C1E] p-2 relative shadow-md overflow-hidden shrink-0">
+              <div className="w-14 h-14 rounded-xl bg-[#1A1C1E] p-1.5 relative shadow-md overflow-hidden shrink-0">
                 <Image
                   src="/images/gifts/wedding.png"
                   alt="Top Product"
@@ -496,9 +496,9 @@ export default function AdminDashboardPage() {
                 />
               </div>
               <div className="space-y-0.5">
-                <h4 className="font-bold text-xs text-gray-900">Bengali Sitahar Gold Necklace</h4>
-                <p className="text-[10px] text-gray-500 font-medium">10K sales • +17% growth</p>
-                <span className="inline-block bg-[#12B76A] text-white text-[9px] font-bold px-2 py-0.5 rounded-full">
+                <h4 className="font-bold text-[11px] text-gray-900">Bengali Sitahar Gold Necklace</h4>
+                <p className="text-[9px] text-gray-500 font-medium">10K sales • +17% growth</p>
+                <span className="inline-block bg-[#12B76A] text-white text-[8px] font-bold px-1.5 py-0.2 rounded-full">
                   #1 Bestseller
                 </span>
               </div>
