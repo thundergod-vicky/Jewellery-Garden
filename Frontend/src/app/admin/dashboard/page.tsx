@@ -206,34 +206,34 @@ export default function AdminDashboardPage() {
   ];
 
   return (
-    <div className="space-y-5 max-w-[1440px] mx-auto animate-in fade-in duration-300 font-sans text-[#1A1C1E] pb-6">
+    <div className="space-y-5 max-w-[1440px] mx-auto font-sans pb-6">
       
-      {/* Top Grid: Total Profit Overview (Luxury Palette Stacked Bar Chart) + Sales Performance Gauge */}
+      {/* Top Grid: Total Profit Overview + Sales Performance Gauge */}
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-5">
         
-        {/* Widget 1: AWS Style Stacked Bar Chart with Premium Luxury Palette */}
-        <div className="xl:col-span-2 bg-gradient-to-br from-[#FFF5F2] via-[#F5F8FF] to-[#E8F6F3] border border-white/80 rounded-[28px] p-5 shadow-sm flex flex-col justify-between space-y-4">
+        {/* Widget 1: AWS Style Stacked Bar Chart with Light/Dark Mode Support */}
+        <div className="xl:col-span-2 bg-gradient-to-br from-[#FFF5F2] via-[#F5F8FF] to-[#E8F6F3] dark:from-[#16181D] dark:via-[#191C22] dark:to-[#14161B] border border-white/80 dark:border-gray-800 rounded-[28px] p-5 shadow-sm dark:shadow-xl flex flex-col justify-between space-y-4 transition-colors duration-500">
           
           {/* Card Header + Legend */}
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
             <div className="flex items-center gap-2">
-              <div className="w-7 h-7 rounded-xl bg-white/90 flex items-center justify-center shadow-2xs">
-                <TrendingUp className="w-3.5 h-3.5 text-[#1A1C1E]" />
+              <div className="w-7 h-7 rounded-xl bg-white/90 dark:bg-gray-800 flex items-center justify-center shadow-2xs">
+                <TrendingUp className="w-3.5 h-3.5 text-[#1A1C1E] dark:text-white" />
               </div>
-              <h3 className="font-bold text-sm text-gray-900">
+              <h3 className="font-bold text-sm text-gray-900 dark:text-white">
                 Total Profit Overview
               </h3>
             </div>
 
-            {/* Premium Category Legend */}
-            <div className="flex items-center gap-3 text-[10px] font-semibold bg-white/90 px-3 py-1 rounded-full border border-gray-200/80 shadow-2xs">
-              <span className="flex items-center gap-1.5 text-gray-700">
+            {/* Category Legend */}
+            <div className="flex items-center gap-3 text-[10px] font-semibold bg-white/90 dark:bg-gray-800/80 px-3 py-1 rounded-full border border-gray-200/80 dark:border-gray-700 shadow-2xs">
+              <span className="flex items-center gap-1.5 text-gray-700 dark:text-gray-200">
                 <span className="w-2.5 h-2.5 rounded-full bg-[#E5C158]" /> 22KT Gold
               </span>
-              <span className="flex items-center gap-1.5 text-gray-700">
+              <span className="flex items-center gap-1.5 text-gray-700 dark:text-gray-200">
                 <span className="w-2.5 h-2.5 rounded-full bg-[#64748B]" /> 925 Silver
               </span>
-              <span className="flex items-center gap-1.5 text-gray-700">
+              <span className="flex items-center gap-1.5 text-gray-700 dark:text-gray-200">
                 <span className="w-2.5 h-2.5 rounded-full bg-[#6366F1]" /> Diamond
               </span>
             </div>
@@ -241,7 +241,7 @@ export default function AdminDashboardPage() {
 
           {/* Hero Big Metric */}
           <div className="space-y-0.5">
-            <h2 className="text-3xl font-extrabold text-[#1A1C1E] tracking-tight">
+            <h2 className="text-3xl font-extrabold text-[#1A1C1E] dark:text-white tracking-tight">
               ₹ 1,36,821
             </h2>
             <div className="flex items-center gap-2 text-[11px]">
@@ -252,7 +252,7 @@ export default function AdminDashboardPage() {
             </div>
           </div>
 
-          {/* AWS Stacked Bar Chart with Premium Palette */}
+          {/* AWS Stacked Bar Chart */}
           <div
             onMouseLeave={() => setActiveHoverMonth(null)}
             className="relative pt-12"
@@ -262,7 +262,7 @@ export default function AdminDashboardPage() {
             {currentHoverData && (
               <div
                 style={{ left: currentHoverData.leftPercent }}
-                className="absolute top-0 -translate-x-1/2 bg-[#1A1C1E] text-white p-2.5 rounded-2xl shadow-xl z-20 w-40 border border-gray-800 text-[10px] space-y-1 transition-all duration-200 pointer-events-none animate-in fade-in zoom-in-95"
+                className="absolute top-0 -translate-x-1/2 bg-[#1A1C1E] dark:bg-black text-white p-2.5 rounded-2xl shadow-2xl z-20 w-40 border border-gray-800 text-[10px] space-y-1 transition-all duration-200 pointer-events-none animate-in fade-in zoom-in-95"
               >
                 <div className="flex items-center justify-between text-gray-400 font-mono text-[9px] border-b border-gray-800 pb-1">
                   <span>{currentHoverData.month} 2026</span>
@@ -292,8 +292,8 @@ export default function AdminDashboardPage() {
               </div>
             )}
 
-            {/* Premium Multi-Segment Stacked Columns */}
-            <div className="grid grid-cols-7 gap-3 items-end h-32 border-b border-gray-200/80 pb-2">
+            {/* Multi-Segment Stacked Columns */}
+            <div className="grid grid-cols-7 gap-3 items-end h-32 border-b border-gray-200/80 dark:border-gray-800 pb-2">
               {Object.keys(monthChartData).map((mKey) => {
                 const item = monthChartData[mKey];
                 const isHovered = activeHoverMonth === mKey;
@@ -307,20 +307,20 @@ export default function AdminDashboardPage() {
                     <span
                       className={`text-[9px] font-bold px-1.5 py-0.2 rounded-full transition-all ${
                         item.isPositive
-                          ? "bg-[#E3F9ED] text-[#12B76A]"
-                          : "bg-[#FEE4E2] text-[#F04438]"
+                          ? "bg-[#E3F9ED] text-[#12B76A] dark:bg-emerald-950/60 dark:text-emerald-400"
+                          : "bg-[#FEE4E2] text-[#F04438] dark:bg-rose-950/60 dark:text-rose-400"
                       }`}
                     >
                       {item.change}
                     </span>
 
-                    {/* Premium Stacked Bar Container */}
+                    {/* Stacked Bar Container */}
                     <div
-                      className={`w-full rounded-xl overflow-hidden flex flex-col justify-end transition-all duration-200 border border-white/80 shadow-2xs ${
+                      className={`w-full rounded-xl overflow-hidden flex flex-col justify-end transition-all duration-200 border border-white/80 dark:border-gray-700 shadow-2xs ${
                         item.barHeight
                       } ${
                         isHovered
-                          ? "ring-2 ring-[#1A1C1E] shadow-md scale-105"
+                          ? "ring-2 ring-white shadow-md scale-105"
                           : "hover:shadow"
                       }`}
                     >
@@ -345,7 +345,7 @@ export default function AdminDashboardPage() {
 
                     <span
                       className={`text-[11px] font-medium transition-colors ${
-                        isHovered ? "text-gray-900 font-bold" : "text-gray-400"
+                        isHovered ? "text-gray-900 dark:text-white font-bold" : "text-gray-400"
                       }`}
                     >
                       {mKey}
@@ -360,17 +360,17 @@ export default function AdminDashboardPage() {
         </div>
 
         {/* Widget 2: Sales Performance SVG Arc Gauge */}
-        <div className="bg-white border border-[#EBEFF5] rounded-[28px] p-5 shadow-sm flex flex-col justify-between space-y-4">
+        <div className="bg-white dark:bg-[#16181D] border border-[#EBEFF5] dark:border-gray-800 rounded-[28px] p-5 shadow-sm dark:shadow-xl flex flex-col justify-between space-y-4 transition-colors duration-500">
           
           {/* Header */}
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Sparkles className="w-4 h-4 text-[#12B76A]" />
-              <h3 className="font-bold text-sm text-gray-900">
+              <h3 className="font-bold text-sm text-gray-900 dark:text-white">
                 Sales Performance
               </h3>
             </div>
-            <button className="p-1 rounded-full hover:bg-gray-100 text-gray-400">
+            <button className="p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-400">
               <MoreHorizontal className="w-3.5 h-3.5" />
             </button>
           </div>
@@ -381,7 +381,7 @@ export default function AdminDashboardPage() {
               <path
                 d="M 20 100 A 80 80 0 0 1 180 100"
                 fill="none"
-                stroke="#EAEFF5"
+                className="stroke-[#EAEFF5] dark:stroke-gray-800"
                 strokeWidth="18"
                 strokeLinecap="round"
               />
@@ -394,36 +394,36 @@ export default function AdminDashboardPage() {
               />
             </svg>
             <div className="text-center absolute bottom-1">
-              <span className="text-2xl font-extrabold text-gray-900 block leading-tight">80%</span>
+              <span className="text-2xl font-extrabold text-gray-900 dark:text-white block leading-tight">80%</span>
               <p className="text-[10px] text-gray-400 font-medium">Sales Goal</p>
             </div>
           </div>
 
           {/* Metrics Grid */}
-          <div className="grid grid-cols-2 gap-3 pt-2 border-t border-gray-100">
+          <div className="grid grid-cols-2 gap-3 pt-2 border-t border-gray-100 dark:border-gray-800">
             <div>
               <div className="flex items-center gap-1 text-[10px] text-gray-400 font-medium mb-0.5">
                 <span>Sales Number</span>
-                <span className="bg-[#E3F9ED] text-[#12B76A] font-bold px-1 py-0.2 rounded-full text-[8px]">
+                <span className="bg-[#E3F9ED] text-[#12B76A] dark:bg-emerald-950/60 dark:text-emerald-400 font-bold px-1 py-0.2 rounded-full text-[8px]">
                   +6%
                 </span>
               </div>
-              <h4 className="text-lg font-extrabold text-gray-900">1,660</h4>
+              <h4 className="text-lg font-extrabold text-gray-900 dark:text-white">1,660</h4>
             </div>
 
             <div>
               <div className="flex items-center gap-1 text-[10px] text-gray-400 font-medium mb-0.5">
                 <span>Total Revenue</span>
-                <span className="bg-[#FEE4E2] text-[#F04438] font-bold px-1 py-0.2 rounded-full text-[8px]">
+                <span className="bg-[#FEE4E2] text-[#F04438] dark:bg-rose-950/60 dark:text-rose-400 font-bold px-1 py-0.2 rounded-full text-[8px]">
                   -2%
                 </span>
               </div>
-              <h4 className="text-lg font-extrabold text-gray-900">₹92,120</h4>
+              <h4 className="text-lg font-extrabold text-gray-900 dark:text-white">₹92,120</h4>
             </div>
           </div>
 
           {/* Bottom Dark Notification Strip */}
-          <div className="bg-[#1A1C1E] text-white p-2.5 rounded-xl flex items-center justify-between text-xs shadow-md">
+          <div className="bg-[#1A1C1E] dark:bg-[#20242D] text-white p-2.5 rounded-xl flex items-center justify-between text-xs shadow-md border dark:border-gray-700">
             <div className="flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping shrink-0" />
               <span className="font-medium text-[10px] truncate">Your daily customer has increased</span>
@@ -441,11 +441,11 @@ export default function AdminDashboardPage() {
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-5">
         
         {/* Widget 3: Recent Transactions Data Table */}
-        <div className="xl:col-span-2 bg-white border border-[#EBEFF5] rounded-[28px] p-5 shadow-sm space-y-4 overflow-hidden">
+        <div className="xl:col-span-2 bg-white dark:bg-[#16181D] border border-[#EBEFF5] dark:border-gray-800 rounded-[28px] p-5 shadow-sm dark:shadow-xl space-y-4 overflow-hidden transition-colors duration-500">
           
           {/* Header Controls */}
           <div className="flex items-center justify-between gap-2">
-            <h3 className="font-bold text-sm text-gray-900">
+            <h3 className="font-bold text-sm text-gray-900 dark:text-white">
               Recent Transaction
             </h3>
 
@@ -455,11 +455,11 @@ export default function AdminDashboardPage() {
                 <input
                   type="text"
                   placeholder="Search..."
-                  className="w-full text-[10px] pl-7 pr-2.5 py-1 bg-[#EEF1F5] rounded-full focus:outline-none"
+                  className="w-full text-[10px] pl-7 pr-2.5 py-1 bg-[#EEF1F5] dark:bg-gray-800 dark:text-white rounded-full focus:outline-none"
                 />
               </div>
 
-              <button className="bg-[#1A1C1E] hover:bg-black text-white text-[10px] font-semibold px-3 py-1 rounded-full flex items-center gap-1 shadow-sm transition-all shrink-0">
+              <button className="bg-[#1A1C1E] dark:bg-white text-white dark:text-gray-900 text-[10px] font-semibold px-3 py-1 rounded-full flex items-center gap-1 shadow-sm transition-all shrink-0">
                 <Download className="w-3 h-3" />
                 <span>Export</span>
               </button>
@@ -470,7 +470,7 @@ export default function AdminDashboardPage() {
           <div className="w-full">
             <table className="w-full text-left text-[11px] border-collapse">
               <thead>
-                <tr className="text-[9px] font-bold text-gray-400 uppercase tracking-wider border-b border-gray-100">
+                <tr className="text-[9px] font-bold text-gray-400 uppercase tracking-wider border-b border-gray-100 dark:border-gray-800">
                   <th className="pb-2.5 pr-2 w-[12%]">ORDER ID</th>
                   <th className="pb-2.5 pr-2 w-[42%]">PRODUCT NAME</th>
                   <th className="pb-2.5 pr-2 w-[22%]">DATE & TIME</th>
@@ -478,19 +478,19 @@ export default function AdminDashboardPage() {
                   <th className="pb-2.5 text-right w-[10%]">STATUS</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-50">
+              <tbody className="divide-y divide-gray-50 dark:divide-gray-800/60">
                 {transactions.map((tx) => (
-                  <tr key={tx.id} className="hover:bg-gray-50/80 transition-colors">
+                  <tr key={tx.id} className="hover:bg-gray-50/80 dark:hover:bg-gray-800/40 transition-colors">
                     
                     {/* Order ID */}
-                    <td className="py-2.5 pr-2 font-bold font-mono text-gray-800 text-[10px]">
+                    <td className="py-2.5 pr-2 font-bold font-mono text-gray-800 dark:text-gray-200 text-[10px]">
                       {tx.id}
                     </td>
                     
                     {/* Product Name & Subtext */}
                     <td className="py-2.5 pr-2">
                       <div className="flex items-center gap-2 overflow-hidden">
-                        <div className="relative w-7 h-7 rounded-lg overflow-hidden bg-gray-100 border border-gray-200 shrink-0">
+                        <div className="relative w-7 h-7 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shrink-0">
                           <Image
                             src={tx.image}
                             alt={tx.productName}
@@ -500,14 +500,14 @@ export default function AdminDashboardPage() {
                           />
                         </div>
                         <div className="overflow-hidden leading-tight">
-                          <p className="font-semibold text-gray-900 text-[11px] truncate">{tx.productName}</p>
+                          <p className="font-semibold text-gray-900 dark:text-white text-[11px] truncate">{tx.productName}</p>
                           <span className="text-[9px] text-gray-400 block truncate">{tx.subtext}</span>
                         </div>
                       </div>
                     </td>
 
                     {/* Date & Time */}
-                    <td className="py-2.5 pr-2 text-gray-500 font-medium text-[10px] leading-tight">
+                    <td className="py-2.5 pr-2 text-gray-500 dark:text-gray-400 font-medium text-[10px] leading-tight">
                       <p>{tx.date}</p>
                       <span className="text-[9px] text-gray-400">{tx.time}</span>
                     </td>
@@ -520,10 +520,10 @@ export default function AdminDashboardPage() {
                           alt={tx.customer}
                           width={20}
                           height={20}
-                          className="rounded-full object-cover shrink-0"
+                          className="rounded-full object-cover shrink-0 ring-1 ring-gray-700"
                           unoptimized
                         />
-                        <span className="font-semibold text-gray-800 text-[10px] truncate">{tx.customer}</span>
+                        <span className="font-semibold text-gray-800 dark:text-gray-200 text-[10px] truncate">{tx.customer}</span>
                       </div>
                     </td>
 
@@ -532,10 +532,10 @@ export default function AdminDashboardPage() {
                       <span
                         className={`inline-block px-2.5 py-0.5 rounded-full text-[9px] font-semibold ${
                           tx.statusType === "completed"
-                            ? "bg-[#E3F9ED] text-[#12B76A]"
+                            ? "bg-[#E3F9ED] text-[#12B76A] dark:bg-emerald-950/60 dark:text-emerald-400"
                             : tx.statusType === "cancelled"
-                            ? "bg-[#FEE4E2] text-[#F04438]"
-                            : "bg-[#E0F2FE] text-[#0284C7]"
+                            ? "bg-[#FEE4E2] text-[#F04438] dark:bg-rose-950/60 dark:text-rose-400"
+                            : "bg-[#E0F2FE] text-[#0284C7] dark:bg-sky-950/60 dark:text-sky-400"
                         }`}
                       >
                         {tx.status}
@@ -554,51 +554,51 @@ export default function AdminDashboardPage() {
         <div className="space-y-5">
           
           {/* Top Market Card */}
-          <div className="bg-white border border-[#EBEFF5] rounded-[28px] p-5 shadow-sm space-y-3">
+          <div className="bg-white dark:bg-[#16181D] border border-[#EBEFF5] dark:border-gray-800 rounded-[28px] p-5 shadow-sm dark:shadow-xl space-y-3 transition-colors duration-500">
             <div className="flex items-center justify-between">
-              <h3 className="font-bold text-sm text-gray-900">
+              <h3 className="font-bold text-sm text-gray-900 dark:text-white">
                 Top Market
               </h3>
-              <button className="p-1 text-gray-400 hover:text-gray-600">
+              <button className="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-white">
                 <MoreHorizontal className="w-3.5 h-3.5" />
               </button>
             </div>
 
             <div className="space-y-2.5 text-xs">
-              <div className="flex items-center justify-between p-2.5 rounded-xl bg-gray-50/80 border border-gray-100">
+              <div className="flex items-center justify-between p-2.5 rounded-xl bg-gray-50/80 dark:bg-gray-800/50 border border-gray-100 dark:border-gray-700/60">
                 <div className="flex items-center gap-2">
                   <span className="text-sm">🇮🇳</span>
-                  <span className="font-semibold text-gray-800 text-[11px]">Durgapur Bazar</span>
+                  <span className="font-semibold text-gray-800 dark:text-gray-200 text-[11px]">Durgapur Bazar</span>
                 </div>
-                <div className="flex items-center gap-1.5 font-bold text-[11px]">
+                <div className="flex items-center gap-1.5 font-bold text-[11px] text-gray-900 dark:text-white">
                   <span>₹62,100</span>
-                  <span className="bg-[#E3F9ED] text-[#12B76A] text-[9px] px-1.5 py-0.2 rounded-full">
+                  <span className="bg-[#E3F9ED] text-[#12B76A] dark:bg-emerald-950/60 dark:text-emerald-400 text-[9px] px-1.5 py-0.2 rounded-full">
                     40%
                   </span>
                 </div>
               </div>
 
-              <div className="flex items-center justify-between p-2.5 rounded-xl bg-gray-50/80 border border-gray-100">
+              <div className="flex items-center justify-between p-2.5 rounded-xl bg-gray-50/80 dark:bg-gray-800/50 border border-gray-100 dark:border-gray-700/60">
                 <div className="flex items-center gap-2">
                   <span className="text-sm">🇮🇳</span>
-                  <span className="font-semibold text-gray-800 text-[11px]">City Centre</span>
+                  <span className="font-semibold text-gray-800 dark:text-gray-200 text-[11px]">City Centre</span>
                 </div>
-                <div className="flex items-center gap-1.5 font-bold text-[11px]">
+                <div className="flex items-center gap-1.5 font-bold text-[11px] text-gray-900 dark:text-white">
                   <span>₹24,500</span>
-                  <span className="bg-[#E3F9ED] text-[#12B76A] text-[9px] px-1.5 py-0.2 rounded-full">
+                  <span className="bg-[#E3F9ED] text-[#12B76A] dark:bg-emerald-950/60 dark:text-emerald-400 text-[9px] px-1.5 py-0.2 rounded-full">
                     25%
                   </span>
                 </div>
               </div>
 
-              <div className="flex items-center justify-between p-2.5 rounded-xl bg-gray-50/80 border border-gray-100">
+              <div className="flex items-center justify-between p-2.5 rounded-xl bg-gray-50/80 dark:bg-gray-800/50 border border-gray-100 dark:border-gray-700/60">
                 <div className="flex items-center gap-2">
                   <span className="text-sm">🇮🇳</span>
-                  <span className="font-semibold text-gray-800 text-[11px]">Online Direct</span>
+                  <span className="font-semibold text-gray-800 dark:text-gray-200 text-[11px]">Online Direct</span>
                 </div>
-                <div className="flex items-center gap-1.5 font-bold text-[11px]">
+                <div className="flex items-center gap-1.5 font-bold text-[11px] text-gray-900 dark:text-white">
                   <span>₹15,500</span>
-                  <span className="bg-[#E3F9ED] text-[#12B76A] text-[9px] px-1.5 py-0.2 rounded-full">
+                  <span className="bg-[#E3F9ED] text-[#12B76A] dark:bg-emerald-950/60 dark:text-emerald-400 text-[9px] px-1.5 py-0.2 rounded-full">
                     10%
                   </span>
                 </div>
@@ -607,9 +607,9 @@ export default function AdminDashboardPage() {
           </div>
 
           {/* Top Product Preview Card */}
-          <div className="bg-gradient-to-br from-[#E6F5F0] to-[#E8EEF5] border border-white/80 rounded-[28px] p-4 shadow-sm space-y-2.5">
+          <div className="bg-gradient-to-br from-[#E6F5F0] to-[#E8EEF5] dark:from-[#182026] dark:to-[#1A222A] border border-white/80 dark:border-gray-800 rounded-[28px] p-4 shadow-sm space-y-2.5 transition-colors duration-500">
             <div className="flex items-center justify-between">
-              <h3 className="font-bold text-xs text-gray-900">
+              <h3 className="font-bold text-xs text-gray-900 dark:text-white">
                 Top Bestselling Product
               </h3>
             </div>
@@ -625,8 +625,8 @@ export default function AdminDashboardPage() {
                 />
               </div>
               <div className="space-y-0.5">
-                <h4 className="font-bold text-[11px] text-gray-900">Bengali Sitahar Gold Necklace</h4>
-                <p className="text-[9px] text-gray-500 font-medium">10K sales • +17% growth</p>
+                <h4 className="font-bold text-[11px] text-gray-900 dark:text-white">Bengali Sitahar Gold Necklace</h4>
+                <p className="text-[9px] text-gray-500 dark:text-gray-400 font-medium">10K sales • +17% growth</p>
                 <span className="inline-block bg-[#12B76A] text-white text-[8px] font-bold px-1.5 py-0.2 rounded-full">
                   #1 Bestseller
                 </span>
