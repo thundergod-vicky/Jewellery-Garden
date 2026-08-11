@@ -22,17 +22,17 @@ interface MonthStackedData {
   goldValue: string;
   silverValue: string;
   diamondValue: string;
-  goldPct: number; // e.g. 55%
-  silverPct: number; // e.g. 20%
-  diamondPct: number; // e.g. 25%
-  barHeight: string; // e.g. h-28
+  goldPct: number;
+  silverPct: number;
+  diamondPct: number;
+  barHeight: string;
 }
 
 export default function AdminDashboardPage() {
   const [selectedMonth, setSelectedMonth] = useState("Month");
   const [activeHoverMonth, setActiveHoverMonth] = useState<string | null>(null);
 
-  // AWS Cost Explorer Style Stacked Bar Data (Gold, Silver, Diamond breakdown)
+  // AWS Cost Explorer Style Stacked Bar Data (Soft Pastel Light Palette)
   const monthChartData: Record<string, MonthStackedData> = {
     Jan: {
       month: "Jan",
@@ -208,13 +208,13 @@ export default function AdminDashboardPage() {
   return (
     <div className="space-y-5 max-w-[1440px] mx-auto animate-in fade-in duration-300 font-sans text-[#1A1C1E] pb-6">
       
-      {/* Top Grid: Total Profit Overview (AWS Stacked Bar Chart) + Sales Performance Gauge */}
+      {/* Top Grid: Total Profit Overview (Soft Pastel Stacked Bar Chart) + Sales Performance Gauge */}
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-5">
         
-        {/* Widget 1: AWS Cost Explorer Style Stacked Bar Chart */}
+        {/* Widget 1: AWS Style Stacked Bar Chart with Light Pastel Palette */}
         <div className="xl:col-span-2 bg-gradient-to-br from-[#FFF5F2] via-[#F5F8FF] to-[#E8F6F3] border border-white/80 rounded-[28px] p-5 shadow-sm flex flex-col justify-between space-y-4">
           
-          {/* Card Header + AWS Category Legend */}
+          {/* Card Header + Light Legend */}
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
             <div className="flex items-center gap-2">
               <div className="w-7 h-7 rounded-xl bg-white/90 flex items-center justify-center shadow-2xs">
@@ -225,16 +225,16 @@ export default function AdminDashboardPage() {
               </h3>
             </div>
 
-            {/* AWS Style Stacked Color Legend */}
-            <div className="flex items-center gap-3 text-[10px] font-semibold bg-white/80 px-3 py-1 rounded-full border border-gray-200/80 shadow-2xs">
-              <span className="flex items-center gap-1 text-gray-700">
-                <span className="w-2 h-2 rounded-full bg-[#12B76A]" /> 22KT Gold
+            {/* Light Pastel Category Legend */}
+            <div className="flex items-center gap-3 text-[10px] font-semibold bg-white/90 px-3 py-1 rounded-full border border-gray-200/80 shadow-2xs">
+              <span className="flex items-center gap-1.5 text-gray-700">
+                <span className="w-2.5 h-2.5 rounded-full bg-[#A7F3D0] border border-emerald-400" /> 22KT Gold
               </span>
-              <span className="flex items-center gap-1 text-gray-700">
-                <span className="w-2 h-2 rounded-full bg-[#F59E0B]" /> 925 Silver
+              <span className="flex items-center gap-1.5 text-gray-700">
+                <span className="w-2.5 h-2.5 rounded-full bg-[#FDE68A] border border-amber-400" /> 925 Silver
               </span>
-              <span className="flex items-center gap-1 text-gray-700">
-                <span className="w-2 h-2 rounded-full bg-[#3B82F6]" /> Diamond
+              <span className="flex items-center gap-1.5 text-gray-700">
+                <span className="w-2.5 h-2.5 rounded-full bg-[#BAE6FD] border border-sky-400" /> Diamond
               </span>
             </div>
           </div>
@@ -252,7 +252,7 @@ export default function AdminDashboardPage() {
             </div>
           </div>
 
-          {/* AWS Stacked Bar Chart with Hover Tooltip */}
+          {/* AWS Stacked Bar Chart with Light Pastel Palette */}
           <div
             onMouseLeave={() => setActiveHoverMonth(null)}
             className="relative pt-12"
@@ -270,29 +270,29 @@ export default function AdminDashboardPage() {
                 </div>
 
                 <div className="flex items-center justify-between pt-0.5">
-                  <span className="flex items-center gap-1.5 text-emerald-400">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" /> 22KT Gold
+                  <span className="flex items-center gap-1.5 text-emerald-300">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#A7F3D0]" /> 22KT Gold
                   </span>
                   <span className="font-bold">{currentHoverData.goldValue}</span>
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <span className="flex items-center gap-1.5 text-amber-400">
-                    <span className="w-1.5 h-1.5 rounded-full bg-amber-400" /> 925 Silver
+                  <span className="flex items-center gap-1.5 text-amber-200">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#FDE68A]" /> 925 Silver
                   </span>
                   <span className="font-bold">{currentHoverData.silverValue}</span>
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <span className="flex items-center gap-1.5 text-blue-400">
-                    <span className="w-1.5 h-1.5 rounded-full bg-blue-400" /> Diamond
+                  <span className="flex items-center gap-1.5 text-sky-200">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#BAE6FD]" /> Diamond
                   </span>
                   <span className="font-bold">{currentHoverData.diamondValue}</span>
                 </div>
               </div>
             )}
 
-            {/* AWS Multi-Segment Stacked Columns */}
+            {/* Light Pastel Multi-Segment Stacked Columns */}
             <div className="grid grid-cols-7 gap-3 items-end h-32 border-b border-gray-200/80 pb-2">
               {Object.keys(monthChartData).map((mKey) => {
                 const item = monthChartData[mKey];
@@ -314,30 +314,32 @@ export default function AdminDashboardPage() {
                       {item.change}
                     </span>
 
-                    {/* AWS Stacked Column Container */}
+                    {/* Light Pastel Stacked Bar Container */}
                     <div
-                      className={`w-full rounded-xl overflow-hidden flex flex-col justify-end transition-all duration-200 border ${item.barHeight} ${
+                      className={`w-full rounded-xl overflow-hidden flex flex-col justify-end transition-all duration-200 border border-white/80 shadow-2xs ${
+                        item.barHeight
+                      } ${
                         isHovered
-                          ? "ring-2 ring-[#1A1C1E] shadow-lg scale-105"
-                          : "border-white/60 shadow-2xs hover:shadow"
+                          ? "ring-2 ring-[#1A1C1E] shadow-md scale-105"
+                          : "hover:shadow"
                       }`}
                     >
-                      {/* Top Segment: Diamond (Blue) */}
+                      {/* Top Segment: Diamond (Soft Pastel Sky Blue) */}
                       <div
                         style={{ height: `${item.diamondPct}%` }}
-                        className="w-full bg-[#3B82F6] hover:bg-blue-400 transition-colors"
+                        className="w-full bg-[#BAE6FD] hover:bg-[#93C5FD] transition-colors"
                       />
 
-                      {/* Middle Segment: Silver (Amber) */}
+                      {/* Middle Segment: Silver (Soft Pastel Warm Amber) */}
                       <div
                         style={{ height: `${item.silverPct}%` }}
-                        className="w-full bg-[#F59E0B] hover:bg-amber-300 transition-colors"
+                        className="w-full bg-[#FDE68A] hover:bg-[#FCD34D] transition-colors"
                       />
 
-                      {/* Bottom Segment: Gold (Emerald Green) */}
+                      {/* Bottom Segment: Gold (Soft Pastel Mint Emerald) */}
                       <div
                         style={{ height: `${item.goldPct}%` }}
-                        className="w-full bg-[#12B76A] hover:bg-emerald-400 transition-colors"
+                        className="w-full bg-[#A7F3D0] hover:bg-[#6EE7B7] transition-colors"
                       />
                     </div>
 
