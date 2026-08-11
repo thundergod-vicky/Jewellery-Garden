@@ -211,7 +211,7 @@ export default function AdminDashboardPage() {
       {/* Top Grid: Total Profit Overview + Sales Performance Gauge */}
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-5">
         
-        {/* Widget 1: AWS Style Stacked Bar Chart with Light/Dark Mode Support */}
+        {/* Widget 1: AWS Style Stacked Bar Chart with Light & Dark Modes */}
         <div className="xl:col-span-2 bg-gradient-to-br from-[#FFF5F2] via-[#F5F8FF] to-[#E8F6F3] dark:from-[#16181D] dark:via-[#191C22] dark:to-[#14161B] border border-white/80 dark:border-gray-800 rounded-[28px] p-5 shadow-sm dark:shadow-xl flex flex-col justify-between space-y-4 transition-colors duration-500">
           
           {/* Card Header + Legend */}
@@ -320,7 +320,7 @@ export default function AdminDashboardPage() {
                         item.barHeight
                       } ${
                         isHovered
-                          ? "ring-2 ring-white shadow-md scale-105"
+                          ? "ring-2 ring-[#1A1C1E] dark:ring-white shadow-md scale-105"
                           : "hover:shadow"
                       }`}
                     >
@@ -455,7 +455,7 @@ export default function AdminDashboardPage() {
                 <input
                   type="text"
                   placeholder="Search..."
-                  className="w-full text-[10px] pl-7 pr-2.5 py-1 bg-[#EEF1F5] dark:bg-gray-800 dark:text-white rounded-full focus:outline-none"
+                  className="w-full text-[10px] pl-7 pr-2.5 py-1 bg-[#EEF1F5] dark:bg-gray-800 text-gray-800 dark:text-white rounded-full focus:outline-none"
                 />
               </div>
 
