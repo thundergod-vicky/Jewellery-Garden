@@ -1,18 +1,30 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Heart, Zap, Star, ShoppingCart } from "lucide-react";
+import { Heart, Zap, Star, ShoppingBag, Eye } from "lucide-react";
 import { PRODUCTS_CATALOG } from "@/data/siteData";
+import { addToCart, toggleWishlist, getWishlistIds } from "@/lib/cartWishlist";
 
 export default function TopSellers() {
-  const [wishlist, setWishlist] = useState<string[]>([]);
+  const [wishlistIds, setWishlistIds] = useState<string[]>([]);
 
-  const toggleWishlist = (id: string) => {
-    setWishlist((prev) =>
-      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
-    );
+  useEffect(() => {
+    setWishlistIds(getWishlistIds());
+    const syncWishlist = () => setWishlistIds(getWishlistIds());
+    window.addEventListener("jg-wishlist-updated", syncWishlist);
+    return () => window.removeEventListener("jg-wishlist-updated", syncWishlist);
+  }, []);
+
+  const handleToggleWishlist = (product: any) => {
+    toggleWishlist(product);
+  };
+
+  const handleAddToCart = (product: any, e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    addToCart(product, 1);
   };
 
   return (
@@ -36,7 +48,7 @@ export default function TopSellers() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {PRODUCTS_CATALOG.slice(0, 4).map((product) => {
-          const isWishlisted = wishlist.includes(product.id);
+          const isWishlisted = wishlistIds.includes(product.id);
           const productUrl = `/jewellery/${product.categorySlug}/${product.slug}`;
 
           return (
@@ -63,9 +75,9 @@ export default function TopSellers() {
                 )}
 
                 <button
-                  onClick={() => toggleWishlist(product.id)}
+                  onClick={() => handleToggleWishlist(product)}
                   title="Add to Wishlist"
-                  className="absolute top-3 right-3 z-10 w-9 h-9 rounded-full bg-white/80 backdrop-blur-sm shadow flex items-center justify-center hover:bg-white transition-all"
+                  className="absolute top-3 right-3 z-10 w-9 h-9 rounded-full bg-white/80 backdrop-blur-sm shadow flex items-center justify-center hover:bg-white transition-all cursor-pointer"
                 >
                   <Heart
                     className={`w-4 h-4 transition-colors ${
@@ -84,37 +96,51 @@ export default function TopSellers() {
               </div>
 
               {/* Product Details */}
-              <div className="p-4 bg-white space-y-2 border-t border-[#F0EDE6]">
-                <div className="flex items-center justify-between">
-                  <span className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider">
-                    {product.category}
-                  </span>
-                  <div className="flex items-center gap-1 text-xs text-amber-500 font-bold">
-                    <Star className="w-3.5 h-3.5 fill-amber-400" />
-                    <span>{product.rating}</span>
-                    <span className="text-gray-400 font-normal">({product.reviewsCount})</span>
+              <div className="p-4 bg-white space-y-2 border-t border-[#F0EDE6] flex-1 flex flex-col justify-between">
+                <div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider">
+                      {product.category}
+                    </span>
+                    <div className="flex items-center gap-1 text-xs text-amber-500 font-bold">
+                      <Star className="w-3.5 h-3.5 fill-amber-400" />
+                      <span>{product.rating}</span>
+                      <span className="text-gray-400 font-normal">({product.reviewsCount})</span>
+                    </div>
+                  </div>
+
+                  <Link href={productUrl} className="font-semibold text-sm text-[#1A1A1A] line-clamp-1 group-hover:text-[#C8232A] transition-colors block mt-1">
+                    {product.name}
+                  </Link>
+
+                  <div className="flex items-baseline gap-2 pt-1">
+                    <span className="font-bold text-base text-[#1A1A1A]">
+                      ₹ {product.price.toLocaleString("en-IN")}
+                    </span>
+                    {product.originalPrice && (
+                      <span className="text-xs text-gray-400 line-through">
+                        ₹ {product.originalPrice.toLocaleString("en-IN")}
+                      </span>
+                    )}
                   </div>
                 </div>
 
-                <Link href={productUrl} className="font-semibold text-sm text-[#1A1A1A] line-clamp-1 group-hover:text-[#C8232A] transition-colors block">
-                  {product.name}
-                </Link>
-
-                <div className="flex items-baseline gap-2 pt-1">
-                  <span className="font-bold text-base text-[#1A1A1A]">
-                    ₹ {product.price.toLocaleString("en-IN")}
-                  </span>
-                  {product.originalPrice && (
-                    <span className="text-xs text-gray-400 line-through">
-                      ₹ {product.originalPrice.toLocaleString("en-IN")}
-                    </span>
-                  )}
+                <div className="grid grid-cols-2 gap-2 pt-3">
+                  <button
+                    onClick={(e) => handleAddToCart(product, e)}
+                    className="bg-[#C8232A] hover:bg-[#A81B21] text-white font-semibold text-xs py-2.5 px-3 rounded-lg flex items-center justify-center gap-1.5 transition-all shadow-xs cursor-pointer"
+                  >
+                    <ShoppingBag className="w-3.5 h-3.5" />
+                    <span>Add to Cart</span>
+                  </button>
+                  <Link
+                    href={productUrl}
+                    className="bg-[#FAF8F5] hover:bg-gray-200 text-gray-800 border border-[#E8E3DA] font-semibold text-xs py-2.5 px-3 rounded-lg flex items-center justify-center gap-1 transition-all"
+                  >
+                    <Eye className="w-3.5 h-3.5 text-gray-500" />
+                    <span>Details</span>
+                  </Link>
                 </div>
-
-                <Link href={productUrl} className="w-full mt-3 bg-[#FAF8F5] hover:bg-[#C8232A] text-[#1A1A1A] hover:text-white border border-[#E8E3DA] hover:border-[#C8232A] font-semibold text-xs py-2.5 px-4 rounded-lg flex items-center justify-center gap-2 transition-all">
-                  <ShoppingCart className="w-3.5 h-3.5" />
-                  <span>View Product Details</span>
-                </Link>
               </div>
             </div>
           );

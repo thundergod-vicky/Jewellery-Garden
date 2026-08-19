@@ -1,143 +1,200 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Heart, ShoppingBag, Trash2, Share2, Sparkles } from "lucide-react";
+import { Heart, Trash2, ShoppingBag, Loader2, ArrowRight } from "lucide-react";
+import toast from "react-hot-toast";
 import TopBar from "@/components/header/TopBar";
 import MainHeader from "@/components/header/MainHeader";
 import CategoryMenu from "@/components/header/CategoryMenu";
 import MainFooter from "@/components/footer/MainFooter";
-import SeoFooter from "@/components/footer/SeoFooter";
-import FloatingActions from "@/components/common/FloatingActions";
 import { PRODUCTS_CATALOG } from "@/data/siteData";
+import { addToCart, toggleWishlist, getWishlistIds } from "@/lib/cartWishlist";
+
+const API_BASE = (process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:4000").replace("localhost", "127.0.0.1");
 
 export default function WishlistPage() {
-  const [wishlistItems, setWishlistItems] = useState([
-    PRODUCTS_CATALOG[0],
-    PRODUCTS_CATALOG[1],
-  ]);
+  const [wishlistItems, setWishlistItems] = useState<string[]>([]);
+  const [apiProducts, setApiProducts] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const removeFromWishlist = (id: string) => {
-    setWishlistItems((prev) => prev.filter((item) => item.id !== id));
+  useEffect(() => {
+    fetchProducts();
+    loadWishlist();
+
+    const handleSync = () => loadWishlist();
+    window.addEventListener("jg-wishlist-updated", handleSync);
+    return () => window.removeEventListener("jg-wishlist-updated", handleSync);
+  }, []);
+
+  const fetchProducts = async () => {
+    try {
+      const res = await fetch(`${API_BASE}/api/products`);
+      if (res.ok) {
+        const data = await res.json();
+        if (Array.isArray(data) && data.length > 0) {
+          setApiProducts(data);
+        }
+      }
+    } catch (err) {
+      console.warn("Using local product catalog for wishlist:", err);
+    } finally {
+      setLoading(false);
+    }
   };
 
+  const loadWishlist = () => {
+    setWishlistItems(getWishlistIds());
+  };
+
+  const handleRemoveFromWishlist = (product: any) => {
+    toggleWishlist(product);
+    loadWishlist();
+  };
+
+  const handleAddToCartClick = (product: any) => {
+    addToCart(product, 1);
+  };
+
+  // Combine local catalog and API products so any wishlisted ID is resolved
+  const allProductsMap = useMemo(() => {
+    const map = new Map<string, any>();
+    PRODUCTS_CATALOG.forEach((p) => map.set(p.id, p));
+    apiProducts.forEach((p) => map.set(p.id, p));
+    return map;
+  }, [apiProducts]);
+
+  const lovedProducts = useMemo(() => {
+    return wishlistItems
+      .map((id) => allProductsMap.get(id))
+      .filter(Boolean);
+  }, [wishlistItems, allProductsMap]);
+
   return (
-    <main className="min-h-screen bg-[#FAF8F5] text-[#1A1A1A]">
+    <main className="min-h-screen bg-[#FAF8F5] text-[#1A1A1A] flex flex-col font-sans">
       <TopBar />
       <MainHeader />
       <CategoryMenu />
 
-      <div className="max-w-[1440px] mx-auto px-4 sm:px-8 py-10">
-        
+      <section className="py-10 px-4 sm:px-8 flex-1 max-w-[1440px] mx-auto w-full text-left">
         {/* Breadcrumb */}
         <div className="text-xs text-gray-500 flex items-center gap-2 mb-6">
-          <Link href="/" className="hover:text-[#C8232A]">Home</Link>
+          <Link href="/" className="hover:text-[#C8232A]">
+            Home
+          </Link>
           <span>/</span>
           <span className="font-semibold text-gray-800">My Wishlist</span>
         </div>
 
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
+        <div className="flex items-center justify-between gap-4 mb-8">
           <div>
-            <h1 className="text-3xl font-serif-title font-bold text-[#1A1A1A]">
-              My Gold & Silver Wishlist ({wishlistItems.length})
+            <h1 className="text-3xl font-serif font-medium tracking-wide text-[#1A1A1A]">
+              YOUR WISHLIST
             </h1>
             <p className="text-xs text-gray-500 mt-1">
-              Your saved 22KT Gold & 925 Sterling Silver favorites.
+              Save your favorite 22KT Gold & 925 Sterling Silver pieces for later or add them to your cart.
             </p>
           </div>
 
-          {wishlistItems.length > 0 && (
-            <button
-              onClick={() => alert("Wishlist share link copied!")}
-              className="flex items-center gap-2 bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 font-semibold text-xs py-2.5 px-4 rounded-xl shadow-sm transition-all"
-            >
-              <Share2 className="w-4 h-4 text-[#C8232A]" />
-              <span>Share My Wishlist</span>
-            </button>
+          {lovedProducts.length > 0 && (
+            <span className="bg-[#FFF3DC] text-[#C5A059] border border-[#F5E1BA] text-xs font-bold px-3 py-1.5 rounded-full flex items-center gap-1.5">
+              <Heart className="w-3.5 h-3.5 fill-[#C5A059]" />
+              {lovedProducts.length} Saved {lovedProducts.length === 1 ? "Item" : "Items"}
+            </span>
           )}
         </div>
 
-        {wishlistItems.length === 0 ? (
-          <div className="bg-white p-12 rounded-3xl border border-[#E8E3DA] text-center space-y-4 shadow-luxury">
-            <Heart className="w-12 h-12 text-gray-300 mx-auto" />
-            <h2 className="text-xl font-serif-title font-bold text-gray-800">Your Wishlist is Empty</h2>
-            <p className="text-xs text-gray-500">Save gold and silver designs you love while browsing.</p>
+        {loading ? (
+          <div className="flex items-center justify-center py-20">
+            <Loader2 className="w-8 h-8 animate-spin text-[#C8232A]" />
+          </div>
+        ) : lovedProducts.length === 0 ? (
+          <div className="bg-white p-12 rounded-2xl border border-[#E8E3DA] text-center space-y-4 shadow-sm max-w-[600px] mx-auto my-8">
+            <div className="w-16 h-16 rounded-full bg-[#FFF5F5] border border-red-100 text-[#C8232A] flex items-center justify-center mx-auto">
+              <Heart className="w-8 h-8 text-[#C8232A]" />
+            </div>
+            <h2 className="text-xl font-serif font-semibold text-gray-900">Your Wishlist is Empty</h2>
+            <p className="text-xs text-gray-500 leading-relaxed">
+              Explore our handcrafted collection of authentic Bengali Sitahar, Solitaire Rings, and Silver Ornaments.
+            </p>
             <Link
               href="/jewellery"
-              className="inline-block bg-[#C8232A] text-white font-semibold text-xs py-3 px-8 rounded-xl shadow"
+              className="inline-flex items-center gap-2 bg-[#C8232A] hover:bg-[#A81B21] text-white font-semibold text-xs py-3 px-7 rounded-xl transition-all shadow-sm cursor-pointer"
             >
-              Explore Gold & Silver Designs →
+              <span>Explore Gold & Silver Collection</span>
+              <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {wishlistItems.map((product) => {
-              const productUrl = `/jewellery/${product.categorySlug}/${product.slug}`;
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {lovedProducts.map((product) => (
+              <div
+                key={product.id}
+                className="bg-white rounded-2xl border border-[#E8E3DA] overflow-hidden hover:border-[#C8232A] hover:shadow-md transition-all flex flex-col justify-between group"
+              >
+                <div>
+                  <div className="relative aspect-square bg-[#FAF8F5] overflow-hidden">
+                    <Image
+                      src={product.image || (product.images ? product.images[0] : "/logo.svg")}
+                      alt={product.name}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
+                      unoptimized
+                    />
 
-              return (
-                <div
-                  key={product.id}
-                  className="group bg-[#FFFFFF] rounded-2xl overflow-hidden border border-[#E8E3DA] shadow-luxury shadow-luxury-hover transition-all flex flex-col justify-between"
-                >
-                  <div className="relative w-full h-64 bg-[#F6F6F6] p-4 overflow-hidden">
-                    <span className="absolute top-3 left-3 bg-[#C8232A] text-white text-[10px] font-bold px-2 py-0.5 rounded shadow z-10">
-                      {product.purity}
-                    </span>
-
+                    {/* Delete Button */}
                     <button
-                      onClick={() => removeFromWishlist(product.id)}
+                      onClick={() => handleRemoveFromWishlist(product)}
+                      className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/90 shadow-sm flex items-center justify-center text-gray-400 hover:text-red-600 hover:bg-white transition-all cursor-pointer"
                       title="Remove from Wishlist"
-                      className="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-white/90 shadow flex items-center justify-center hover:bg-red-50 text-gray-500 hover:text-red-600 transition-all"
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
 
-                    <Image
-                      src={product.image}
-                      alt={product.name}
-                      fill
-                      className="object-cover group-hover:scale-108 transition-transform duration-500"
-                      unoptimized
-                    />
+                    {product.badge && (
+                      <span className="absolute top-3 left-3 text-[10px] font-bold px-2 py-0.5 rounded bg-[#C8232A] text-white">
+                        {product.badge}
+                      </span>
+                    )}
                   </div>
 
-                  <div className="p-4 bg-white space-y-2 border-t border-[#F0EDE6]">
-                    <span className="text-[11px] font-bold text-[#C8232A] uppercase tracking-wider block">
-                      {product.metal} • {product.category}
-                    </span>
-
-                    <Link href={productUrl} className="font-semibold text-sm text-[#1A1A1A] line-clamp-1 group-hover:text-[#C8232A] transition-colors block">
-                      {product.name}
-                    </Link>
-
-                    <p className="text-[11px] text-gray-400">Weight: {product.grossWeight}</p>
-
-                    <div className="flex items-baseline gap-2 pt-1">
-                      <span className="font-bold text-base text-[#1A1A1A]">
-                        ₹ {product.price.toLocaleString("en-IN")}
-                      </span>
+                  <div className="p-4">
+                    <div className="text-[10px] font-bold text-[#C5A059] uppercase tracking-wider mb-1">
+                      {product.category || "Jewellery"}
                     </div>
-
-                    <Link
-                      href="/cart"
-                      className="w-full mt-3 bg-[#C8232A] hover:bg-[#B81D24] text-white font-semibold text-xs py-2.5 px-4 rounded-lg flex items-center justify-center gap-2 transition-all shadow"
-                    >
-                      <ShoppingBag className="w-3.5 h-3.5" />
-                      <span>Move to Shopping Bag</span>
-                    </Link>
+                    <h3 className="font-semibold text-xs text-gray-900 line-clamp-2 mb-2 group-hover:text-[#C8232A] transition-colors">
+                      {product.name}
+                    </h3>
+                    <div className="flex items-center gap-2">
+                      <span className="font-bold text-sm text-[#1A1A1A]">
+                        ₹{product.price.toLocaleString("en-IN")}
+                      </span>
+                      {product.originalPrice && (
+                        <span className="text-xs text-gray-400 line-through">
+                          ₹{product.originalPrice.toLocaleString("en-IN")}
+                        </span>
+                      )}
+                    </div>
                   </div>
                 </div>
-              );
-            })}
+
+                <div className="p-4 pt-0">
+                  <button
+                    onClick={() => handleAddToCartClick(product)}
+                    className="w-full py-2.5 bg-[#1A1A1A] hover:bg-[#C8232A] text-white text-xs font-semibold rounded-xl transition-all flex items-center justify-center gap-2 shadow-xs cursor-pointer"
+                  >
+                    <ShoppingBag className="w-4 h-4" />
+                    <span>Add to Bag</span>
+                  </button>
+                </div>
+              </div>
+            ))}
           </div>
         )}
-
-      </div>
+      </section>
 
       <MainFooter />
-      <SeoFooter />
-      <FloatingActions />
     </main>
   );
 }

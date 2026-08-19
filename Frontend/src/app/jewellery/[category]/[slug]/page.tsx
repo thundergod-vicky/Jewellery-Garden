@@ -12,6 +12,7 @@ import MainFooter from "@/components/footer/MainFooter";
 import SeoFooter from "@/components/footer/SeoFooter";
 import FloatingActions from "@/components/common/FloatingActions";
 import { PRODUCTS_CATALOG, getProductBySlug } from "@/data/siteData";
+import { addToCart, toggleWishlist, getWishlistIds } from "@/lib/cartWishlist";
 
 export default function ProductDetailPage() {
   const params = useParams();
@@ -30,6 +31,12 @@ export default function ProductDetailPage() {
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [copiedUrl, setCopiedUrl] = useState(false);
 
+  React.useEffect(() => {
+    if (product) {
+      setIsWishlisted(getWishlistIds().includes(product.id));
+    }
+  }, [product]);
+
   const handleCheckPincode = (e: React.FormEvent) => {
     e.preventDefault();
     if (pincode.length >= 6) {
@@ -40,8 +47,14 @@ export default function ProductDetailPage() {
   };
 
   const handleAddToCart = () => {
+    addToCart(product, 1);
     setAddedToCart(true);
     setTimeout(() => setAddedToCart(false), 3000);
+  };
+
+  const handleToggleWishlist = () => {
+    const isNowWishlisted = toggleWishlist(product);
+    setIsWishlisted(isNowWishlisted);
   };
 
   const handleShareUrl = () => {
@@ -86,9 +99,9 @@ export default function ProductDetailPage() {
               {/* Action Buttons Overlay */}
               <div className="absolute top-4 right-4 z-10 flex items-center gap-2">
                 <button
-                  onClick={() => setIsWishlisted(!isWishlisted)}
+                  onClick={handleToggleWishlist}
                   title="Save to Wishlist"
-                  className="w-10 h-10 rounded-full bg-white/90 shadow flex items-center justify-center hover:bg-white transition-all text-gray-700"
+                  className="w-10 h-10 rounded-full bg-white/90 shadow flex items-center justify-center hover:bg-white transition-all text-gray-700 cursor-pointer"
                 >
                   <Heart className={`w-5 h-5 ${isWishlisted ? "fill-[#C8232A] text-[#C8232A]" : ""}`} />
                 </button>

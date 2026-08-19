@@ -1,0 +1,145 @@
+// Prisma Schema for Jewellery Garden PostgreSQL Database
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum MetalType {
+  Gold
+  Silver
+}
+
+enum OrderStatus {
+  COMPLETED
+  PENDING
+  CANCELLED
+}
+
+enum PaymentStatus {
+  PAID
+  PENDING
+}
+
+model User {
+  id            String    @id @default(uuid())
+  email         String    @unique
+  phone         String?
+  role          String    @default("CUSTOMER") // CUSTOMER or ADMIN
+  isVerified    Boolean   @default(false)
+  otpCode       String?
+  otpExpiresAt  DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  orders        Order[]
+}
+
+model Product {
+  id          String    @id @default(uuid())
+  sku         String    @unique
+  name        String
+  category    String
+  metal       MetalType @default(Gold)
+  purity      String
+  grossWeight String
+  netWeight   String
+  price       Float
+  stock       Int       @default(10)
+  image       String
+  active      Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  orderItems  OrderItem[]
+}
+
+model Order {
+  id            String        @id @default(uuid())
+  orderNumber   String        @unique
+  userId        String?
+  customerEmail String
+  customerPhone String
+  totalAmount   Float
+  gstAmount     Float
+  itemsCount    Int           @default(1)
+  status        OrderStatus   @default(PENDING)
+  paymentStatus PaymentStatus @default(PAID)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  user          User?         @relation(fields: [userId], references: [id])
+  items         OrderItem[]
+}
+
+model OrderItem {
+  id        String   @id @default(uuid())
+  orderId   String
+  productId String
+  quantity  Int      @default(1)
+  price     Float
+
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+
+model MonthlySalesMetric {
+  id           String   @id @default(uuid())
+  month        String   @unique // Jan, Feb, Mar, Apr, May, Jun, Jul
+  sortOrder    Int      @default(1)
+  changePct    String
+  isPositive   Boolean  @default(true)
+  totalRevenue Float
+  goldRevenue  Float
+  silverRevenue Float
+  diamondRevenue Float
+  goldPct      Int
+  silverPct    Int
+  diamondPct   Int
+  barHeight    String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Customer {
+  id          String   @id @default(uuid())
+  firebaseId  String   @unique
+  email       String   @unique
+  username    String
+  phone       String?
+  addresses   String[]
+  savedCards  String?  // Serialized JSON array of saved cards
+  superPearls Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt @default(now())
+}
+
+model SuperPearlTransaction {
+  id          String   @id @default(uuid())
+  customerId  String
+  amount      Int      // +Earned or -Redeemed
+  type        String   // "purchase_earn", "purchase_redeem", "social_share", "admin_adjustment", "welcome_bonus"
+  description String
+  orderId     String?
+  createdAt   DateTime @default(now())
+}
+
+model SupportSession {
+  id         String   @id @default(uuid())
+  firebaseId String
+  status     String   @default("bot") // "bot", "escalated", or "human"
+  createdAt  DateTime @default(now())
+}
+
+model SupportMessage {
+  id        String   @id @default(uuid())
+  sessionId String
+  sender    String   // "user", "bot", or "admin"
+  content   String
+  createdAt DateTime @default(now())
+}
+

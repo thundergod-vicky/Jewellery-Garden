@@ -8,7 +8,49 @@ import { SITE_DATA } from "@/data/siteData";
 
 export default function MainHeader() {
   const [searchQuery, setSearchQuery] = useState("");
+  const [cartCount, setCartCount] = useState(0);
+  const [wishlistCount, setWishlistCount] = useState(0);
   const router = useRouter();
+
+  React.useEffect(() => {
+    const syncCounts = () => {
+      if (typeof window !== "undefined") {
+        const savedCart = localStorage.getItem("jg-cart-items");
+        if (savedCart) {
+          try {
+            const items = JSON.parse(savedCart);
+            const total = items.reduce((acc: number, item: any) => acc + (item.quantity || 1), 0);
+            setCartCount(total);
+          } catch (e) {
+            setCartCount(0);
+          }
+        } else {
+          setCartCount(0);
+        }
+
+        const savedWishlist = localStorage.getItem("jg-wishlist-items");
+        if (savedWishlist) {
+          try {
+            const items = JSON.parse(savedWishlist);
+            setWishlistCount(items.length);
+          } catch (e) {
+            setWishlistCount(0);
+          }
+        } else {
+          setWishlistCount(0);
+        }
+      }
+    };
+
+    syncCounts();
+    window.addEventListener("jg-cart-updated", syncCounts);
+    window.addEventListener("jg-wishlist-updated", syncCounts);
+
+    return () => {
+      window.removeEventListener("jg-cart-updated", syncCounts);
+      window.removeEventListener("jg-wishlist-updated", syncCounts);
+    };
+  }, []);
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -105,9 +147,11 @@ export default function MainHeader() {
               className="hover:text-[#C8232A] p-2 hover:bg-red-50 rounded-full transition-all relative"
             >
               <Heart className="w-5 h-5 text-gray-700" />
-              <span className="absolute top-1 right-1 w-4 h-4 bg-[#C8232A] text-white text-[10px] font-bold rounded-full flex items-center justify-center">
-                2
-              </span>
+              {wishlistCount > 0 && (
+                <span className="absolute top-1 right-1 w-4 h-4 bg-[#C8232A] text-white text-[10px] font-bold rounded-full flex items-center justify-center">
+                  {wishlistCount}
+                </span>
+              )}
             </a>
 
             <a
@@ -116,17 +160,20 @@ export default function MainHeader() {
               className="hover:text-[#C8232A] p-2 hover:bg-red-50 rounded-full transition-all relative"
             >
               <ShoppingBag className="w-5 h-5 text-gray-700" />
-              <span className="absolute top-1 right-1 w-4 h-4 bg-[#C8232A] text-white text-[10px] font-bold rounded-full flex items-center justify-center">
-                1
-              </span>
+              {cartCount > 0 && (
+                <span className="absolute top-1 right-1 w-4 h-4 bg-[#C8232A] text-white text-[10px] font-bold rounded-full flex items-center justify-center">
+                  {cartCount}
+                </span>
+              )}
             </a>
 
-            <button
-              title="Account Login"
+            <a
+              href="/account"
+              title="User Account"
               className="hover:text-[#C8232A] p-2 hover:bg-red-50 rounded-full transition-all"
             >
               <User className="w-5 h-5 text-gray-700" />
-            </button>
+            </a>
           </div>
         </div>
 

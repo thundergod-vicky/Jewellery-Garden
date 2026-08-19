@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @layer base {
   :root {
     /* Brand Primary Colors */
@@ -18,7 +20,7 @@
     /* Neutral Backgrounds */
     --bg-main: #FAF8F5;
     --bg-card: #FFFFFF;
-    --bg-topbar: #F4F6F9;
+    --bg-canvas: #F7F9FC;
     --bg-seo-footer: #F9F6F0;
 
     /* Text & Neutral Colors */
@@ -60,25 +62,66 @@
   border-color: #C8232A;
 }
 
-/* Expanding Circular Wave Overlay Animation */
-@keyframes wave-expand {
+/* Custom Stylish Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(200, 35, 42, 0.3);
+  border-radius: 9999px;
+  transition: background 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(200, 35, 42, 0.7);
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+/* Firefox Scrollbar Styling */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(200, 35, 42, 0.3) transparent;
+}
+
+.dark * {
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+}
+
+/* Sleek Thin Glowing Wave Ring Animation (2px - 6px) */
+@keyframes wave-ring-expand {
   0% {
     width: 0px;
     height: 0px;
-    opacity: 0.9;
-  }
-  40% {
     opacity: 0.95;
+    border-width: 2px;
+  }
+  50% {
+    opacity: 0.8;
+    border-width: 6px;
   }
   100% {
     width: 320vmax;
     height: 320vmax;
     opacity: 0;
+    border-width: 1.5px;
   }
 }
 
-.animate-wave-expand {
-  animation: wave-expand 800ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
+.animate-wave-ring {
+  animation: wave-ring-expand 900ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .animate-spin-slow {
@@ -90,13 +133,12 @@
   to { transform: rotate(360deg); }
 }
 
-/* Hide scrollbar for Chrome, Safari and Opera */
+/* Hide scrollbar utility class */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
 
-/* Hide scrollbar for IE, Edge and Firefox */
 .no-scrollbar {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }

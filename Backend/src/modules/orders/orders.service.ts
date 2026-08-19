@@ -1,81 +1,82 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
-
-export interface OrderItem {
-  id: string;
-  orderNumber: string;
-  customerEmail: string;
-  customerPhone: string;
-  totalAmount: number;
-  gstAmount: number;
-  itemsCount: number;
-  status: "PENDING" | "PROCESSING" | "SHIPPED" | "DELIVERED";
-  paymentStatus: "PAID" | "PENDING";
-  createdAt: string;
-}
+import { PrismaService } from "../../prisma/prisma.service";
+import { OrderStatus } from "@prisma/client";
 
 @Injectable()
 export class OrdersService {
-  private orders: OrderItem[] = [
-    {
-      id: "ord-1",
-      orderNumber: "JG-2026-8812",
-      customerEmail: "customer@gmail.com",
-      customerPhone: "+91 98321 44556",
-      totalAmount: 34800,
-      gstAmount: 1013,
-      itemsCount: 1,
-      status: "PROCESSING",
-      paymentStatus: "PAID",
-      createdAt: "2026-08-10 14:30",
-    },
-    {
-      id: "ord-2",
-      orderNumber: "JG-2026-8813",
-      customerEmail: "bengali.bride@gmail.com",
-      customerPhone: "+91 97330 99887",
-      totalAmount: 89500,
-      gstAmount: 2606,
-      itemsCount: 1,
-      status: "SHIPPED",
-      paymentStatus: "PAID",
-      createdAt: "2026-08-09 11:15",
-    },
-    {
-      id: "ord-3",
-      orderNumber: "JG-2026-8814",
-      customerEmail: "durgapur.buyer@yahoo.com",
-      customerPhone: "+91 76050 11223",
-      totalAmount: 12521,
-      gstAmount: 365,
-      itemsCount: 1,
-      status: "DELIVERED",
-      paymentStatus: "PAID",
-      createdAt: "2026-08-08 16:45",
-    },
-  ];
+  constructor(private readonly prisma: PrismaService) {}
 
-  findAll(): OrderItem[] {
-    return this.orders;
+  async findAll() {
+    return this.prisma.order.findMany({
+      orderBy: { createdAt: "desc" },
+      include: { items: { include: { product: true } } },
+    });
   }
 
-  updateStatus(id: string, status: "PENDING" | "PROCESSING" | "SHIPPED" | "DELIVERED"): OrderItem {
-    const order = this.orders.find((o) => o.id === id || o.orderNumber === id);
-    if (!order) {
-      throw new NotFoundException(`Order ${id} not found.`);
+  async findByCustomer(firebaseId: string) {
+    const customer = await this.prisma.customer.findUnique({
+      where: { firebaseId },
+    });
+    if (!customer) {
+      return [];
     }
-    order.status = status;
-    return order;
+
+    return this.prisma.order.findMany({
+      where: {
+        OR: [
+          { userId: customer.id },
+          { customerEmail: customer.email },
+        ],
+      },
+      orderBy: { createdAt: "desc" },
+      include: { items: { include: { product: true } } },
+    });
   }
 
-  getMetrics() {
-    const totalSales = this.orders.reduce((sum, o) => sum + o.totalAmount, 0);
-    const activeOrders = this.orders.filter((o) => o.status !== "DELIVERED").length;
+
+  async updateStatus(id: string, status: OrderStatus) {
+    const existing = await this.prisma.order.findUnique({ where: { id } });
+    if (!existing) {
+      throw new NotFoundException(`Order ${id} not found in database.`);
+    }
+    return this.prisma.order.update({
+      where: { id },
+      data: { status },
+    });
+  }
+
+  async getMetrics() {
+    const orders = await this.prisma.order.findMany();
+    const totalSales = orders.reduce((sum, o) => sum + o.totalAmount, 0);
+    const activeOrders = orders.filter((o) => o.status !== OrderStatus.COMPLETED).length;
 
     return {
       totalSales,
-      totalOrdersCount: this.orders.length,
+      totalOrdersCount: orders.length,
       activeOrdersCount: activeOrders,
-      deliveredOrdersCount: this.orders.length - activeOrders,
+      deliveredOrdersCount: orders.length - activeOrders,
+    };
+  }
+
+  async getAdminDashboardMetrics() {
+    const monthlyMetrics = await this.prisma.monthlySalesMetric.findMany({
+      orderBy: { sortOrder: "asc" },
+    });
+    const recentOrders = await this.prisma.order.findMany({
+      take: 10,
+      orderBy: { createdAt: "desc" },
+      include: { items: { include: { product: true } } },
+    });
+
+    const allOrders = await this.prisma.order.findMany();
+    const totalRevenue = allOrders.reduce((acc, curr) => acc + curr.totalAmount, 0);
+    const completedCount = allOrders.filter(o => o.status === OrderStatus.COMPLETED).length;
+
+    return {
+      totalRevenue,
+      salesCount: completedCount,
+      monthlyMetrics,
+      recentOrders,
     };
   }
 }

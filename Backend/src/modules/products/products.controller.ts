@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Put, Delete, Param, Body } from "@nestjs/common";
-import { ProductsService, ProductItem } from "./products.service";
+import { ProductsService } from "./products.service";
 
 @Controller("api/products")
 export class ProductsController {
@@ -16,13 +16,8 @@ export class ProductsController {
   }
 
   @Post()
-  create(@Body() dto: Partial<ProductItem>) {
+  create(@Body() dto: any) {
     return this.productsService.create(dto);
-  }
-
-  @Put(":id")
-  update(@Param("id") id: string, @Body() dto: Partial<ProductItem>) {
-    return this.productsService.update(id, dto);
   }
 
   @Delete(":id")

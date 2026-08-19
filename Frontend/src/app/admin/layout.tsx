@@ -22,6 +22,15 @@ import {
   ChevronDown,
   Menu,
   X,
+  FolderTree,
+  MapPin,
+  Star,
+  Tag,
+  Award,
+  Globe,
+  MessageSquare,
+  ShieldCheck,
+  ArrowRightLeft,
 } from "lucide-react";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -31,7 +40,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [theme, setTheme] = useState<"light" | "dark">("light");
 
-  // Wave Ripple Animation States
+  // Glowing Wave Ring Animation States
   const [isWaving, setIsWaving] = useState(false);
   const [wavePos, setWavePos] = useState({ x: 0, y: 0 });
   const [targetTheme, setTargetTheme] = useState<"light" | "dark">("light");
@@ -59,7 +68,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     }
   }, [pathname, router]);
 
-  // Full-Screen Visible Wave Sweep Animation
+  // Glowing Wave Ring Sweep Transition (Hollow center so text & cards stay 100% visible while morphing)
   const handleToggleTheme = (e: React.MouseEvent<HTMLButtonElement>) => {
     const nextTheme = theme === "light" ? "dark" : "light";
     
@@ -72,21 +81,19 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     setTargetTheme(nextTheme);
     setIsWaving(true);
 
-    // Mid-animation theme swap (400ms into 800ms wave)
-    setTimeout(() => {
-      setTheme(nextTheme);
-      localStorage.setItem("admin_theme", nextTheme);
-      if (nextTheme === "dark") {
-        document.documentElement.classList.add("dark");
-      } else {
-        document.documentElement.classList.remove("dark");
-      }
-    }, 400);
+    // Immediately trigger theme morphing so elements change color right as the wave sweeps over them
+    setTheme(nextTheme);
+    localStorage.setItem("admin_theme", nextTheme);
+    if (nextTheme === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
 
     // End wave animation
     setTimeout(() => {
       setIsWaving(false);
-    }, 850);
+    }, 950);
   };
 
   const handleLogout = () => {
@@ -103,13 +110,20 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     { label: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
     { label: "Products", href: "/admin/products", icon: Package, badge: "5" },
     { label: "Orders & Invoices", href: "/admin/orders", icon: ShoppingBag, badge: "3" },
-    { label: "Sales Analytics", href: "#", icon: BarChart3 },
-    { label: "Customer Insights", href: "#", icon: Users },
-    { label: "Reports", href: "#", icon: FileText, badge: "2" },
+    { label: "Categories", href: "/admin/categories", icon: FolderTree },
+    { label: "Customer Insights", href: "/admin/customers", icon: Users, badge: "Live" },
+    { label: "Support Chat Desk", href: "/admin/support", icon: MessageSquare, badge: "Live" },
+    { label: "Customer Reviews", href: "/admin/reviews", icon: Star },
+    { label: "Promotions & Sales", href: "/admin/sales", icon: Tag },
+    { label: "RFM Segmentation", href: "/admin/segmentation", icon: Award },
+    { label: "Showrooms & Stores", href: "/admin/locations", icon: MapPin },
+    { label: "Stock Transfers", href: "/admin/transfers", icon: ArrowRightLeft },
+    { label: "SEO Metadata", href: "/admin/seo", icon: Globe },
+    { label: "Zero-Trust Security", href: "/admin/zerotrust", icon: ShieldCheck },
   ];
 
   const otherItems = [
-    { label: "Settings", href: "#", icon: Settings },
+    { label: "Settings", href: "/admin/settings", icon: Settings },
     { label: "Team Members", href: "#", icon: Users, badge: "3" },
     { label: "Help Center", href: "#", icon: HelpCircle },
   ];
@@ -117,30 +131,30 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const isDark = theme === "dark";
 
   return (
-    // 100% Full Screen Edge-to-Edge Container with Unified Light/Dark Classes
+    // 100% Full Screen Edge-to-Edge Container with Smooth Morphing Transitions
     <div
-      className={`h-screen w-screen overflow-hidden flex flex-col font-sans antialiased relative transition-colors duration-500 ${
+      className={`h-screen w-screen overflow-hidden flex flex-col font-sans antialiased relative transition-colors duration-700 ease-in-out ${
         isDark ? "bg-[#0B0C0E] text-white dark" : "bg-[#F7F9FC] text-[#1A1C1E]"
       }`}
     >
-      {/* Visual Wave Ripple Overlay Sweep Effect */}
+      {/* Translucent Glowing Wave Ring Overlay (Hollow Center - Never blacks out or whites out text) */}
       {isWaving && (
         <div
           style={{
             left: `${wavePos.x}px`,
             top: `${wavePos.y}px`,
           }}
-          className={`fixed -translate-x-1/2 -translate-y-1/2 rounded-full z-50 pointer-events-none animate-wave-expand ${
+          className={`fixed -translate-x-1/2 -translate-y-1/2 rounded-full z-50 pointer-events-none bg-transparent animate-wave-ring backdrop-blur-[1px] ${
             targetTheme === "dark"
-              ? "bg-gradient-to-r from-[#0B0C0E] via-[#121417] to-[#1A1D23] shadow-2xl border-4 border-indigo-500/40"
-              : "bg-gradient-to-r from-[#F7F9FC] via-white to-[#EEF1F5] shadow-2xl border-4 border-amber-400/40"
+              ? "border-indigo-500/70 shadow-[0_0_120px_rgba(99,102,241,0.7)]"
+              : "border-amber-400/70 shadow-[0_0_120px_rgba(251,191,36,0.7)]"
           }`}
         />
       )}
 
       {/* Fixed Top Header Bar (Edge-to-Edge) */}
       <header
-        className={`shrink-0 border-b px-5 py-3 flex items-center justify-between gap-4 z-40 transition-colors duration-500 ${
+        className={`shrink-0 border-b px-5 py-3 flex items-center justify-between gap-4 z-40 transition-colors duration-700 ease-in-out ${
           isDark
             ? "bg-[#121417] border-gray-800 text-white"
             : "bg-white border-[#EAEFF5] text-gray-900"
@@ -209,7 +223,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             ref={toggleBtnRef}
             onClick={handleToggleTheme}
             title={isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}
-            className={`relative flex items-center gap-2 px-3 py-1.5 rounded-full font-bold text-xs shadow-md transition-all border shrink-0 ${
+            className={`relative flex items-center gap-2 px-3.5 py-1.5 rounded-full font-bold text-xs shadow-md transition-all border shrink-0 ${
               isDark
                 ? "bg-[#1E222B] text-amber-300 border-amber-500/40 hover:bg-gray-800 hover:border-amber-400 ring-2 ring-amber-500/20"
                 : "bg-gradient-to-r from-amber-100 via-amber-50 to-orange-100 text-gray-900 border-amber-300 hover:shadow-lg ring-2 ring-amber-400/20"
@@ -279,11 +293,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       {/* Main Body Layout (Flex Row) */}
       <div className="flex-1 flex overflow-hidden min-h-0">
         
-        {/* Fixed Left Sidebar (Full Height Dark Support) */}
+        {/* Fixed Left Sidebar */}
         <aside
           className={`${
             isMobileMenuOpen ? "block" : "hidden"
-          } lg:flex w-full lg:w-56 h-full shrink-0 overflow-y-auto lg:overflow-y-hidden border-r p-4 flex-col justify-between space-y-4 transition-colors duration-500 ${
+          } lg:flex w-full lg:w-56 h-full shrink-0 overflow-y-auto border-r p-4 flex-col justify-between space-y-4 transition-colors duration-700 ease-in-out ${
             isDark
               ? "bg-[#121417] border-gray-800 text-gray-200"
               : "bg-white border-[#EAEFF5] text-gray-800"
@@ -403,7 +417,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
         {/* Dedicated Scrolling Canvas Area */}
         <main
-          className={`flex-1 h-full overflow-y-auto p-5 transition-colors duration-500 ${
+          className={`flex-1 h-full overflow-y-auto p-5 transition-colors duration-700 ease-in-out ${
             isDark ? "bg-[#0B0C0E] text-white" : "bg-[#F7F9FC] text-[#1A1C1E]"
           }`}
         >

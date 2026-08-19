@@ -5,10 +5,11 @@ import { ValidationPipe } from "@nestjs/common";
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // Enable CORS for Frontend & Admin Subdomain
+  // Enable CORS with dynamic origin matching for credentials support
   app.enableCors({
-    origin: "*",
+    origin: true,
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
+    allowedHeaders: "Content-Type,Accept,Authorization,X-Requested-With",
     credentials: true,
   });
 
