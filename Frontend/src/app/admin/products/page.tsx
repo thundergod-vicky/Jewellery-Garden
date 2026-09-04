@@ -182,12 +182,12 @@ export default function AdminProductsPage() {
           <h1 className="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
             <Package className="w-5 h-5 text-[#C8232A]" />
             <span>Product Catalog</span>
-            <span className="text-[10px] bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-mono px-2 py-0.5 rounded-full flex items-center gap-1">
-              <Database className="w-2.5 h-2.5" /> PostgreSQL Database
+            <span className="text-[10px] bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-mono font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
+              <Database className="w-2.5 h-2.5" /> Live Inventory
             </span>
           </h1>
           <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
-            Manage your live gold, silver, and diamond inventory stored directly in PostgreSQL
+            Manage your gold, silver, and diamond product catalog in real-time
           </p>
         </div>
 
@@ -251,7 +251,7 @@ export default function AdminProductsPage() {
             </div>
           ) : filteredProducts.length === 0 ? (
             <div className="text-center py-16 text-xs text-gray-400">
-              No product items found in PostgreSQL database.
+              No product items found.
             </div>
           ) : (
             <table className="w-full text-left text-xs border-collapse">
@@ -353,7 +353,7 @@ export default function AdminProductsPage() {
           <div className="bg-white dark:bg-[#16181D] text-gray-900 dark:text-white rounded-[24px] p-6 max-w-md w-full border border-gray-200 dark:border-gray-800 shadow-2xl space-y-4">
             
             <div className="flex items-center justify-between border-b border-gray-100 dark:border-gray-800 pb-3">
-              <h3 className="font-bold text-sm">Add New Product to PostgreSQL</h3>
+              <h3 className="font-bold text-sm">Add New Product</h3>
               <button
                 onClick={() => setIsAddModalOpen(false)}
                 className="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-white"

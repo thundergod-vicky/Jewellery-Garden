@@ -244,7 +244,7 @@ export default function AdminCustomersPage() {
             </h1>
             <span className="bg-emerald-50 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400 text-[10px] font-bold px-2 py-0.5 rounded-full border border-emerald-200 dark:border-emerald-800/50 flex items-center gap-1">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-              PostgreSQL Table
+              Verified Directory
             </span>
           </div>
           <p className="text-xs text-gray-500 dark:text-gray-400">

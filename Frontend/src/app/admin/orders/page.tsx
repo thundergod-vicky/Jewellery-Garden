@@ -134,12 +134,12 @@ export default function AdminOrdersPage() {
           <h1 className="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
             <ShoppingBag className="w-5 h-5 text-[#C8232A]" />
             <span>Orders & Invoices</span>
-            <span className="text-[10px] bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-mono px-2 py-0.5 rounded-full flex items-center gap-1">
-              <Database className="w-2.5 h-2.5" /> PostgreSQL Table
+            <span className="text-[10px] bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-mono font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
+              <Database className="w-2.5 h-2.5" /> Live Orders
             </span>
           </h1>
           <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
-            Monitor and fulfill customer jewellery orders fetched live from PostgreSQL database
+            Monitor, track, and fulfill customer jewellery orders and invoices in real-time
           </p>
         </div>
       </div>
@@ -195,7 +195,7 @@ export default function AdminOrdersPage() {
             </div>
           ) : filteredOrders.length === 0 ? (
             <div className="text-center py-16 text-xs text-gray-400">
-              No order records found in PostgreSQL database.
+              No order records found.
             </div>
           ) : (
             <table className="w-full text-left text-xs border-collapse">

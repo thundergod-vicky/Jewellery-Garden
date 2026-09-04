@@ -195,7 +195,7 @@ export default function AdminDashboardPage() {
                 <h3 className="font-bold text-sm text-gray-900 dark:text-white flex items-center gap-2">
                   <span>Total Profit Overview</span>
                   <span className="bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 text-[9px] font-mono px-2 py-0.5 rounded-full flex items-center gap-1">
-                    <Database className="w-2.5 h-2.5" /> PostgreSQL Database
+                    <Database className="w-2.5 h-2.5" /> Live System
                   </span>
                 </h3>
               </div>
@@ -222,7 +222,7 @@ export default function AdminDashboardPage() {
             </h2>
             <div className="flex items-center gap-2 text-[11px]">
               <span className="text-[#12B76A] font-bold flex items-center gap-0.5">
-                <ArrowUpRight className="w-3.5 h-3.5" /> Live PostgreSQL Data
+                <ArrowUpRight className="w-3.5 h-3.5" /> Real-time Performance
               </span>
               <span className="text-gray-400 font-medium">Compare to last month</span>
             </div>
@@ -406,17 +406,6 @@ export default function AdminDashboardPage() {
             </div>
           </div>
 
-          {/* Bottom Notification Strip */}
-          <div className="bg-[#1A1C1E] dark:bg-[#20242D] text-white p-2.5 rounded-xl flex items-center justify-between text-xs shadow-md border dark:border-gray-700">
-            <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping shrink-0" />
-              <span className="font-medium text-[10px] truncate">PostgreSQL database sync active</span>
-            </div>
-            <button className="text-gray-400 hover:text-white shrink-0 ml-1">
-              <X className="w-3 h-3" />
-            </button>
-          </div>
-
         </div>
 
       </div>
@@ -424,15 +413,15 @@ export default function AdminDashboardPage() {
       {/* Bottom Grid: Recent Transactions Data Table + Top Market & Product */}
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-5">
         
-        {/* Widget 3: Recent Transactions Data Table from PostgreSQL */}
+        {/* Widget 3: Recent Transactions Data Table */}
         <div className="xl:col-span-2 bg-white dark:bg-[#16181D] border border-[#EBEFF5] dark:border-gray-800 rounded-[28px] p-5 shadow-sm dark:shadow-xl space-y-4 overflow-hidden transition-colors duration-500">
           
           {/* Header Controls */}
           <div className="flex items-center justify-between gap-2">
             <h3 className="font-bold text-sm text-gray-900 dark:text-white flex items-center gap-2">
               <span>Recent Transactions</span>
-              <span className="text-[10px] text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full font-mono">
-                PostgreSQL Live Table
+              <span className="text-[10px] text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full font-mono font-bold">
+                Live Sync
               </span>
             </h3>
 
@@ -461,7 +450,7 @@ export default function AdminDashboardPage() {
               </div>
             ) : transactions.length === 0 ? (
               <div className="text-center py-10 text-xs text-gray-400">
-                No transaction records found in PostgreSQL database.
+                No transaction records found.
               </div>
             ) : (
               <table className="w-full text-left text-[11px] border-collapse">

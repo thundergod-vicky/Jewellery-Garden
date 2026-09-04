@@ -13,6 +13,7 @@ import SeoFooter from "@/components/footer/SeoFooter";
 import FloatingActions from "@/components/common/FloatingActions";
 import { PRODUCTS_CATALOG, getProductBySlug } from "@/data/siteData";
 import { addToCart, toggleWishlist, getWishlistIds } from "@/lib/cartWishlist";
+import ProductReviewsSection from "@/components/product/ProductReviewsSection";
 
 export default function ProductDetailPage() {
   const params = useParams();
@@ -346,6 +347,9 @@ export default function ProductDetailPage() {
           </div>
 
         </div>
+
+        {/* Customer Reviews & Ratings Section */}
+        <ProductReviewsSection product={product} />
 
       </div>
 

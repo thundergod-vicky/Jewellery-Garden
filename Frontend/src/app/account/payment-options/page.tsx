@@ -19,38 +19,155 @@ import {
 } from "lucide-react";
 import toast from "react-hot-toast";
 
-// Card Brand Logos Component
-const CardBrandLogo = ({ brand, size = 36 }: { brand: string; size?: number }) => {
-  switch (brand?.toLowerCase()) {
-    case "visa":
-      return (
-        <svg width={size} height={size * 0.3} viewBox="0 0 100 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M40.2 1.4L33.7 28.5H23.5L17.2 7.2C16.8 5.6 16.4 5.0 15.0 4.2C11.4 2.2 5.3 0.6 0.1 0V5.7C5.9 5.7 10.7 7.0 13.9 8.7C15.6 9.6 16.0 10.3 16.6 12.8L22.2 28.5H32.6L48.1 1.4H40.2ZM70.4 17.5C70.5 10.8 61.2 10.4 61.3 7.5C61.4 6.6 62.2 5.6 64.3 5.3C65.3 5.2 68.3 5.0 71.8 6.6V1.3C67.0 -0.3 63.4 -0.1 60.9 0.6C55.0 2.2 50.9 5.7 50.8 10.9C50.6 17.5 59.8 17.8 59.7 21.0C59.6 22.0 58.5 23.0 56.1 23.3C52.7 23.7 49.3 22.8 47.7 22.0L46.3 27.6C48.9 28.8 52.8 29.3 56.1 29.3C62.5 29.3 70.3 25.7 70.4 17.5ZM90.2 1.4C88.3 1.4 86.8 2.5 86.0 4.4L73.6 28.5H83.9L86.0 22.7H98.6L99.8 28.5H108.8L90.2 1.4ZM88.2 16.3L93.7 5.7L96.8 16.3H88.2ZM121.7 1.4H113.8C111.4 1.4 110.1 2.5 109.2 4.4L96.3 28.5H106.6L108.7 22.7H121.3L122.5 28.5H131.5L121.7 1.4ZM119.7 16.3L125.2 5.7L128.3 16.3H119.7Z" fill="#1A1F71"/>
-        </svg>
-      );
-    case "mastercard":
-      return (
-        <svg width={size} height={size * 0.6} viewBox="0 0 100 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="35" cy="30" r="28" fill="#EB001B" fillOpacity="0.85"/>
-          <circle cx="65" cy="30" r="28" fill="#F79E1B" fillOpacity="0.85"/>
-          <path d="M50 8.5C53.3 14.5 55 22.2 55 30C55 37.8 53.3 45.5 50 51.5C46.7 45.5 45 37.8 45 30C45 22.2 46.7 14.5 50 8.5Z" fill="#FF5F00"/>
-        </svg>
-      );
-    case "amex":
-      return (
-        <div className="bg-[#0185FF] text-white font-black text-[11px] px-2 py-0.5 rounded tracking-tight border border-white/20 inline-flex items-center h-5">
-          AMEX
-        </div>
-      );
-    case "rupay":
-      return (
-        <div className="font-sans italic font-extrabold text-xs text-[#0B2D85]">
-          <span className="text-[#F05323]">Ru</span>Pay
-        </div>
-      );
-    default:
-      return <CreditCard className="w-6 h-6 text-[#C8232A]" />;
+// Card Category Detection Helper
+const detectCardCategory = (number: string): "DEBIT CARD" | "CREDIT CARD" => {
+  const clean = number.replace(/\D/g, "");
+  if (!clean) return "DEBIT CARD";
+  if (/^(508|60|6521|6522|4026|4175|4508|4844|4913|4917|4129|4375|4591|4214|4592|4386|5020|5038|5893|6304|6759|6761|6762|6763)/.test(clean)) {
+    return "DEBIT CARD";
   }
+  return "CREDIT CARD";
+};
+
+// Realistic Credit Card Preview Component matching reference design
+const VirtualCardPreview = ({
+  cardNumber,
+  cardHolder,
+  expiry,
+  brand,
+  cardType = "CREDIT CARD",
+  variant = "red",
+  onDelete,
+}: {
+  cardNumber: string;
+  cardHolder: string;
+  expiry: string;
+  brand: string;
+  cardType?: string;
+  variant?: "red" | "green" | "black";
+  onDelete?: () => void;
+}) => {
+  const bgGradient =
+    variant === "green"
+      ? "bg-gradient-to-br from-[#68B715] via-[#478B0C] to-[#255203]"
+      : variant === "black"
+      ? "bg-gradient-to-br from-[#1C1D21] via-[#242730] to-[#121316]"
+      : "bg-gradient-to-br from-[#CE1B25] via-[#9B0A11] to-[#5C0308]";
+
+  return (
+    <div
+      className={`relative w-full max-w-[420px] h-[210px] sm:h-[220px] rounded-[22px] p-5 text-white shadow-2xl flex flex-col justify-between overflow-hidden font-sans border border-white/25 select-none transition-all ${bgGradient}`}
+    >
+      {/* Dual-Tone Curved Wave Background Overlay */}
+      <svg
+        className="absolute inset-0 w-full h-full pointer-events-none"
+        viewBox="0 0 420 220"
+        preserveAspectRatio="none"
+      >
+        <path
+          d="M0,220 C120,200 220,130 420,0 L420,220 Z"
+          fill="black"
+          fillOpacity="0.25"
+        />
+        <path
+          d="M0,220 C140,210 240,150 420,40 L420,220 Z"
+          fill="black"
+          fillOpacity="0.1"
+        />
+      </svg>
+
+      {/* Top Header Row with Card Type Badge */}
+      <div className="flex justify-between items-center z-10 min-h-[24px]">
+        <span className="text-[9px] font-mono font-extrabold tracking-widest text-white uppercase bg-white/20 px-2.5 py-0.5 rounded-full border border-white/30 backdrop-blur-xs shadow-2xs">
+          {cardType}
+        </span>
+
+        {onDelete && (
+          <button
+            onClick={onDelete}
+            className="p-1.5 text-white/70 hover:text-white hover:bg-white/20 rounded-lg transition-all"
+            title="Delete Card"
+          >
+            <Trash2 className="w-4 h-4" />
+          </button>
+        )}
+      </div>
+
+      {/* Middle Gold Keyhole EMV Chip */}
+      <div className="z-10 -mt-2">
+        <svg width="44" height="33" viewBox="0 0 44 33" fill="none" xmlns="http://www.w3.org/2000/svg" className="drop-shadow-sm">
+          <rect width="44" height="33" rx="6" fill="url(#chip_gold_grad)" stroke="#D4AF37" strokeWidth="0.8" />
+          <path d="M0 11.5H14C16.2 11.5 18 13.3 18 15.5V17.5C18 19.7 16.2 21.5 14 21.5H0" stroke="#B8860B" strokeWidth="0.8" />
+          <path d="M44 11.5H30C27.8 11.5 26 13.3 26 15.5V17.5C26 19.7 27.8 21.5 30 21.5H44" stroke="#B8860B" strokeWidth="0.8" />
+          <path d="M18 0V33" stroke="#B8860B" strokeWidth="0.8" />
+          <path d="M26 0V33" stroke="#B8860B" strokeWidth="0.8" />
+          <ellipse cx="22" cy="16.5" rx="4" ry="5.5" fill="#FAD961" stroke="#B8860B" strokeWidth="0.8" />
+          <defs>
+            <linearGradient id="chip_gold_grad" x1="0" y1="0" x2="44" y2="33" gradientUnits="userSpaceOnUse">
+              <stop stopColor="#FAD961" />
+              <stop offset="1" stopColor="#F76B1C" />
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+
+      {/* Card Number & Valid Thru Row */}
+      <div className="z-10 space-y-1 my-0.5">
+        <div className="font-mono text-lg sm:text-xl font-bold tracking-[0.18em] text-white drop-shadow-md">
+          {cardNumber || "1234 5678 9012 3456"}
+        </div>
+        <div className="flex items-center justify-between text-[9px] text-white/90 font-mono">
+          <span className="text-[10px] text-white/80">0123</span>
+          <div className="flex items-center gap-1.5 mr-4">
+            <div className="text-[7px] leading-tight font-extrabold text-white/80 text-right uppercase">
+              VALID<br />THRU
+            </div>
+            <span className="text-[10px] text-white">►</span>
+            <span className="text-xs font-mono font-bold tracking-widest text-white">
+              {expiry || "22/01"}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom Name & Brand Logo Row */}
+      <div className="flex justify-between items-end z-10 pt-1">
+        <span className="font-sans font-semibold text-sm text-white capitalize tracking-wide drop-shadow-xs truncate max-w-[240px]">
+          {cardHolder.toLowerCase() || "name surname"}
+        </span>
+
+        {/* White Rectangular Badge for Brand Logo */}
+        <div className="bg-white px-3 py-1.5 rounded-lg shadow-md flex items-center justify-center shrink-0 min-w-[58px] min-h-[26px]">
+          {brand?.toLowerCase() === "mastercard" ? (
+            <svg width="34" height="20" viewBox="0 0 100 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="35" cy="30" r="28" fill="#EB001B" />
+              <circle cx="65" cy="30" r="28" fill="#F79E1B" fillOpacity="0.95" />
+              <path d="M50 8.5C53.3 14.5 55 22.2 55 30C55 37.8 53.3 45.5 50 51.5C46.7 45.5 45 37.8 45 30C45 22.2 46.7 14.5 50 8.5Z" fill="#FF5F00" />
+            </svg>
+          ) : brand?.toLowerCase() === "amex" ? (
+            <span className="font-extrabold text-[12px] text-[#016FD0] font-sans tracking-wider">AMEX</span>
+          ) : brand?.toLowerCase() === "rupay" ? (
+            <span className="font-sans italic font-extrabold text-sm">
+              <span className="text-[#F05323]">Ru</span><span className="text-[#0B2D85]">Pay</span>
+            </span>
+          ) : (
+            <svg width="44" height="15" viewBox="0 0 100 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+              {/* Golden Wing on V */}
+              <path d="M12.5 0C8.5 0 4.2 1.8 0 4.2L0.8 7.8C4.5 5.8 8.2 4.2 11.8 4.2C14.2 4.2 15.2 5.0 15.8 7.2L20.2 24.5L12.5 0Z" fill="#F79E1B" />
+              {/* V */}
+              <path d="M37.5 0L24.8 30.5H16.8L9.8 7.2C9.4 5.6 8.8 5.0 7.4 4.2C4.8 2.8 1.8 1.2 0 0.5L0.2 0H14.2C16.2 0 17.8 1.4 18.2 3.8L21.6 21.8L30.2 0H37.5Z" fill="#1A1F71" />
+              {/* I */}
+              <path d="M49.5 0L43.2 30.5H35.5L41.8 0H49.5Z" fill="#1A1F71" />
+              {/* S */}
+              <path d="M68.5 9.8C68.5 3.8 59.8 3.4 59.9 2.4C60.0 2.0 60.8 1.5 62.8 1.3C64.9 1.1 70.2 1.0 74.8 3.1L76.4 0.5C73.1 -0.5 69.0 -0.8 64.0 -0.8C53.8 -0.8 46.8 4.4 46.7 11.6C46.6 17.2 51.8 20.3 55.7 22.2C59.7 24.1 61.0 25.3 61.0 27.0C60.9 29.6 57.6 30.8 54.5 30.8C49.0 30.8 44.7 29.1 42.2 28.0L40.6 31.0C44.4 32.7 50.0 33.7 55.5 33.7C66.4 33.7 73.5 28.5 73.6 20.8C73.6 13.9 68.5 9.8 68.5 9.8Z" fill="#1A1F71" />
+              {/* A */}
+              <path d="M94.5 0H88.5C86.7 0 85.3 0.6 84.5 2.4L72.2 30.5H80.0L81.6 26.2H91.2L92.1 30.5H99.0L94.5 0ZM83.8 20.2L87.8 9.5L90.0 20.2H83.8Z" fill="#1A1F71" />
+            </svg>
+          )}
+        </div>
+      </div>
+    </div>
+  );
 };
 
 const validateLuhn = (number: string) => {
@@ -92,6 +209,8 @@ export default function PaymentOptionsPage() {
   const [isAdding, setIsAdding] = useState(false);
   const [saving, setSaving] = useState(false);
   const [fetching, setFetching] = useState(true);
+  const [cardColor, setCardColor] = useState<"red" | "green" | "black">("red");
+  const [cardCategory, setCardCategory] = useState<"DEBIT CARD" | "CREDIT CARD">("DEBIT CARD");
 
   const [cardNumber, setCardNumber] = useState("");
   const [cardHolder, setCardHolder] = useState("");
@@ -202,6 +321,7 @@ export default function PaymentOptionsPage() {
         id: "card_" + Math.random().toString(36).substring(2, 11),
         holder: cardHolder.trim().toUpperCase(),
         brand: detectedBrand !== "unknown" ? detectedBrand : "card",
+        cardType: cardCategory,
         last4: cleanNumber.slice(-4),
         expiry,
         masked: `•••• •••• •••• ${cleanNumber.slice(-4)}`,
@@ -329,41 +449,23 @@ export default function PaymentOptionsPage() {
                     )}
                   </div>
                 ) : (
-                  <div className="grid grid-cols-1 gap-4">
+                  <div className="grid grid-cols-1 gap-5">
                     {savedCards.map((card) => (
-                      <div
+                      <VirtualCardPreview
                         key={card.id}
-                        className="bg-gradient-to-br from-[#1E1E1F] to-[#111112] border border-[#C5A059]/20 rounded-2xl p-5 text-white shadow-md flex flex-col justify-between h-[160px] text-left"
-                      >
-                        <div className="flex justify-between items-center">
-                          <CardBrandLogo brand={card.brand} size={40} />
-                          <button
-                            onClick={() => handleDeleteCard(card.id)}
-                            className="p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-500/10 rounded-lg transition-all"
-                            title="Delete Card"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </button>
-                        </div>
-                        <div className="font-mono text-base tracking-widest text-gray-200">
-                          {card.masked}
-                        </div>
-                        <div className="flex justify-between text-[10px] text-gray-400 uppercase">
-                          <div>
-                            <span className="block text-[8px] text-gray-500">CARDHOLDER</span>
-                            <span className="font-semibold text-gray-200">{card.holder}</span>
-                          </div>
-                          <div>
-                            <span className="block text-[8px] text-gray-500">EXPIRES</span>
-                            <span className="font-semibold text-gray-200">{card.expiry}</span>
-                          </div>
-                        </div>
-                      </div>
+                        cardNumber={card.masked}
+                        cardHolder={card.holder}
+                        expiry={card.expiry}
+                        brand={card.brand}
+                        cardType={card.cardType || "DEBIT CARD"}
+                        variant={cardColor}
+                        onDelete={() => handleDeleteCard(card.id)}
+                      />
                     ))}
                     {!isAdding && (
                       <button
                         onClick={() => setIsAdding(true)}
-                        className="border-2 border-dashed border-[#E8E3DA] rounded-2xl h-[120px] flex flex-col items-center justify-center gap-2 hover:border-[#C8232A] hover:bg-red-50/20 transition-all text-xs font-semibold text-[#C8232A]"
+                        className="border-2 border-dashed border-[#E8E3DA] rounded-2xl h-[110px] flex flex-col items-center justify-center gap-2 hover:border-[#C8232A] hover:bg-red-50/20 transition-all text-xs font-semibold text-[#C8232A]"
                       >
                         <Plus className="w-5 h-5 text-[#C8232A]" />
                         <span>Add New Card</span>
@@ -375,28 +477,61 @@ export default function PaymentOptionsPage() {
 
               {/* Add Card Form Block */}
               {isAdding && (
-                <div className="bg-white border border-[#E8E3DA] rounded-2xl p-6 shadow-sm text-left">
+                <div className="bg-white border border-[#E8E3DA] rounded-2xl p-6 shadow-sm text-left space-y-5">
                   {/* Virtual Credit Card Mockup */}
-                  <div className="bg-gradient-to-br from-[#1E1E1F] to-[#111112] border border-[#C5A059]/30 rounded-2xl p-5 text-white shadow-lg mb-6 flex flex-col justify-between h-[160px]">
-                    <div className="flex justify-between items-center">
-                      <div className="w-9 h-7 rounded border border-yellow-200/40 bg-yellow-200/20 flex items-center justify-center">
-                        <div className="w-full h-[1px] bg-yellow-200/40" />
+                  <VirtualCardPreview
+                    cardNumber={cardNumber}
+                    cardHolder={cardHolder}
+                    expiry={expiry}
+                    brand={detectedBrand}
+                    cardType={cardCategory}
+                    variant={cardColor}
+                  />
+
+                  {/* Card Type & Theme Controls Bar */}
+                  <div className="space-y-2 bg-gray-50 p-3 rounded-2xl border border-gray-200/80">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[11px] font-semibold text-gray-600">Card Classification:</span>
+                      <div className="flex items-center gap-1.5 bg-gray-200/80 p-1 rounded-xl">
+                        {(["DEBIT CARD", "CREDIT CARD"] as const).map((type) => (
+                          <button
+                            key={type}
+                            type="button"
+                            onClick={() => setCardCategory(type)}
+                            className={`px-3 py-1 rounded-lg text-[10px] font-bold transition-all ${
+                              cardCategory === type
+                                ? "bg-white text-gray-900 shadow-2xs font-extrabold"
+                                : "text-gray-600 hover:text-gray-900"
+                            }`}
+                          >
+                            {type === "DEBIT CARD" ? "💳 Debit" : "✨ Credit"}
+                          </button>
+                        ))}
                       </div>
-                      <CardBrandLogo brand={detectedBrand} size={42} />
                     </div>
-                    <div className="font-mono text-lg tracking-widest text-gray-100">
-                      {cardNumber || "•••• •••• •••• ••••"}
-                    </div>
-                    <div className="flex justify-between text-[10px] text-gray-400 uppercase">
-                      <div>
-                        <span className="block text-[8px] text-gray-500">CARD HOLDER</span>
-                        <span className="font-semibold text-gray-100">
-                          {cardHolder.trim().toUpperCase() || "CLIENT NAME"}
-                        </span>
-                      </div>
-                      <div>
-                        <span className="block text-[8px] text-gray-500">EXPIRES</span>
-                        <span className="font-semibold text-gray-100">{expiry || "MM/YY"}</span>
+
+                    <div className="flex items-center justify-between pt-1 border-t border-gray-200/60">
+                      <span className="text-[11px] font-semibold text-gray-600">Card Theme Color:</span>
+                      <div className="flex items-center gap-1.5">
+                        {[
+                          { id: "red", label: "Royal Red", color: "bg-[#C8232A]" },
+                          { id: "green", label: "Emerald", color: "bg-[#68B715]" },
+                          { id: "black", label: "Obsidian", color: "bg-[#1C1D21]" },
+                        ].map((c) => (
+                          <button
+                            key={c.id}
+                            type="button"
+                            onClick={() => setCardColor(c.id as any)}
+                            className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-bold transition-all border ${
+                              cardColor === c.id
+                                ? "bg-white text-gray-900 border-gray-400 shadow-2xs"
+                                : "text-gray-500 border-transparent hover:text-gray-900"
+                            }`}
+                          >
+                            <span className={`w-2.5 h-2.5 rounded-full ${c.color}`} />
+                            <span>{c.label}</span>
+                          </button>
+                        ))}
                       </div>
                     </div>
                   </div>

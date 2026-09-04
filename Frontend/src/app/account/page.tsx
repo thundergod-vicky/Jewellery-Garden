@@ -17,6 +17,7 @@ import {
   LogOut,
   ChevronRight,
   Loader2,
+  Star,
 } from "lucide-react";
 
 export default function AccountDashboard() {
@@ -61,6 +62,12 @@ export default function AccountDashboard() {
       description: "Edit or add secure payment methods",
       icon: <CreditCard className="w-6 h-6 text-[#C8232A]" />,
       link: "/account/payment-options",
+    },
+    {
+      title: "My Reviews & Ratings",
+      description: "Rate & review your purchased jewellery items",
+      icon: <Star className="w-6 h-6 text-[#C8232A]" />,
+      link: "/account/reviews",
     },
     {
       title: "Contact Us",

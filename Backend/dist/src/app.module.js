@@ -20,6 +20,7 @@ const orders_service_1 = require("./modules/orders/orders.service");
 const customers_module_1 = require("./modules/customers/customers.module");
 const loyalty_module_1 = require("./modules/loyalty/loyalty.module");
 const support_module_1 = require("./modules/support/support.module");
+const search_module_1 = require("./modules/search/search.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -35,6 +36,7 @@ exports.AppModule = AppModule = __decorate([
             customers_module_1.CustomersModule,
             loyalty_module_1.LoyaltyModule,
             support_module_1.SupportModule,
+            search_module_1.SearchModule,
         ],
         controllers: [auth_controller_1.AuthController, products_controller_1.ProductsController, orders_controller_1.OrdersController],
         providers: [auth_service_1.AuthService, products_service_1.ProductsService, orders_service_1.OrdersService],

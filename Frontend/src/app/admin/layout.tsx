@@ -32,6 +32,8 @@ import {
   ShieldCheck,
   ArrowRightLeft,
 } from "lucide-react";
+import AdminUniversalSearch from "@/components/admin/AdminUniversalSearch";
+import AdminNotifications from "@/components/admin/AdminNotifications";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -187,33 +189,15 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </div>
         </div>
 
-        {/* Center Search Pill Bar */}
-        <div
-          className={`hidden md:flex items-center gap-2 px-3.5 py-1.5 rounded-full w-80 lg:w-96 transition-all border ${
-            isDark
-              ? "bg-[#1A1D23] border-gray-700 focus-within:bg-[#20242C] focus-within:border-gray-600 text-white"
-              : "bg-[#EEF1F5] border-transparent focus-within:bg-white focus-within:border-gray-200 text-gray-800"
-          }`}
-        >
-          <Search className="w-3.5 h-3.5 text-gray-400" />
-          <input
-            type="text"
-            placeholder="Search here..."
-            className={`bg-transparent text-xs w-full focus:outline-none placeholder-gray-400 ${
-              isDark ? "text-white" : "text-gray-800"
-            }`}
-          />
-          <kbd
-            className={`hidden lg:inline-block text-[10px] font-mono px-1.5 py-0.5 rounded border ${
-              isDark ? "bg-gray-800 text-gray-400 border-gray-700" : "bg-white text-gray-400 border-gray-200"
-            }`}
-          >
-            ⌘S
-          </kbd>
-          <button className="p-1 rounded-full text-gray-400 hover:text-gray-600 dark:hover:text-white">
-            <SlidersHorizontal className="w-3.5 h-3.5" />
-          </button>
-        </div>
+        {/* Universal Search Bar */}
+        <AdminUniversalSearch
+          isDark={isDark}
+          onToggleTheme={() => {
+            if (toggleBtnRef.current) {
+              toggleBtnRef.current.click();
+            }
+          }}
+        />
 
         {/* Right Action Icons & Highly Visible Sliding Theme Toggle */}
         <div className="flex items-center gap-3">
@@ -244,41 +228,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             )}
           </button>
 
-          {/* Notification Bell */}
-          <button
-            className={`relative p-2 rounded-full transition-all ${
-              isDark ? "bg-[#1A1D23] hover:bg-gray-800 text-gray-300" : "bg-[#EEF1F5] hover:bg-gray-200 text-gray-700"
-            }`}
-          >
-            <Bell className="w-4 h-4" />
-            <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-[#F04438]" />
-          </button>
-
-          {/* Team Avatars */}
-          <div className="hidden sm:flex items-center -space-x-1.5">
-            <div className="w-6 h-6 rounded-full bg-amber-500 text-white font-bold text-[9px] flex items-center justify-center ring-2 ring-gray-900">
-              SB
-            </div>
-            <div className="w-6 h-6 rounded-full bg-emerald-500 text-white font-bold text-[9px] flex items-center justify-center ring-2 ring-gray-900">
-              AD
-            </div>
-            <div className="w-6 h-6 rounded-full bg-indigo-500 text-white font-bold text-[9px] flex items-center justify-center ring-2 ring-gray-900">
-              KG
-            </div>
-            <div className="w-6 h-6 rounded-full bg-gray-700 text-gray-200 font-bold text-[9px] flex items-center justify-center ring-2 ring-gray-900">
-              +6
-            </div>
-          </div>
-
-          {/* Invite Button */}
-          <button
-            className={`text-xs font-semibold px-3.5 py-1.5 rounded-full flex items-center gap-1.5 shadow-sm transition-all ${
-              isDark ? "bg-white text-gray-900 hover:bg-gray-200" : "bg-[#1A1C1E] text-white hover:bg-black"
-            }`}
-          >
-            <UserPlus className="w-3.5 h-3.5" />
-            <span>Invite</span>
-          </button>
+          {/* Interactive Notifications Bell & Popover */}
+          <AdminNotifications isDark={isDark} />
 
           {/* Mobile Menu Toggle */}
           <button

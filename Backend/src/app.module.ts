@@ -11,6 +11,7 @@ import { OrdersService } from "./modules/orders/orders.service";
 import { CustomersModule } from "./modules/customers/customers.module";
 import { LoyaltyModule } from "./modules/loyalty/loyalty.module";
 import { SupportModule } from "./modules/support/support.module";
+import { SearchModule } from "./modules/search/search.module";
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { SupportModule } from "./modules/support/support.module";
     CustomersModule,
     LoyaltyModule,
     SupportModule,
+    SearchModule,
   ],
   controllers: [AuthController, ProductsController, OrdersController],
   providers: [AuthService, ProductsService, OrdersService],
