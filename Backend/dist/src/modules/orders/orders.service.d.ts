@@ -10,37 +10,45 @@ export declare class OrdersService {
                 createdAt: Date;
                 updatedAt: Date;
                 name: string;
+                price: number;
                 sku: string;
                 category: string;
                 metal: import(".prisma/client").$Enums.MetalType;
                 purity: string;
                 grossWeight: string;
                 netWeight: string;
-                price: number;
+                stoneWeight: string | null;
+                tokenNumber: string | null;
+                makingCharges: string | null;
+                otherCharges: string | null;
+                description: string | null;
+                modelNumber: string | null;
                 stock: number;
                 image: string;
                 active: boolean;
             };
         } & {
             id: string;
-            price: number;
-            quantity: number;
             orderId: string;
             productId: string;
+            quantity: number;
+            price: number;
         })[];
     } & {
         id: string;
-        createdAt: Date;
-        updatedAt: Date;
         orderNumber: string;
         userId: string | null;
         customerEmail: string;
         customerPhone: string;
+        panCard: string | null;
+        aadharCard: string | null;
         totalAmount: number;
         gstAmount: number;
         itemsCount: number;
         status: import(".prisma/client").$Enums.OrderStatus;
         paymentStatus: import(".prisma/client").$Enums.PaymentStatus;
+        createdAt: Date;
+        updatedAt: Date;
     })[]>;
     findByCustomer(firebaseId: string): Promise<({
         items: ({
@@ -49,51 +57,77 @@ export declare class OrdersService {
                 createdAt: Date;
                 updatedAt: Date;
                 name: string;
+                price: number;
                 sku: string;
                 category: string;
                 metal: import(".prisma/client").$Enums.MetalType;
                 purity: string;
                 grossWeight: string;
                 netWeight: string;
-                price: number;
+                stoneWeight: string | null;
+                tokenNumber: string | null;
+                makingCharges: string | null;
+                otherCharges: string | null;
+                description: string | null;
+                modelNumber: string | null;
                 stock: number;
                 image: string;
                 active: boolean;
             };
         } & {
             id: string;
-            price: number;
-            quantity: number;
             orderId: string;
             productId: string;
+            quantity: number;
+            price: number;
         })[];
     } & {
         id: string;
-        createdAt: Date;
-        updatedAt: Date;
         orderNumber: string;
         userId: string | null;
         customerEmail: string;
         customerPhone: string;
+        panCard: string | null;
+        aadharCard: string | null;
         totalAmount: number;
         gstAmount: number;
         itemsCount: number;
         status: import(".prisma/client").$Enums.OrderStatus;
         paymentStatus: import(".prisma/client").$Enums.PaymentStatus;
+        createdAt: Date;
+        updatedAt: Date;
     })[]>;
+    create(dto: any): Promise<{
+        id: string;
+        orderNumber: string;
+        userId: string | null;
+        customerEmail: string;
+        customerPhone: string;
+        panCard: string | null;
+        aadharCard: string | null;
+        totalAmount: number;
+        gstAmount: number;
+        itemsCount: number;
+        status: import(".prisma/client").$Enums.OrderStatus;
+        paymentStatus: import(".prisma/client").$Enums.PaymentStatus;
+        createdAt: Date;
+        updatedAt: Date;
+    }>;
     updateStatus(id: string, status: OrderStatus): Promise<{
         id: string;
-        createdAt: Date;
-        updatedAt: Date;
         orderNumber: string;
         userId: string | null;
         customerEmail: string;
         customerPhone: string;
+        panCard: string | null;
+        aadharCard: string | null;
         totalAmount: number;
         gstAmount: number;
         itemsCount: number;
         status: import(".prisma/client").$Enums.OrderStatus;
         paymentStatus: import(".prisma/client").$Enums.PaymentStatus;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
     getMetrics(): Promise<{
         totalSales: number;
@@ -106,6 +140,8 @@ export declare class OrdersService {
         salesCount: number;
         monthlyMetrics: {
             id: string;
+            createdAt: Date;
+            updatedAt: Date;
             month: string;
             sortOrder: number;
             changePct: string;
@@ -118,8 +154,6 @@ export declare class OrdersService {
             silverPct: number;
             diamondPct: number;
             barHeight: string;
-            createdAt: Date;
-            updatedAt: Date;
         }[];
         recentOrders: ({
             items: ({
@@ -128,37 +162,45 @@ export declare class OrdersService {
                     createdAt: Date;
                     updatedAt: Date;
                     name: string;
+                    price: number;
                     sku: string;
                     category: string;
                     metal: import(".prisma/client").$Enums.MetalType;
                     purity: string;
                     grossWeight: string;
                     netWeight: string;
-                    price: number;
+                    stoneWeight: string | null;
+                    tokenNumber: string | null;
+                    makingCharges: string | null;
+                    otherCharges: string | null;
+                    description: string | null;
+                    modelNumber: string | null;
                     stock: number;
                     image: string;
                     active: boolean;
                 };
             } & {
                 id: string;
-                price: number;
-                quantity: number;
                 orderId: string;
                 productId: string;
+                quantity: number;
+                price: number;
             })[];
         } & {
             id: string;
-            createdAt: Date;
-            updatedAt: Date;
             orderNumber: string;
             userId: string | null;
             customerEmail: string;
             customerPhone: string;
+            panCard: string | null;
+            aadharCard: string | null;
             totalAmount: number;
             gstAmount: number;
             itemsCount: number;
             status: import(".prisma/client").$Enums.OrderStatus;
             paymentStatus: import(".prisma/client").$Enums.PaymentStatus;
+            createdAt: Date;
+            updatedAt: Date;
         })[];
     }>;
 }

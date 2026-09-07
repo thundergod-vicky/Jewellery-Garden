@@ -6,6 +6,8 @@ export interface CreateCustomerDto {
   email: string;
   username: string;
   phone?: string;
+  panCard?: string;
+  aadharCard?: string;
   addresses?: string[];
   savedCards?: string;
 }
@@ -13,6 +15,8 @@ export interface CreateCustomerDto {
 export interface UpdateCustomerDto {
   username?: string;
   phone?: string;
+  panCard?: string;
+  aadharCard?: string;
   addresses?: string[];
   savedCards?: string;
 }
@@ -42,6 +46,8 @@ export class CustomersService {
           email: emailNormalized,
           username: dto.username,
           phone: dto.phone || "",
+          panCard: dto.panCard || null,
+          aadharCard: dto.aadharCard || null,
           addresses: dto.addresses || [],
           savedCards: dto.savedCards || null,
           superPearls: 50,
@@ -92,6 +98,8 @@ export class CustomersService {
       data: {
         ...(dto.username !== undefined && { username: dto.username }),
         ...(dto.phone !== undefined && { phone: dto.phone }),
+        ...(dto.panCard !== undefined && { panCard: dto.panCard }),
+        ...(dto.aadharCard !== undefined && { aadharCard: dto.aadharCard }),
         ...(dto.addresses !== undefined && { addresses: dto.addresses }),
         ...(dto.savedCards !== undefined && { savedCards: dto.savedCards }),
       },

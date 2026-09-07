@@ -57,8 +57,7 @@ export default function AdminSettingsPage() {
   const [soundAlerts, setSoundAlerts] = useState(true);
   const [backupFreq, setBackupFreq] = useState("Daily");
 
-  // Load saved settings from localStorage on mount
-  useEffect(() => {
+  const loadRatesFromStorage = () => {
     if (typeof window !== "undefined") {
       const savedStore = localStorage.getItem("admin_setting_storeName");
       if (savedStore) setStoreName(savedStore);
@@ -74,7 +73,24 @@ export default function AdminSettingsPage() {
 
       const saved22K = localStorage.getItem("admin_rate_22k");
       if (saved22K) setRate22K(saved22K);
+
+      const saved18K = localStorage.getItem("admin_rate_18k");
+      if (saved18K) setRate18K(saved18K);
+
+      const savedSil = localStorage.getItem("admin_rate_silver");
+      if (savedSil) setRateSilver(savedSil);
+
+      const savedAuto = localStorage.getItem("admin_auto_rate_update");
+      if (savedAuto !== null) setAutoRateUpdate(savedAuto === "true");
     }
+  };
+
+  // Load saved settings from localStorage on mount & sync on metalRatesUpdated event
+  useEffect(() => {
+    loadRatesFromStorage();
+    const handleUpdate = () => loadRatesFromStorage();
+    window.addEventListener("metalRatesUpdated", handleUpdate);
+    return () => window.removeEventListener("metalRatesUpdated", handleUpdate);
   }, []);
 
   const handleSaveAll = async (e: React.FormEvent) => {
@@ -96,6 +112,12 @@ export default function AdminSettingsPage() {
         localStorage.setItem("admin_theme", themeMode);
         localStorage.setItem("admin_rate_24k", rate24K);
         localStorage.setItem("admin_rate_22k", rate22K);
+        localStorage.setItem("admin_rate_18k", rate18K);
+        localStorage.setItem("admin_rate_silver", rateSilver);
+        localStorage.setItem("admin_auto_rate_update", String(autoRateUpdate));
+        localStorage.setItem("admin_rate_last_updated", new Date().toISOString());
+
+        window.dispatchEvent(new Event("metalRatesUpdated"));
 
         if (themeMode === "dark") {
           document.documentElement.classList.add("dark");

@@ -193,8 +193,43 @@ export default function ProductDetailPage() {
               <p className="text-[11px] text-gray-500">(Price inclusive of all taxes & 3% GST)</p>
             </div>
 
+            {/* Product Specification Grid Accordion */}
+            <div className="border border-[#E8E3DA] rounded-xl overflow-hidden">
+              <button
+                onClick={() => setShowSpecs(!showSpecs)}
+                className="w-full bg-[#FAF8F5] p-3.5 flex items-center justify-between font-semibold text-xs text-[#1A1A1A] hover:bg-gray-100 transition-colors"
+              >
+                <div className="flex items-center gap-2">
+                  <Sparkles className="w-4 h-4 text-[#D4AF37]" />
+                  <span>Product Specifications & Purity</span>
+                </div>
+                {showSpecs ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+              </button>
+
+              {showSpecs && (
+                <div className="p-4 bg-white grid grid-cols-2 gap-3 text-xs border-t border-[#E8E3DA]">
+                  <div>
+                    <span className="text-gray-400 block font-medium">Purity Hallmark:</span>
+                    <span className="font-semibold text-gray-800">{product.purity}</span>
+                  </div>
+                  <div>
+                    <span className="text-gray-400 block font-medium">Gross Weight:</span>
+                    <span className="font-semibold text-gray-800">{product.grossWeight}</span>
+                  </div>
+                  <div>
+                    <span className="text-gray-400 block font-medium">Net Weight:</span>
+                    <span className="font-semibold text-gray-800">{product.netWeight}</span>
+                  </div>
+                  <div>
+                    <span className="text-gray-400 block font-medium">Metal Color:</span>
+                    <span className="font-semibold text-gray-800">{product.metalColor}</span>
+                  </div>
+                </div>
+              )}
+            </div>
+
             {/* Delivery Pincode Checker */}
-            <div className="space-y-2 pt-2">
+            <div className="space-y-2 pt-1">
               <label className="text-xs font-semibold text-gray-700 flex items-center gap-1.5">
                 <Truck className="w-4 h-4 text-[#C8232A]" />
                 <span>Check Delivery & Express Shipping Pincode:</span>
@@ -236,58 +271,34 @@ export default function ProductDetailPage() {
               </button>
 
               {showPriceBreakup && (
-                <div className="p-4 bg-white space-y-2 text-xs text-gray-600 border-t border-[#E8E3DA]">
-                  <div className="flex justify-between py-1 border-b border-gray-100">
-                    <span>Gold / Metal Value ({product.grossWeight}):</span>
-                    <span className="font-semibold text-gray-800">₹ {(product.goldValue || 8900).toLocaleString("en-IN")}</span>
+                <div className="p-4 bg-white space-y-2.5 text-xs border-t border-[#E8E3DA]">
+                  <div className="flex justify-between items-center py-1 border-b border-gray-100">
+                    <span className="font-bold text-gray-900">Gold / Metal Value ({product.grossWeight}):</span>
+                    <span className="font-bold text-gray-900">₹ {(product.goldValue || 8900).toLocaleString("en-IN")}</span>
                   </div>
-                  <div className="flex justify-between py-1 border-b border-gray-100">
-                    <span>Making Charges:</span>
-                    <span className="font-semibold text-gray-800">₹ {(product.makingCharges || 3200).toLocaleString("en-IN")}</span>
+                  <div className="flex justify-between items-center py-1 border-b border-gray-100">
+                    <span className="font-bold text-gray-900">Making Charges:</span>
+                    <span className="font-bold text-gray-900">₹ {(product.makingCharges || 3200).toLocaleString("en-IN")}</span>
                   </div>
-                  <div className="flex justify-between py-1 border-b border-gray-100 text-emerald-600 font-semibold">
-                    <span>Making Discount (20% Off):</span>
-                    <span>- ₹ {(product.makingDiscount || 640).toLocaleString("en-IN")}</span>
-                  </div>
-                  <div className="flex justify-between py-1 border-b border-gray-100">
-                    <span>GST (3%):</span>
-                    <span className="font-semibold text-gray-800">₹ {(product.gstAmount || 376).toLocaleString("en-IN")}</span>
-                  </div>
-                  <div className="flex justify-between pt-2 text-sm font-bold text-[#1A1A1A]">
-                    <span>Total Product Price:</span>
-                    <span className="text-[#C8232A]">₹ {product.price.toLocaleString("en-IN")}</span>
-                  </div>
-                </div>
-              )}
-            </div>
 
-            {/* Product Specification Grid Accordion */}
-            <div className="border border-[#E8E3DA] rounded-xl overflow-hidden">
-              <button
-                onClick={() => setShowSpecs(!showSpecs)}
-                className="w-full bg-[#FAF8F5] p-3.5 flex items-center justify-between font-semibold text-xs text-[#1A1A1A] hover:bg-gray-100 transition-colors"
-              >
-                <span>Product Specifications & Purity</span>
-                {showSpecs ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-              </button>
+                  {/* Highlighted Discount Line */}
+                  <div className="flex justify-between items-center py-1.5 px-2.5 bg-emerald-50 text-emerald-800 font-bold rounded-lg border border-emerald-200/80 shadow-2xs">
+                    <span className="font-extrabold flex items-center gap-1.5 text-emerald-700">
+                      <Sparkles className="w-3.5 h-3.5 text-emerald-600 animate-pulse" />
+                      <span>Making Discount (20% Off):</span>
+                    </span>
+                    <span className="font-black text-xs text-emerald-700 bg-emerald-100/90 px-2 py-0.5 rounded-md border border-emerald-300/50">
+                      - ₹ {(product.makingDiscount || 640).toLocaleString("en-IN")}
+                    </span>
+                  </div>
 
-              {showSpecs && (
-                <div className="p-4 bg-white grid grid-cols-2 gap-3 text-xs border-t border-[#E8E3DA]">
-                  <div>
-                    <span className="text-gray-400 block">Purity Hallmark:</span>
-                    <span className="font-semibold text-gray-800">{product.purity}</span>
+                  <div className="flex justify-between items-center py-1 border-b border-gray-100">
+                    <span className="font-bold text-gray-900">GST (3%):</span>
+                    <span className="font-bold text-gray-900">₹ {(product.gstAmount || 376).toLocaleString("en-IN")}</span>
                   </div>
-                  <div>
-                    <span className="text-gray-400 block">Gross Weight:</span>
-                    <span className="font-semibold text-gray-800">{product.grossWeight}</span>
-                  </div>
-                  <div>
-                    <span className="text-gray-400 block">Net Weight:</span>
-                    <span className="font-semibold text-gray-800">{product.netWeight}</span>
-                  </div>
-                  <div>
-                    <span className="text-gray-400 block">Metal Color:</span>
-                    <span className="font-semibold text-gray-800">{product.metalColor}</span>
+                  <div className="flex justify-between items-center pt-2 text-sm font-extrabold text-[#1A1A1A]">
+                    <span className="font-extrabold text-gray-900">Total Product Price:</span>
+                    <span className="text-[#C8232A] text-base font-black">₹ {product.price.toLocaleString("en-IN")}</span>
                   </div>
                 </div>
               )}

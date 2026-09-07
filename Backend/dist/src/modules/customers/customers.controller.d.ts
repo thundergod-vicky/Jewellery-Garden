@@ -8,6 +8,8 @@ export declare class CustomersController {
         email: string;
         username: string;
         phone: string | null;
+        panCard: string | null;
+        aadharCard: string | null;
         addresses: string[];
         savedCards: string | null;
         superPearls: number;
@@ -20,6 +22,8 @@ export declare class CustomersController {
         email: string;
         username: string;
         phone: string | null;
+        panCard: string | null;
+        aadharCard: string | null;
         addresses: string[];
         savedCards: string | null;
         superPearls: number;
@@ -34,6 +38,8 @@ export declare class CustomersController {
             email: string;
             username: string;
             phone: string | null;
+            panCard: string | null;
+            aadharCard: string | null;
             addresses: string[];
             savedCards: string | null;
             superPearls: number;
@@ -47,6 +53,8 @@ export declare class CustomersController {
         email: string;
         username: string;
         phone: string | null;
+        panCard: string | null;
+        aadharCard: string | null;
         addresses: string[];
         savedCards: string | null;
         superPearls: number;
@@ -59,6 +67,8 @@ export declare class CustomersController {
         email: string;
         username: string;
         phone: string | null;
+        panCard: string | null;
+        aadharCard: string | null;
         addresses: string[];
         savedCards: string | null;
         superPearls: number;

@@ -39,6 +39,8 @@ export default function AdminCustomersPage() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [panCard, setPanCard] = useState("");
+  const [aadharCard, setAadharCard] = useState("");
   const [addressLine, setAddressLine] = useState("");
   const [city, setCity] = useState("");
   const [stateVal, setStateVal] = useState("");
@@ -114,6 +116,8 @@ export default function AdminCustomersPage() {
     setUsername("");
     setEmail("");
     setPhone("");
+    setPanCard("");
+    setAadharCard("");
     setAddressLine("");
     setCity("");
     setStateVal("");
@@ -126,6 +130,8 @@ export default function AdminCustomersPage() {
     setUsername(cust.username || "");
     setEmail(cust.email || "");
     setPhone(cust.phone || "");
+    setPanCard(cust.panCard || "");
+    setAadharCard(cust.aadharCard || "");
 
     let parsedAddress: any = {};
     if (cust.addresses && cust.addresses.length > 0) {
@@ -169,6 +175,8 @@ export default function AdminCustomersPage() {
         email: email.trim(),
         username: username.trim(),
         phone: phone.trim(),
+        panCard: panCard.trim().toUpperCase(),
+        aadharCard: aadharCard.trim(),
         addresses: [JSON.stringify(addressObj)],
       };
 
@@ -635,6 +643,48 @@ export default function AdminCustomersPage() {
                   placeholder="+91 XXXXX XXXXX"
                   className="px-3.5 py-2 border border-[#EAEFF5] dark:border-gray-700 rounded-xl bg-white dark:bg-[#1A1D23] text-gray-900 dark:text-white focus:outline-none focus:border-[#C8232A]"
                 />
+              </div>
+
+              {/* Tax Verification & Billing Identity (PAN & Aadhar) */}
+              <div className="p-3 bg-[#FAFBFD] dark:bg-[#1A1D23] border border-[#EAEFF5] dark:border-gray-800 rounded-xl space-y-2.5">
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                    Tax Verification & Billing Identity
+                  </span>
+                  <span className="text-[9px] bg-amber-500/15 text-amber-700 dark:text-amber-300 font-semibold px-2 py-0.5 rounded-full border border-amber-500/20">
+                    PAN Mandatory &gt; ₹2 Lakhs
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                  <div className="flex flex-col gap-1">
+                    <label className="font-semibold text-gray-700 dark:text-gray-300">
+                      PAN Card Number
+                    </label>
+                    <input
+                      type="text"
+                      maxLength={10}
+                      value={panCard}
+                      onChange={(e) => setPanCard(e.target.value.toUpperCase())}
+                      placeholder="e.g. ABCDE1234F"
+                      className="px-3 py-2 border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-[#121417] text-gray-900 dark:text-white uppercase font-mono text-xs focus:outline-none focus:border-[#C8232A]"
+                    />
+                  </div>
+
+                  <div className="flex flex-col gap-1">
+                    <label className="font-semibold text-gray-700 dark:text-gray-300">
+                      Aadhar Card Number
+                    </label>
+                    <input
+                      type="text"
+                      maxLength={14}
+                      value={aadharCard}
+                      onChange={(e) => setAadharCard(e.target.value)}
+                      placeholder="e.g. 1234 5678 9012"
+                      className="px-3 py-2 border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-[#121417] text-gray-900 dark:text-white font-mono text-xs focus:outline-none focus:border-[#C8232A]"
+                    />
+                  </div>
+                </div>
               </div>
 
               <div className="flex flex-col gap-1">

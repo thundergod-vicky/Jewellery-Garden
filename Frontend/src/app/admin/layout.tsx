@@ -31,9 +31,11 @@ import {
   MessageSquare,
   ShieldCheck,
   ArrowRightLeft,
+  Coins,
 } from "lucide-react";
 import AdminUniversalSearch from "@/components/admin/AdminUniversalSearch";
 import AdminNotifications from "@/components/admin/AdminNotifications";
+import LiveMetalRatesModal from "@/components/admin/LiveMetalRatesModal";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -41,6 +43,32 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const [adminEmail, setAdminEmail] = useState("admin@jewellerygardenpvtltd.com");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [theme, setTheme] = useState<"light" | "dark">("light");
+
+  // Pinned Live Metal Rates Quick-Access Modal State
+  const [isMetalRatesModalOpen, setIsMetalRatesModalOpen] = useState(false);
+  const [metalRates, setMetalRates] = useState({
+    rate24K: "7650",
+    rate22K: "7015",
+    rate18K: "5740",
+    rateSilver: "88",
+  });
+
+  const loadMetalRates = () => {
+    if (typeof window !== "undefined") {
+      const s24K = localStorage.getItem("admin_rate_24k") || "7650";
+      const s22K = localStorage.getItem("admin_rate_22k") || "7015";
+      const s18K = localStorage.getItem("admin_rate_18k") || "5740";
+      const sSil = localStorage.getItem("admin_rate_silver") || "88";
+      setMetalRates({ rate24K: s24K, rate22K: s22K, rate18K: s18K, rateSilver: sSil });
+    }
+  };
+
+  useEffect(() => {
+    loadMetalRates();
+    const handleUpdate = () => loadMetalRates();
+    window.addEventListener("metalRatesUpdated", handleUpdate);
+    return () => window.removeEventListener("metalRatesUpdated", handleUpdate);
+  }, []);
 
   // Glowing Wave Ring Animation States
   const [isWaving, setIsWaving] = useState(false);
@@ -200,32 +228,40 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         />
 
         {/* Right Action Icons & Highly Visible Sliding Theme Toggle */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5">
           
-          {/* HIGHLY VISIBLE THEME TOGGLE SWITCH BUTTON */}
+          {/* PINNED LIVE METAL RATES QUICK UPDATE BUTTON */}
+          <button
+            onClick={() => setIsMetalRatesModalOpen(true)}
+            title="Daily Live Metal Rates - Click to update"
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer border ${
+              isDark
+                ? "bg-gray-800/80 hover:bg-gray-700 text-gray-200 border-gray-700"
+                : "bg-[#F1F4F8] hover:bg-[#E8EDF3] text-gray-800 border-gray-200"
+            }`}
+          >
+            <Coins className="w-3.5 h-3.5 text-amber-500" />
+            <span>Live Rates</span>
+          </button>
+          
+          {/* ANIMATED SUN / MOON THEME TOGGLE BUTTON */}
           <button
             ref={toggleBtnRef}
             onClick={handleToggleTheme}
             title={isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}
-            className={`relative flex items-center gap-2 px-3.5 py-1.5 rounded-full font-bold text-xs shadow-md transition-all border shrink-0 ${
+            className={`p-2 rounded-full transition-all duration-300 border cursor-pointer ${
               isDark
-                ? "bg-[#1E222B] text-amber-300 border-amber-500/40 hover:bg-gray-800 hover:border-amber-400 ring-2 ring-amber-500/20"
-                : "bg-gradient-to-r from-amber-100 via-amber-50 to-orange-100 text-gray-900 border-amber-300 hover:shadow-lg ring-2 ring-amber-400/20"
+                ? "bg-gray-800/80 hover:bg-gray-700 text-amber-300 border-gray-700"
+                : "bg-[#F1F4F8] hover:bg-[#E8EDF3] text-amber-600 border-gray-200"
             }`}
           >
-            {isDark ? (
-              <>
-                <Moon className="w-4 h-4 text-indigo-400 animate-pulse" />
-                <span className="text-[11px] font-semibold text-white">Dark</span>
-                <span className="w-2 h-2 rounded-full bg-indigo-400 shadow-glow" />
-              </>
-            ) : (
-              <>
-                <Sun className="w-4 h-4 text-amber-500 animate-spin-slow" />
-                <span className="text-[11px] font-semibold text-gray-900">Light</span>
-                <span className="w-2 h-2 rounded-full bg-amber-500 shadow-glow" />
-              </>
-            )}
+            <div className="transition-transform duration-500 transform hover:rotate-90 active:scale-90 flex items-center justify-center">
+              {isDark ? (
+                <Moon className="w-4 h-4 text-indigo-300 animate-in spin-in-90 duration-300" />
+              ) : (
+                <Sun className="w-4 h-4 text-amber-500 animate-in spin-in-90 duration-300" />
+              )}
+            </div>
           </button>
 
           {/* Interactive Notifications Bell & Popover */}
@@ -376,6 +412,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </main>
 
       </div>
+
+      {/* Live Metal Rates Quick Access Daily Update Modal */}
+      <LiveMetalRatesModal
+        isOpen={isMetalRatesModalOpen}
+        onClose={() => setIsMetalRatesModalOpen(false)}
+        isDark={isDark}
+      />
 
     </div>
   );

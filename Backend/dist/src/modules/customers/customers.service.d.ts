@@ -4,12 +4,16 @@ export interface CreateCustomerDto {
     email: string;
     username: string;
     phone?: string;
+    panCard?: string;
+    aadharCard?: string;
     addresses?: string[];
     savedCards?: string;
 }
 export interface UpdateCustomerDto {
     username?: string;
     phone?: string;
+    panCard?: string;
+    aadharCard?: string;
     addresses?: string[];
     savedCards?: string;
 }
@@ -22,6 +26,8 @@ export declare class CustomersService {
         email: string;
         username: string;
         phone: string | null;
+        panCard: string | null;
+        aadharCard: string | null;
         addresses: string[];
         savedCards: string | null;
         superPearls: number;
@@ -34,6 +40,8 @@ export declare class CustomersService {
         email: string;
         username: string;
         phone: string | null;
+        panCard: string | null;
+        aadharCard: string | null;
         addresses: string[];
         savedCards: string | null;
         superPearls: number;
@@ -46,6 +54,8 @@ export declare class CustomersService {
         email: string;
         username: string;
         phone: string | null;
+        panCard: string | null;
+        aadharCard: string | null;
         addresses: string[];
         savedCards: string | null;
         superPearls: number;
@@ -58,6 +68,8 @@ export declare class CustomersService {
         email: string;
         username: string;
         phone: string | null;
+        panCard: string | null;
+        aadharCard: string | null;
         addresses: string[];
         savedCards: string | null;
         superPearls: number;
@@ -70,6 +82,8 @@ export declare class CustomersService {
         email: string;
         username: string;
         phone: string | null;
+        panCard: string | null;
+        aadharCard: string | null;
         addresses: string[];
         savedCards: string | null;
         superPearls: number;

@@ -20,12 +20,14 @@ function ProductsContent() {
   const initialQuery = searchParams.get("q") || "";
   const initialMetal = searchParams.get("metal") || "All";
   const initialCategory = searchParams.get("category") || "all";
+  const initialPurity = searchParams.get("purity") || "All";
   const initialMinPrice = Number(searchParams.get("minPrice")) || 0;
   const initialMaxPrice = Number(searchParams.get("maxPrice")) || 100000;
 
   const [query, setQuery] = useState(initialQuery);
   const [selectedMetal, setSelectedMetal] = useState(initialMetal);
   const [selectedCategory, setSelectedCategory] = useState(initialCategory);
+  const [selectedPurity, setSelectedPurity] = useState(initialPurity);
   const [minPrice, setMinPrice] = useState<number>(initialMinPrice);
   const [maxPrice, setMaxPrice] = useState<number>(initialMaxPrice);
   const [sortBy, setSortBy] = useState<"featured" | "lowToHigh" | "highToLow" | "rating">("featured");
@@ -37,6 +39,20 @@ function ProductsContent() {
     window.addEventListener("jg-wishlist-updated", syncWishlist);
     return () => window.removeEventListener("jg-wishlist-updated", syncWishlist);
   }, []);
+
+  const matchPurity = (productPurity: string, targetPurity: string) => {
+    if (!targetPurity || targetPurity === "All") return true;
+    const targetNorm = targetPurity.toLowerCase().replace(/kt\b/g, "k").replace(/karat/g, "k").trim();
+    const prodNorm = productPurity.toLowerCase().replace(/kt\b/g, "k").replace(/karat/g, "k").trim();
+
+    const targetNum = targetNorm.match(/\d+/)?.[0];
+    const prodNum = prodNorm.match(/\d+/)?.[0];
+
+    if (targetNum && prodNum) {
+      return targetNum === prodNum;
+    }
+    return prodNorm.includes(targetNorm);
+  };
 
   const filteredProducts = useMemo(() => {
     return PRODUCTS_CATALOG.filter((product) => {
@@ -57,9 +73,34 @@ function ProductsContent() {
         return false;
       }
 
-      // Category match
-      if (selectedCategory !== "all" && product.categorySlug !== selectedCategory) {
+      // Purity match
+      if (!matchPurity(product.purity, selectedPurity)) {
         return false;
+      }
+
+      // Category match
+      if (selectedCategory !== "all" && selectedCategory !== "") {
+        const catSlug = selectedCategory.toLowerCase();
+        const prodCatSlug = (product.categorySlug || "").toLowerCase();
+        const prodCat = (product.category || "").toLowerCase();
+
+        const isExactMatch =
+          prodCatSlug === catSlug ||
+          prodCat.includes(catSlug.replace(/-/g, " ")) ||
+          catSlug.includes(prodCatSlug);
+
+        if (!isExactMatch) {
+          // Special fallback for coin/bar/bean categories
+          if (catSlug.includes("coin") && (prodCat.includes("coin") || prodCatSlug.includes("coin"))) {
+            // match
+          } else if (catSlug.includes("bar") && (prodCat.includes("bar") || prodCatSlug.includes("bar"))) {
+            // match
+          } else if (catSlug.includes("bean") && (prodCat.includes("bean") || prodCatSlug.includes("bean"))) {
+            // match
+          } else {
+            return false;
+          }
+        }
       }
 
       // Price match
@@ -74,7 +115,7 @@ function ProductsContent() {
       if (sortBy === "rating") return b.rating - a.rating;
       return 0;
     });
-  }, [query, selectedMetal, selectedCategory, minPrice, maxPrice, sortBy]);
+  }, [query, selectedMetal, selectedCategory, selectedPurity, minPrice, maxPrice, sortBy]);
 
   const handleToggleWishlist = (product: any, e: React.MouseEvent) => {
     e.preventDefault();
@@ -98,14 +139,16 @@ function ProductsContent() {
           <span className="font-semibold text-gray-800">Gold & Silver Jewellery</span>
         </div>
         <h1 className="text-3xl sm:text-4xl font-serif-title font-bold text-[#1A1A1A]">
-          {selectedCategory !== "all"
+          {selectedPurity !== "All"
+            ? `${selectedPurity} Gold Collection`
+            : selectedCategory !== "all"
             ? `${selectedCategory.split("-").map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ")}`
             : selectedMetal === "All"
             ? "Gold & Silver Jewellery Collection"
             : `${selectedMetal} Jewellery`}
         </h1>
         <p className="text-xs sm:text-sm text-gray-500">
-          Showing {filteredProducts.length} authentic 22KT Gold & 925 Sterling Silver pieces with BIS Hallmark guarantee.
+          Showing {filteredProducts.length} authentic pieces with BIS Hallmark guarantee.
         </p>
       </div>
 
@@ -118,7 +161,7 @@ function ProductsContent() {
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search gold, silver, rings..."
+            placeholder="Search gold, silver, coins..."
             className="w-full text-xs bg-[#F6F6F6] focus:bg-white pl-9 pr-4 py-2 rounded-lg border border-gray-200 focus:border-[#C8232A] focus:outline-none"
           />
         </div>
@@ -129,7 +172,7 @@ function ProductsContent() {
             <SlidersHorizontal className="w-3.5 h-3.5 text-[#C8232A]" />
             Metal:
           </span>
-          {["All", "Gold", "Silver"].map((m) => (
+          {["All", "Gold", "Silver", "Titanium"].map((m) => (
             <button
               key={m}
               onClick={() => setSelectedMetal(m)}
@@ -172,22 +215,52 @@ function ProductsContent() {
             Filter Products
           </h3>
 
-          {/* Categories */}
+          {/* Purity Filter */}
           <div className="space-y-2">
+            <label className="text-xs font-semibold text-[#C8232A] uppercase tracking-wider block">
+              Gold Purity
+            </label>
+            <div className="flex flex-wrap gap-1.5">
+              {["All", "24K", "22K", "18K", "9K"].map((p) => (
+                <button
+                  key={p}
+                  onClick={() => setSelectedPurity(p)}
+                  className={`px-2.5 py-1 rounded text-xs font-semibold transition-all ${
+                    selectedPurity === p
+                      ? "bg-[#C8232A] text-white"
+                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                  }`}
+                >
+                  {p}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Categories */}
+          <div className="space-y-2 pt-2 border-t border-gray-100">
             <label className="text-xs font-semibold text-[#C8232A] uppercase tracking-wider block">
               Categories
             </label>
             <div className="space-y-1.5 text-xs text-gray-600">
               <button
-                onClick={() => setSelectedCategory("all")}
+                onClick={() => { setSelectedCategory("all"); setSelectedPurity("All"); }}
                 className={`block w-full text-left py-1 hover:text-[#C8232A] ${
-                  selectedCategory === "all" ? "font-bold text-[#C8232A]" : ""
+                  selectedCategory === "all" && selectedPurity === "All" ? "font-bold text-[#C8232A]" : ""
                 }`}
               >
                 All Categories ({PRODUCTS_CATALOG.length})
               </button>
               <button
-                onClick={() => setSelectedCategory("gold-nosepin")}
+                onClick={() => { setSelectedCategory("gold-coins"); setSelectedPurity("24K"); }}
+                className={`block w-full text-left py-1 hover:text-[#C8232A] ${
+                  selectedCategory === "gold-coins" || selectedPurity === "24K" ? "font-bold text-[#C8232A]" : ""
+                }`}
+              >
+                24K Gold Coins & Bars
+              </button>
+              <button
+                onClick={() => { setSelectedCategory("gold-nosepin"); setSelectedPurity("All"); }}
                 className={`block w-full text-left py-1 hover:text-[#C8232A] ${
                   selectedCategory === "gold-nosepin" ? "font-bold text-[#C8232A]" : ""
                 }`}
@@ -195,7 +268,7 @@ function ProductsContent() {
                 Gold & Diamond Nosepin
               </button>
               <button
-                onClick={() => setSelectedCategory("gold-rings")}
+                onClick={() => { setSelectedCategory("gold-rings"); setSelectedPurity("All"); }}
                 className={`block w-full text-left py-1 hover:text-[#C8232A] ${
                   selectedCategory === "gold-rings" ? "font-bold text-[#C8232A]" : ""
                 }`}
@@ -203,7 +276,7 @@ function ProductsContent() {
                 Gold Rings
               </button>
               <button
-                onClick={() => setSelectedCategory("gold-earrings")}
+                onClick={() => { setSelectedCategory("gold-earrings"); setSelectedPurity("All"); }}
                 className={`block w-full text-left py-1 hover:text-[#C8232A] ${
                   selectedCategory === "gold-earrings" ? "font-bold text-[#C8232A]" : ""
                 }`}
@@ -211,7 +284,7 @@ function ProductsContent() {
                 Gold Earrings & Jhumkas
               </button>
               <button
-                onClick={() => setSelectedCategory("gold-necklaces")}
+                onClick={() => { setSelectedCategory("gold-necklaces"); setSelectedPurity("All"); }}
                 className={`block w-full text-left py-1 hover:text-[#C8232A] ${
                   selectedCategory === "gold-necklaces" ? "font-bold text-[#C8232A]" : ""
                 }`}
@@ -219,7 +292,7 @@ function ProductsContent() {
                 Gold Sitahars & Necklaces
               </button>
               <button
-                onClick={() => setSelectedCategory("silver-bangles")}
+                onClick={() => { setSelectedCategory("silver-bangles"); setSelectedPurity("All"); }}
                 className={`block w-full text-left py-1 hover:text-[#C8232A] ${
                   selectedCategory === "silver-bangles" ? "font-bold text-[#C8232A]" : ""
                 }`}
@@ -253,10 +326,10 @@ function ProductsContent() {
             <div className="bg-white p-12 rounded-2xl border border-[#E8E3DA] text-center space-y-3">
               <Search className="w-10 h-10 text-gray-300 mx-auto" />
               <h3 className="text-lg font-serif-title font-bold text-gray-700">No Gold or Silver Jewellery Found</h3>
-              <p className="text-xs text-gray-500">Try adjusting your search keywords or clearing price filters.</p>
+              <p className="text-xs text-gray-500">Try adjusting your search keywords or clearing price & purity filters.</p>
               <button
-                onClick={() => { setQuery(""); setSelectedMetal("All"); setSelectedCategory("all"); setMinPrice(0); setMaxPrice(100000); }}
-                className="mt-2 inline-block bg-[#C8232A] text-white text-xs font-semibold py-2 px-6 rounded-md"
+                onClick={() => { setQuery(""); setSelectedMetal("All"); setSelectedCategory("all"); setSelectedPurity("All"); setMinPrice(0); setMaxPrice(100000); }}
+                className="mt-2 inline-block bg-[#C8232A] text-white text-xs font-semibold py-2 px-6 rounded-md cursor-pointer hover:bg-[#a81b21] transition-colors"
               >
                 Reset All Filters
               </button>

@@ -32,6 +32,9 @@ let OrdersController = class OrdersController {
     getAll() {
         return this.ordersService.findAll();
     }
+    create(dto) {
+        return this.ordersService.create(dto);
+    }
     updateStatus(id, status) {
         return this.ordersService.updateStatus(id, status);
     }
@@ -62,6 +65,13 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], OrdersController.prototype, "getAll", null);
+__decorate([
+    (0, common_1.Post)(),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], OrdersController.prototype, "create", null);
 __decorate([
     (0, common_1.Patch)(":id/status"),
     __param(0, (0, common_1.Param)("id")),

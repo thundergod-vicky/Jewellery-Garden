@@ -28,6 +28,9 @@ let ProductsController = class ProductsController {
     create(dto) {
         return this.productsService.create(dto);
     }
+    update(id, dto) {
+        return this.productsService.update(id, dto);
+    }
     delete(id) {
         return this.productsService.delete(id);
     }
@@ -53,6 +56,14 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], ProductsController.prototype, "create", null);
+__decorate([
+    (0, common_1.Put)(":id"),
+    __param(0, (0, common_1.Param)("id")),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", void 0)
+], ProductsController.prototype, "update", null);
 __decorate([
     (0, common_1.Delete)(":id"),
     __param(0, (0, common_1.Param)("id")),

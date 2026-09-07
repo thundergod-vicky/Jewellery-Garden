@@ -20,6 +20,11 @@ export class ProductsController {
     return this.productsService.create(dto);
   }
 
+  @Put(":id")
+  update(@Param("id") id: string, @Body() dto: any) {
+    return this.productsService.update(id, dto);
+  }
+
   @Delete(":id")
   delete(@Param("id") id: string) {
     return this.productsService.delete(id);

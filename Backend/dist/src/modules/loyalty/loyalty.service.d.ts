@@ -8,10 +8,10 @@ export declare class LoyaltyService {
             id: string;
             createdAt: Date;
             orderId: string | null;
+            description: string;
             customerId: string;
             amount: number;
             type: string;
-            description: string;
         }[];
     }>;
 }

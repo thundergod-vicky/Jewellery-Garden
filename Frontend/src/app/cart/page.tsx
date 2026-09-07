@@ -47,9 +47,11 @@ export default function CartPage() {
   // Checkout Steps
   const [checkoutStep, setCheckoutStep] = useState<"cart" | "address" | "payment" | "success">("cart");
 
-  // Shipping Form State
+  // Shipping & Billing Form State
   const [fullName, setFullName] = useState("");
   const [phoneNum, setPhoneNum] = useState("");
+  const [panCard, setPanCard] = useState("");
+  const [aadharCard, setAadharCard] = useState("");
   const [pincode, setPincode] = useState("");
   const [flat, setFlat] = useState("");
   const [area, setArea] = useState("");
@@ -71,6 +73,8 @@ export default function CartPage() {
     if (profile) {
       setFullName(profile.username || user?.displayName || "");
       setPhoneNum(profile.phone || "");
+      if (profile.panCard) setPanCard(profile.panCard);
+      if (profile.aadharCard) setAadharCard(profile.aadharCard);
 
       if (profile.addresses && profile.addresses.length > 0) {
         try {
@@ -177,9 +181,21 @@ export default function CartPage() {
   const handleProceedToPayment = (e: React.FormEvent) => {
     e.preventDefault();
     if (!fullName.trim() || !phoneNum.trim() || !pincode.trim() || !flat.trim()) {
-      toast.error("Please fill in all shipping address fields.");
+      toast.error("Please fill in all mandatory shipping address fields.");
       return;
     }
+
+    // MANDATORY PAN Card validation for billing exceeding ₹2,00,000 (2 Lakhs)
+    if (grandTotal > 200000) {
+      const cleanPan = panCard.trim().toUpperCase();
+      if (!cleanPan || cleanPan.length !== 10) {
+        toast.error(
+          "Government Tax Compliance: PAN Card is MANDATORY for jewellery billing exceeding ₹2,00,000 (2 Lakhs). Please enter a valid 10-character PAN number."
+        );
+        return;
+      }
+    }
+
     setCheckoutStep("payment");
   };
 
@@ -196,6 +212,8 @@ export default function CartPage() {
         customerName: fullName || user?.displayName || "Valued Customer",
         customerEmail: user?.email || "customer@jewellerygarden.com",
         customerPhone: phoneNum || "",
+        panCard: panCard.trim().toUpperCase() || null,
+        aadharCard: aadharCard.trim() || null,
         address: `${flat}, ${area}, ${city}, ${stateVal} - ${pincode}`,
         totalAmount: grandTotal,
         paymentMethod: paymentMethod.toUpperCase(),
@@ -629,6 +647,66 @@ export default function CartPage() {
                   />
                 </div>
               </div>
+
+              {/* Government Identity & Tax Verification (PAN & Aadhar) - ONLY shown when order total > ₹2 Lakhs */}
+              {grandTotal > 200000 && (
+                <div className="mt-2 p-4 bg-[#FAF8F5] border border-[#E8E3DA] rounded-2xl space-y-3 animate-in fade-in">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <ShieldCheck className="w-4 h-4 text-[#C8232A]" />
+                      <span className="font-semibold text-gray-900 text-xs">
+                        Government Tax Verification & Billing Details
+                      </span>
+                    </div>
+                    <span className="text-[10px] font-bold bg-red-100 text-[#C8232A] px-2 py-0.5 rounded-full border border-red-200">
+                      PAN Mandatory (&gt; ₹2 Lakhs)
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div className="flex flex-col gap-1.5">
+                      <label className="font-semibold text-gray-700 flex items-center gap-1">
+                        <span>PAN Card Number</span>
+                        <span className="text-[#C8232A] font-bold">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        maxLength={10}
+                        value={panCard}
+                        onChange={(e) => setPanCard(e.target.value.toUpperCase())}
+                        placeholder="e.g. ABCDE1234F"
+                        className={`w-full px-3.5 py-2.5 border rounded-xl bg-white uppercase font-mono text-xs focus:outline-none ${
+                          !panCard
+                            ? "border-amber-400 focus:border-[#C8232A]"
+                            : "border-gray-200 focus:border-[#C8232A]"
+                        }`}
+                        required
+                      />
+                    </div>
+
+                    <div className="flex flex-col gap-1.5">
+                      <label className="font-semibold text-gray-700">
+                        Aadhar Card Number (Optional)
+                      </label>
+                      <input
+                        type="text"
+                        maxLength={14}
+                        value={aadharCard}
+                        onChange={(e) => setAadharCard(e.target.value)}
+                        placeholder="e.g. 1234 5678 9012"
+                        className="w-full px-3.5 py-2.5 border border-gray-200 rounded-xl bg-white font-mono text-xs focus:outline-none focus:border-[#C8232A]"
+                      />
+                    </div>
+                  </div>
+
+                  <p className="text-[11px] text-[#C8232A] font-medium bg-red-50 p-2.5 rounded-xl border border-red-100 flex items-center gap-1.5">
+                    <span>⚠️</span>
+                    <span>
+                      As per Income Tax Government Regulations, PAN Card details are mandatory for jewellery billing orders exceeding ₹2,00,000.
+                    </span>
+                  </p>
+                </div>
+              )}
 
               <div className="pt-4 flex justify-between items-center border-t border-gray-100 mt-4">
                 <button

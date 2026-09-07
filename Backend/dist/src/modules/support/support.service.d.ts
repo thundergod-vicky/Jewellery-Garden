@@ -4,15 +4,15 @@ export declare class SupportService {
     constructor(prisma: PrismaService);
     createSession(firebaseId: string): Promise<{
         id: string;
-        firebaseId: string;
         status: string;
         createdAt: Date;
+        firebaseId: string;
     }>;
     getSessions(firebaseId: string): Promise<{
         id: string;
-        firebaseId: string;
         status: string;
         createdAt: Date;
+        firebaseId: string;
     }[]>;
     getMessages(sessionId: string): Promise<{
         id: string;
@@ -30,8 +30,8 @@ export declare class SupportService {
     }[]>;
     escalate(sessionId: string): Promise<{
         id: string;
-        firebaseId: string;
         status: string;
         createdAt: Date;
+        firebaseId: string;
     }>;
 }

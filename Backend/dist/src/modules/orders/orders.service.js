@@ -41,6 +41,23 @@ let OrdersService = class OrdersService {
             include: { items: { include: { product: true } } },
         });
     }
+    async create(dto) {
+        const orderNumber = dto.orderNumber || `JG-${Math.floor(100000 + Math.random() * 900000)}`;
+        return this.prisma.order.create({
+            data: {
+                orderNumber,
+                customerEmail: dto.customerEmail || "customer@jewellerygarden.com",
+                customerPhone: dto.customerPhone || "+91 9800000000",
+                panCard: dto.panCard || null,
+                aadharCard: dto.aadharCard || null,
+                totalAmount: Number(dto.totalAmount) || 0,
+                gstAmount: Number(dto.gstAmount) || 0,
+                itemsCount: Number(dto.itemsCount) || 1,
+                status: dto.status || client_1.OrderStatus.PENDING,
+                paymentStatus: dto.paymentStatus || "PAID",
+            },
+        });
+    }
     async updateStatus(id, status) {
         const existing = await this.prisma.order.findUnique({ where: { id } });
         if (!existing) {

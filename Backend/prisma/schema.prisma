@@ -48,6 +48,12 @@ model Product {
   purity      String
   grossWeight String
   netWeight   String
+  stoneWeight String?
+  tokenNumber String?
+  makingCharges String?
+  otherCharges  String?
+  description String?
+  modelNumber String?
   price       Float
   stock       Int       @default(10)
   image       String
@@ -64,6 +70,8 @@ model Order {
   userId        String?
   customerEmail String
   customerPhone String
+  panCard       String?
+  aadharCard    String?
   totalAmount   Float
   gstAmount     Float
   itemsCount    Int           @default(1)
@@ -111,6 +119,8 @@ model Customer {
   email       String   @unique
   username    String
   phone       String?
+  panCard     String?
+  aadharCard  String?
   addresses   String[]
   savedCards  String?  // Serialized JSON array of saved cards
   superPearls Int      @default(0)
