@@ -18,6 +18,7 @@ import {
   Calendar,
 } from "lucide-react";
 import toast from "react-hot-toast";
+import { API_BASE } from "@/lib/api";
 
 // Card Category Detection Helper
 const detectCardCategory = (number: string): "DEBIT CARD" | "CREDIT CARD" => {
@@ -240,7 +241,6 @@ export default function PaymentOptionsPage() {
         } catch (e) {}
       }
 
-      const API_BASE = (process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:4000").replace("localhost", "127.0.0.1");
       const res = await fetch(`${API_BASE}/api/customers/${user.uid}`);
       if (res.ok) {
         const data = await res.json();
@@ -315,8 +315,6 @@ export default function PaymentOptionsPage() {
 
     setSaving(true);
     try {
-      const API_BASE = (process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:4000").replace("localhost", "127.0.0.1");
-
       const newCard = {
         id: "card_" + Math.random().toString(36).substring(2, 11),
         holder: cardHolder.trim().toUpperCase(),
@@ -361,7 +359,6 @@ export default function PaymentOptionsPage() {
     const updatedCards = savedCards.filter((c) => c.id !== cardId);
 
     try {
-      const API_BASE = (process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:4000").replace("localhost", "127.0.0.1");
       const res = await fetch(`${API_BASE}/api/customers/${user.uid}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },

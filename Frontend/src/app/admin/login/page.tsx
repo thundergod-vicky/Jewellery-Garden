@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Lock, Mail, ArrowRight, ShieldCheck } from "lucide-react";
 import { SITE_DATA } from "@/data/siteData";
+import { API_BASE } from "@/lib/api";
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -20,7 +21,7 @@ export default function AdminLoginPage() {
 
     try {
       // Connect to NestJS Backend API
-      const res = await fetch("http://localhost:4000/api/auth/admin-login", {
+      const res = await fetch(`${API_BASE}/api/auth/admin-login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),

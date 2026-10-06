@@ -23,7 +23,7 @@ async function bootstrap() {
   );
 
   const port = process.env.PORT || 4000;
-  await app.listen(port);
-  console.log(`🚀 Jewellery Garden NestJS Backend running on http://localhost:${port}`);
+  await app.listen(port, "0.0.0.0");
+  console.log(`🚀 Jewellery Garden NestJS Backend running on port ${port}`);
 }
 bootstrap();

@@ -17,6 +17,7 @@ import {
   Database,
   Pencil,
 } from "lucide-react";
+import { API_BASE } from "@/lib/api";
 
 interface ProductItem {
   id: string;
@@ -75,7 +76,7 @@ export default function AdminProductsPage() {
     setIsLoading(true);
     let apiProds: ProductItem[] = [];
     try {
-      const res = await fetch("http://localhost:4000/api/products");
+      const res = await fetch(`${API_BASE}/api/products`);
       if (res.ok) {
         const data = await res.json();
         if (Array.isArray(data)) apiProds = data;
@@ -144,7 +145,7 @@ export default function AdminProductsPage() {
     if (!newProduct.name || !newProduct.price) return;
 
     try {
-      const res = await fetch("http://localhost:4000/api/products", {
+      const res = await fetch(`${API_BASE}/api/products`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -191,7 +192,7 @@ export default function AdminProductsPage() {
 
     try {
       const targetId = editProduct.id || editProduct.sku;
-      const res = await fetch(`http://localhost:4000/api/products/${targetId}`, {
+      const res = await fetch(`${API_BASE}/api/products/${targetId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -212,7 +213,7 @@ export default function AdminProductsPage() {
 
   const handleDeleteProduct = async (id: string) => {
     try {
-      const res = await fetch(`http://localhost:4000/api/products/${id}`, {
+      const res = await fetch(`${API_BASE}/api/products/${id}`, {
         method: "DELETE",
       });
       if (res.ok) {

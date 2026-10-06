@@ -13,6 +13,7 @@ import {
   Database,
   Loader2,
 } from "lucide-react";
+import { API_BASE } from "@/lib/api";
 
 interface MonthStackedData {
   month: string;
@@ -58,7 +59,7 @@ export default function AdminDashboardPage() {
       let revenue = 0;
 
       try {
-        const res = await fetch("http://localhost:4000/api/orders/admin-dashboard");
+        const res = await fetch(`${API_BASE}/api/orders/admin-dashboard`);
         if (res.ok) {
           const data = await res.json();
 

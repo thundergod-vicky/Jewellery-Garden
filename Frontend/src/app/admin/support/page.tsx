@@ -13,8 +13,7 @@ import {
   Search,
 } from "lucide-react";
 import toast from "react-hot-toast";
-
-const API_BASE = (process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:4000").replace("localhost", "127.0.0.1");
+import { API_BASE } from "@/lib/api";
 
 export default function AdminSupportPage() {
   const [sessions, setSessions] = useState<any[]>([]);

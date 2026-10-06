@@ -154,6 +154,16 @@ npm run start
 
 ---
 
+## 🚀 Production Hosting (Netlify & Render)
+
+This repository is pre-configured for instant zero-downtime hosting:
+- **Frontend (Next.js 16)**: Deploy on **Netlify** (configured via [`netlify.toml`](./netlify.toml) & `@netlify/plugin-nextjs`).
+- **Backend (NestJS + PostgreSQL)**: Deploy on **Render** (configured via [`render.yaml`](./render.yaml) & automatic Prisma migrations).
+
+For step-by-step instructions, see the complete [Deployment Guide](DEPLOYMENT.md).
+
+---
+
 <div align="center">
 
   <img src="https://jewellerygardenpvtltd.com/wp-content/uploads/2025/07/LOGO-FOR-WEBSITE-scaled.png" alt="Jewellery Garden Footer Logo" width="280" />

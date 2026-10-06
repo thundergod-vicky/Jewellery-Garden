@@ -32,8 +32,7 @@ import CategoryMenu from "@/components/header/CategoryMenu";
 import MainFooter from "@/components/footer/MainFooter";
 import { useAuth } from "@/lib/AuthContext";
 import { PRODUCTS_CATALOG } from "@/data/siteData";
-
-const API_BASE = (process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:4000").replace("localhost", "127.0.0.1");
+import { API_BASE } from "@/lib/api";
 
 export default function CartPage() {
   const router = useRouter();

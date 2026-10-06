@@ -1,0 +1,41 @@
+services:
+  - type: web
+    name: jewellery-garden-backend
+    runtime: node
+    rootDir: Backend
+    plan: free
+    region: oregon
+    buildCommand: npm install && npx prisma generate && npm run build
+    startCommand: npx prisma db push && npm run start:prod
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: DATABASE_URL
+        fromDatabase:
+          name: jewellery-garden-db
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRES_IN
+        value: 7d
+      - key: ADMIN_EMAIL
+        value: admin@jewellerygardenpvtltd.com
+      - key: ADMIN_PASSWORD
+        value: Admin@Garden2026!
+      - key: SMTP_HOST
+        value: smtp.gmail.com
+      - key: SMTP_PORT
+        value: 587
+      - key: SMTP_USER
+        sync: false
+      - key: SMTP_PASS
+        sync: false
+
+databases:
+  - name: jewellery-garden-db
+    plan: free
+    region: oregon
+    databaseName: jewellery_garden
+    user: jewellery_admin

@@ -32,6 +32,7 @@ import {
   Command,
 } from "lucide-react";
 import { PRODUCTS_CATALOG } from "@/data/siteData";
+import { API_BASE } from "@/lib/api";
 
 interface AdminUniversalSearchProps {
   isDark: boolean;
@@ -179,7 +180,7 @@ export default function AdminUniversalSearch({ isDark, onToggleTheme }: AdminUni
     setIsLoading(true);
     const timer = setTimeout(async () => {
       try {
-        const res = await fetch(`http://localhost:4000/api/admin/search?q=${encodeURIComponent(trimmed)}`);
+        const res = await fetch(`${API_BASE}/api/admin/search?q=${encodeURIComponent(trimmed)}`);
         if (res.ok) {
           const data = await res.json();
           setApiProducts(data.products || []);

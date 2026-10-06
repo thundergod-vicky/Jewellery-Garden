@@ -8,6 +8,7 @@ import MainHeader from "@/components/header/MainHeader";
 import TopBar from "@/components/header/TopBar";
 import MainFooter from "@/components/footer/MainFooter";
 import { Loader2, ArrowLeft, ShoppingBag, Package } from "lucide-react";
+import { API_BASE } from "@/lib/api";
 
 export default function OrdersList() {
   const router = useRouter();
@@ -30,7 +31,6 @@ export default function OrdersList() {
   const fetchOrders = async () => {
     let apiOrders: any[] = [];
     try {
-      const API_BASE = (process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:4000").replace("localhost", "127.0.0.1");
       const res = await fetch(`${API_BASE}/api/orders/customer/${user.uid}`);
       if (res.ok) {
         const data = await res.json();

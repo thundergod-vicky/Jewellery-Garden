@@ -17,12 +17,7 @@ import {
   getRedirectResult,
 } from "./firebase";
 import toast from "react-hot-toast";
-
-const getApiUrl = () => {
-  const url = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:4000";
-  return url.replace("localhost", "127.0.0.1");
-};
-const API_BASE = getApiUrl();
+import { API_BASE, getApiUrl } from "./api";
 
 interface AuthContextType {
   user: any;

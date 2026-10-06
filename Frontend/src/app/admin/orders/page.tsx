@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { ShoppingBag, Search, Download, CheckCircle, Clock, Truck, X, Loader2, Database } from "lucide-react";
+import { API_BASE } from "@/lib/api";
 
 interface OrderItem {
   id: string;
@@ -28,7 +29,7 @@ export default function AdminOrdersPage() {
     setIsLoading(true);
     let apiOrders: OrderItem[] = [];
     try {
-      const res = await fetch("http://localhost:4000/api/orders");
+      const res = await fetch(`${API_BASE}/api/orders`);
       if (res.ok) {
         const data = await res.json();
         apiOrders = data.map((o: any) => {
@@ -104,7 +105,7 @@ export default function AdminOrdersPage() {
 
   const handleUpdateStatus = async (id: string, newStatus: string) => {
     try {
-      const res = await fetch(`http://localhost:4000/api/orders/${id}/status`, {
+      const res = await fetch(`${API_BASE}/api/orders/${id}/status`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status: newStatus }),

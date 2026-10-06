@@ -14,6 +14,7 @@ import {
   Sparkles,
   Clock,
 } from "lucide-react";
+import { API_BASE } from "@/lib/api";
 
 interface NotificationItem {
   id: string;
@@ -106,7 +107,7 @@ export default function AdminNotifications({ isDark }: { isDark: boolean }) {
     const fetchLiveNotifications = async () => {
       let liveItems: NotificationItem[] = [];
       try {
-        const res = await fetch("http://localhost:4000/api/orders");
+        const res = await fetch(`${API_BASE}/api/orders`);
         if (res.ok) {
           const orders = await res.json();
           if (Array.isArray(orders) && orders.length > 0) {
