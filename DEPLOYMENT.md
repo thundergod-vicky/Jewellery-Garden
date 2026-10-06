@@ -1,7 +1,7 @@
 # Jewellery Garden - Production Deployment Guide
 
 This guide walks you through deploying **Jewellery Garden** into production:
-- **Backend (NestJS + PostgreSQL)** on [Render](https://render.com)
+- **Backend (NestJS + MongoDB Atlas)** on [Render](https://render.com)
 - **Frontend (Next.js 16)** on [Netlify](https://netlify.com)
 
 ---
@@ -23,11 +23,11 @@ This guide walks you through deploying **Jewellery Garden** into production:
                       |  api.jewellerygarden.onrender|
                       +--------------+--------------+
                                      |
-                                     | DATABASE_URL
+                                     | DATABASE_URL (mongodb+srv://...)
                                      v
                       +-----------------------------+
-                      |      PostgreSQL Database    |
-                      |   (Render / Neon / Supabase)|
+                      |      MongoDB Database       |
+                      |   (MongoDB Atlas / Cloud)   |
                       +-----------------------------+
 ```
 
@@ -44,7 +44,7 @@ This guide walks you through deploying **Jewellery Garden** into production:
 3. Click **New +** > **Blueprint**.
 4. Connect your `Jewellery-Garden` repository.
 5. Render will detect [`render.yaml`](./render.yaml) automatically:
-   - It will provision a managed **PostgreSQL database** (`jewellery-garden-db`).
+   - When prompted for `DATABASE_URL`, paste your MongoDB Atlas connection string (`mongodb+srv://...`).
    - It will create a **Web Service** (`jewellery-garden-backend`) configured with:
      - **Root Directory:** `Backend`
      - **Build Command:** `npm install && npx prisma generate && npm run build`
@@ -57,26 +57,21 @@ This guide walks you through deploying **Jewellery Garden** into production:
 ### Option B: Manual Web Service Setup on Render
 
 1. Log into your [Render Dashboard](https://dashboard.render.com).
-2. Create your PostgreSQL database first:
-   - Click **New +** > **PostgreSQL**.
-   - Name: `jewellery-garden-db`.
-   - Copy the **Internal Database URL** (or External URL).
-3. Create the Web Service:
-   - Click **New +** > **Web Service**.
-   - Select your GitHub repo.
-   - Configure the following settings:
-     - **Name:** `jewellery-garden-backend`
-     - **Region:** Same region as your database (e.g., Oregon or Frankfurt)
-     - **Root Directory:** `Backend`
-     - **Runtime:** `Node`
-     - **Build Command:** `npm install && npx prisma generate && npm run build`
-     - **Start Command:** `npx prisma db push && npm run start:prod`
-4. Add the **Environment Variables**:
+2. Click **New +** > **Web Service**.
+3. Select your GitHub repository.
+4. Configure the following settings:
+   - **Name:** `jewellery-garden-backend`
+   - **Region:** Any close region (e.g., Oregon, Frankfurt, Singapore)
+   - **Root Directory:** `Backend`
+   - **Runtime:** `Node`
+   - **Build Command:** `npm install && npx prisma generate && npm run build`
+   - **Start Command:** `npx prisma db push && npm run start:prod`
+5. Add the **Environment Variables**:
    | Key | Value | Notes |
    | --- | --- | --- |
    | `NODE_ENV` | `production` | Production mode |
    | `PORT` | `10000` | Port assigned by Render |
-   | `DATABASE_URL` | *`postgresql://...`* | Your PostgreSQL connection string |
+   | `DATABASE_URL` | `mongodb+srv://<user>:<password>@cluster0.mongodb.net/jewellery_garden?retryWrites=true&w=majority` | Your MongoDB Atlas connection string |
    | `JWT_SECRET` | *`random_secure_32+_char_string`* | Used for JWT authentication tokens |
    | `JWT_EXPIRES_IN` | `7d` | Token lifetime |
    | `ADMIN_EMAIL` | `admin@jewellerygardenpvtltd.com` | Default admin email |

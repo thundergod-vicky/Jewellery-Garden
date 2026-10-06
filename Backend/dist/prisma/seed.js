@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
 async function main() {
-    console.log("🌱 Seeding Jewellery Garden PostgreSQL Database via Prisma...");
+    console.log("🌱 Seeding Jewellery Garden MongoDB Database via Prisma...");
     await prisma.user.upsert({
         where: { email: "admin@jewellerygardenpvtltd.com" },
         update: { role: "ADMIN", isVerified: true },
@@ -90,7 +90,7 @@ async function main() {
         });
         prodMap[p.sku] = created;
     }
-    console.log("✔ PostgreSQL database seeded successfully with linked products and monthly metrics!");
+    console.log("✔ MongoDB database seeded successfully with linked products and monthly metrics!");
 }
 main()
     .catch((e) => {

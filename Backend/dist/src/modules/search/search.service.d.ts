@@ -5,11 +5,8 @@ export declare class SearchService {
     searchAll(query: string): Promise<{
         products: {
             id: string;
-            createdAt: Date;
-            updatedAt: Date;
-            name: string;
-            price: number;
             sku: string;
+            name: string;
             category: string;
             metal: import(".prisma/client").$Enums.MetalType;
             purity: string;
@@ -21,19 +18,19 @@ export declare class SearchService {
             otherCharges: string | null;
             description: string | null;
             modelNumber: string | null;
+            price: number;
             stock: number;
             image: string;
             active: boolean;
+            createdAt: Date;
+            updatedAt: Date;
         }[];
         orders: ({
             items: ({
                 product: {
                     id: string;
-                    createdAt: Date;
-                    updatedAt: Date;
-                    name: string;
-                    price: number;
                     sku: string;
+                    name: string;
                     category: string;
                     metal: import(".prisma/client").$Enums.MetalType;
                     purity: string;
@@ -45,19 +42,24 @@ export declare class SearchService {
                     otherCharges: string | null;
                     description: string | null;
                     modelNumber: string | null;
+                    price: number;
                     stock: number;
                     image: string;
                     active: boolean;
+                    createdAt: Date;
+                    updatedAt: Date;
                 };
             } & {
                 id: string;
+                price: number;
                 orderId: string;
                 productId: string;
                 quantity: number;
-                price: number;
             })[];
         } & {
             id: string;
+            createdAt: Date;
+            updatedAt: Date;
             orderNumber: string;
             userId: string | null;
             customerEmail: string;
@@ -69,15 +71,13 @@ export declare class SearchService {
             itemsCount: number;
             status: import(".prisma/client").$Enums.OrderStatus;
             paymentStatus: import(".prisma/client").$Enums.PaymentStatus;
-            createdAt: Date;
-            updatedAt: Date;
         })[];
         customers: {
             id: string;
-            panCard: string | null;
-            aadharCard: string | null;
             createdAt: Date;
             updatedAt: Date;
+            panCard: string | null;
+            aadharCard: string | null;
             firebaseId: string;
             email: string;
             username: string;

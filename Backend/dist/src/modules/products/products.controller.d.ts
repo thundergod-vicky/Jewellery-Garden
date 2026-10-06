@@ -4,11 +4,8 @@ export declare class ProductsController {
     constructor(productsService: ProductsService);
     getAll(): Promise<{
         id: string;
-        createdAt: Date;
-        updatedAt: Date;
-        name: string;
-        price: number;
         sku: string;
+        name: string;
         category: string;
         metal: import(".prisma/client").$Enums.MetalType;
         purity: string;
@@ -20,17 +17,17 @@ export declare class ProductsController {
         otherCharges: string | null;
         description: string | null;
         modelNumber: string | null;
+        price: number;
         stock: number;
         image: string;
         active: boolean;
+        createdAt: Date;
+        updatedAt: Date;
     }[]>;
     getOne(id: string): Promise<{
         id: string;
-        createdAt: Date;
-        updatedAt: Date;
-        name: string;
-        price: number;
         sku: string;
+        name: string;
         category: string;
         metal: import(".prisma/client").$Enums.MetalType;
         purity: string;
@@ -42,17 +39,17 @@ export declare class ProductsController {
         otherCharges: string | null;
         description: string | null;
         modelNumber: string | null;
+        price: number;
         stock: number;
         image: string;
         active: boolean;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
     create(dto: any): Promise<{
         id: string;
-        createdAt: Date;
-        updatedAt: Date;
-        name: string;
-        price: number;
         sku: string;
+        name: string;
         category: string;
         metal: import(".prisma/client").$Enums.MetalType;
         purity: string;
@@ -64,17 +61,17 @@ export declare class ProductsController {
         otherCharges: string | null;
         description: string | null;
         modelNumber: string | null;
+        price: number;
         stock: number;
         image: string;
         active: boolean;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
     update(id: string, dto: any): Promise<{
         id: string;
-        createdAt: Date;
-        updatedAt: Date;
-        name: string;
-        price: number;
         sku: string;
+        name: string;
         category: string;
         metal: import(".prisma/client").$Enums.MetalType;
         purity: string;
@@ -86,9 +83,12 @@ export declare class ProductsController {
         otherCharges: string | null;
         description: string | null;
         modelNumber: string | null;
+        price: number;
         stock: number;
         image: string;
         active: boolean;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
     delete(id: string): Promise<{
         success: boolean;

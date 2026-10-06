@@ -3,7 +3,7 @@ import { PrismaClient, MetalType, OrderStatus, PaymentStatus } from "@prisma/cli
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log("🌱 Seeding Jewellery Garden PostgreSQL Database via Prisma...");
+  console.log("🌱 Seeding Jewellery Garden MongoDB Database via Prisma...");
 
   // 2. Seed Admin User
   await prisma.user.upsert({
@@ -97,7 +97,7 @@ async function main() {
     prodMap[p.sku] = created;
   }
 
-  console.log("✔ PostgreSQL database seeded successfully with linked products and monthly metrics!");
+  console.log("✔ MongoDB database seeded successfully with linked products and monthly metrics!");
 }
 
 main()

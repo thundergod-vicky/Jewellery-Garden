@@ -13,10 +13,10 @@ let PrismaService = class PrismaService extends client_1.PrismaClient {
     async onModuleInit() {
         try {
             await this.$connect();
-            console.log("✔ PostgreSQL database connection established via Prisma Client.");
+            console.log("✔ MongoDB database connection established via Prisma Client.");
         }
         catch (err) {
-            console.warn("⚠ PostgreSQL connection pending or running in offline mode:", err);
+            console.warn("⚠ MongoDB connection pending or running in offline mode:", err);
         }
     }
     async onModuleDestroy() {

@@ -6,9 +6,9 @@ export declare class LoyaltyService {
         superPearls: number;
         transactions: {
             id: string;
+            description: string;
             createdAt: Date;
             orderId: string | null;
-            description: string;
             customerId: string;
             amount: number;
             type: string;

@@ -1,7 +1,7 @@
-// Prisma Schema for Jewellery Garden PostgreSQL Database
+// Prisma Schema for Jewellery Garden MongoDB Database
 
 datasource db {
-  provider = "postgresql"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
@@ -26,7 +26,7 @@ enum PaymentStatus {
 }
 
 model User {
-  id            String    @id @default(uuid())
+  id            String    @id @default(uuid()) @map("_id")
   email         String    @unique
   phone         String?
   role          String    @default("CUSTOMER") // CUSTOMER or ADMIN
@@ -40,32 +40,32 @@ model User {
 }
 
 model Product {
-  id          String    @id @default(uuid())
-  sku         String    @unique
-  name        String
-  category    String
-  metal       MetalType @default(Gold)
-  purity      String
-  grossWeight String
-  netWeight   String
-  stoneWeight String?
-  tokenNumber String?
+  id            String      @id @default(uuid()) @map("_id")
+  sku           String      @unique
+  name          String
+  category      String
+  metal         MetalType   @default(Gold)
+  purity        String
+  grossWeight   String
+  netWeight     String
+  stoneWeight   String?
+  tokenNumber   String?
   makingCharges String?
   otherCharges  String?
-  description String?
-  modelNumber String?
-  price       Float
-  stock       Int       @default(10)
-  image       String
-  active      Boolean   @default(true)
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  description   String?
+  modelNumber   String?
+  price         Float
+  stock         Int         @default(10)
+  image         String
+  active        Boolean     @default(true)
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
 
-  orderItems  OrderItem[]
+  orderItems    OrderItem[]
 }
 
 model Order {
-  id            String        @id @default(uuid())
+  id            String        @id @default(uuid()) @map("_id")
   orderNumber   String        @unique
   userId        String?
   customerEmail String
@@ -85,7 +85,7 @@ model Order {
 }
 
 model OrderItem {
-  id        String   @id @default(uuid())
+  id        String   @id @default(uuid()) @map("_id")
   orderId   String
   productId String
   quantity  Int      @default(1)
@@ -96,25 +96,25 @@ model OrderItem {
 }
 
 model MonthlySalesMetric {
-  id           String   @id @default(uuid())
-  month        String   @unique // Jan, Feb, Mar, Apr, May, Jun, Jul
-  sortOrder    Int      @default(1)
-  changePct    String
-  isPositive   Boolean  @default(true)
-  totalRevenue Float
-  goldRevenue  Float
+  id            String   @id @default(uuid()) @map("_id")
+  month         String   @unique // Jan, Feb, Mar, Apr, May, Jun, Jul
+  sortOrder     Int      @default(1)
+  changePct     String
+  isPositive    Boolean  @default(true)
+  totalRevenue  Float
+  goldRevenue   Float
   silverRevenue Float
   diamondRevenue Float
-  goldPct      Int
-  silverPct    Int
-  diamondPct   Int
-  barHeight    String
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  goldPct       Int
+  silverPct     Int
+  diamondPct    Int
+  barHeight     String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }
 
 model Customer {
-  id          String   @id @default(uuid())
+  id          String   @id @default(uuid()) @map("_id")
   firebaseId  String   @unique
   email       String   @unique
   username    String
@@ -129,7 +129,7 @@ model Customer {
 }
 
 model SuperPearlTransaction {
-  id          String   @id @default(uuid())
+  id          String   @id @default(uuid()) @map("_id")
   customerId  String
   amount      Int      // +Earned or -Redeemed
   type        String   // "purchase_earn", "purchase_redeem", "social_share", "admin_adjustment", "welcome_bonus"
@@ -139,17 +139,16 @@ model SuperPearlTransaction {
 }
 
 model SupportSession {
-  id         String   @id @default(uuid())
+  id         String   @id @default(uuid()) @map("_id")
   firebaseId String
   status     String   @default("bot") // "bot", "escalated", or "human"
   createdAt  DateTime @default(now())
 }
 
 model SupportMessage {
-  id        String   @id @default(uuid())
+  id        String   @id @default(uuid()) @map("_id")
   sessionId String
   sender    String   // "user", "bot", or "admin"
   content   String
   createdAt DateTime @default(now())
 }
-

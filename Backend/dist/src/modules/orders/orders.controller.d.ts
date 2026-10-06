@@ -27,11 +27,8 @@ export declare class OrdersController {
             items: ({
                 product: {
                     id: string;
-                    createdAt: Date;
-                    updatedAt: Date;
-                    name: string;
-                    price: number;
                     sku: string;
+                    name: string;
                     category: string;
                     metal: import(".prisma/client").$Enums.MetalType;
                     purity: string;
@@ -43,19 +40,24 @@ export declare class OrdersController {
                     otherCharges: string | null;
                     description: string | null;
                     modelNumber: string | null;
+                    price: number;
                     stock: number;
                     image: string;
                     active: boolean;
+                    createdAt: Date;
+                    updatedAt: Date;
                 };
             } & {
                 id: string;
+                price: number;
                 orderId: string;
                 productId: string;
                 quantity: number;
-                price: number;
             })[];
         } & {
             id: string;
+            createdAt: Date;
+            updatedAt: Date;
             orderNumber: string;
             userId: string | null;
             customerEmail: string;
@@ -67,8 +69,6 @@ export declare class OrdersController {
             itemsCount: number;
             status: import(".prisma/client").$Enums.OrderStatus;
             paymentStatus: import(".prisma/client").$Enums.PaymentStatus;
-            createdAt: Date;
-            updatedAt: Date;
         })[];
     }>;
     getMetrics(): Promise<{
@@ -81,11 +81,8 @@ export declare class OrdersController {
         items: ({
             product: {
                 id: string;
-                createdAt: Date;
-                updatedAt: Date;
-                name: string;
-                price: number;
                 sku: string;
+                name: string;
                 category: string;
                 metal: import(".prisma/client").$Enums.MetalType;
                 purity: string;
@@ -97,19 +94,24 @@ export declare class OrdersController {
                 otherCharges: string | null;
                 description: string | null;
                 modelNumber: string | null;
+                price: number;
                 stock: number;
                 image: string;
                 active: boolean;
+                createdAt: Date;
+                updatedAt: Date;
             };
         } & {
             id: string;
+            price: number;
             orderId: string;
             productId: string;
             quantity: number;
-            price: number;
         })[];
     } & {
         id: string;
+        createdAt: Date;
+        updatedAt: Date;
         orderNumber: string;
         userId: string | null;
         customerEmail: string;
@@ -121,18 +123,13 @@ export declare class OrdersController {
         itemsCount: number;
         status: import(".prisma/client").$Enums.OrderStatus;
         paymentStatus: import(".prisma/client").$Enums.PaymentStatus;
-        createdAt: Date;
-        updatedAt: Date;
     })[]>;
     getAll(): Promise<({
         items: ({
             product: {
                 id: string;
-                createdAt: Date;
-                updatedAt: Date;
-                name: string;
-                price: number;
                 sku: string;
+                name: string;
                 category: string;
                 metal: import(".prisma/client").$Enums.MetalType;
                 purity: string;
@@ -144,19 +141,24 @@ export declare class OrdersController {
                 otherCharges: string | null;
                 description: string | null;
                 modelNumber: string | null;
+                price: number;
                 stock: number;
                 image: string;
                 active: boolean;
+                createdAt: Date;
+                updatedAt: Date;
             };
         } & {
             id: string;
+            price: number;
             orderId: string;
             productId: string;
             quantity: number;
-            price: number;
         })[];
     } & {
         id: string;
+        createdAt: Date;
+        updatedAt: Date;
         orderNumber: string;
         userId: string | null;
         customerEmail: string;
@@ -168,11 +170,11 @@ export declare class OrdersController {
         itemsCount: number;
         status: import(".prisma/client").$Enums.OrderStatus;
         paymentStatus: import(".prisma/client").$Enums.PaymentStatus;
-        createdAt: Date;
-        updatedAt: Date;
     })[]>;
     create(dto: any): Promise<{
         id: string;
+        createdAt: Date;
+        updatedAt: Date;
         orderNumber: string;
         userId: string | null;
         customerEmail: string;
@@ -184,11 +186,11 @@ export declare class OrdersController {
         itemsCount: number;
         status: import(".prisma/client").$Enums.OrderStatus;
         paymentStatus: import(".prisma/client").$Enums.PaymentStatus;
-        createdAt: Date;
-        updatedAt: Date;
     }>;
     updateStatus(id: string, status: OrderStatus): Promise<{
         id: string;
+        createdAt: Date;
+        updatedAt: Date;
         orderNumber: string;
         userId: string | null;
         customerEmail: string;
@@ -200,7 +202,5 @@ export declare class OrdersController {
         itemsCount: number;
         status: import(".prisma/client").$Enums.OrderStatus;
         paymentStatus: import(".prisma/client").$Enums.PaymentStatus;
-        createdAt: Date;
-        updatedAt: Date;
     }>;
 }
