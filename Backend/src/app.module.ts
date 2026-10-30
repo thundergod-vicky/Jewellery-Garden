@@ -13,6 +13,8 @@ import { LoyaltyModule } from "./modules/loyalty/loyalty.module";
 import { SupportModule } from "./modules/support/support.module";
 import { SearchModule } from "./modules/search/search.module";
 
+import { AppController } from "./app.controller";
+
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -26,7 +28,7 @@ import { SearchModule } from "./modules/search/search.module";
     SupportModule,
     SearchModule,
   ],
-  controllers: [AuthController, ProductsController, OrdersController],
+  controllers: [AppController, AuthController, ProductsController, OrdersController],
   providers: [AuthService, ProductsService, OrdersService],
 })
 export class AppModule {}
