@@ -886,7 +886,7 @@ export default function AdminUniversalSearch({ isDark, onToggleTheme }: AdminUni
               </div>
 
               <div className="font-semibold text-amber-500">
-                Jewellery Garden Universal Search
+                Jewellery ERP Universal Search
               </div>
             </div>
 

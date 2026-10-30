@@ -255,7 +255,7 @@ export default function AdminCustomersPage() {
             </span>
           </div>
           <p className="text-xs text-gray-500 dark:text-gray-400">
-            View and manage registered Jewellery Garden clients, saved addresses, contact numbers, and purchase credentials.
+            View and manage registered Jewellery ERP clients, saved addresses, contact numbers, and purchase credentials.
           </p>
         </div>
 

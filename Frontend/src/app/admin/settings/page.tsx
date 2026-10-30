@@ -28,7 +28,7 @@ export default function AdminSettingsPage() {
   const [saving, setSaving] = useState(false);
 
   // Store Configuration State
-  const [storeName, setStoreName] = useState("Jewellery Garden Pvt Ltd");
+  const [storeName, setStoreName] = useState("Jewellery ERP Pvt Ltd");
   const [gstin, setGstin] = useState("19AABCJ1234F1Z5");
   const [supportEmail, setSupportEmail] = useState("support@jewellerygardenpvtltd.com");
   const [phone, setPhone] = useState("+91 98000 00000");

@@ -104,7 +104,7 @@ export default function AdminSupportPage() {
             </span>
           </div>
           <p className="text-xs text-gray-500 dark:text-gray-400">
-            Real-time chat interaction with Jewellery Garden clients for order assistance, custom designs, and inquiries.
+            Real-time chat interaction with Jewellery ERP clients for order assistance, custom designs, and inquiries.
           </p>
         </div>
 

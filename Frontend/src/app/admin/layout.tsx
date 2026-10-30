@@ -198,10 +198,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               isDark ? "bg-gray-800/80 hover:bg-gray-700 text-white" : "bg-[#F1F4F8] hover:bg-[#E8EDF3] text-gray-900"
             }`}
           >
-            <div className="w-5 h-5 rounded-full bg-[#1A1C1E] text-white font-serif-title flex items-center justify-center text-[10px] ring-1 ring-amber-400">
-              JG
+            <div className="w-5 h-5 rounded-full bg-[#1A1C1E] text-white font-serif-title flex items-center justify-center text-[9px] font-bold ring-1 ring-amber-400">
+              ERP
             </div>
-            <span className="font-semibold">Jewellery Garden</span>
+            <span className="font-semibold">Jewellery ERP</span>
             <span className="bg-[#12B76A] text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full">
               Admin
             </span>
@@ -209,7 +209,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </div>
 
           <div className="hidden sm:flex items-center gap-1.5 text-xs text-gray-400 font-medium">
-            <span>Jewellery Garden</span>
+            <span>Jewellery ERP</span>
             <span>/</span>
             <span className={`font-semibold capitalize ${isDark ? "text-gray-200" : "text-gray-900"}`}>
               {pathname.replace("/admin/", "") || "Dashboard"}
@@ -298,7 +298,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 Welcome Back, Admin
               </h2>
               <p className="text-[10px] text-gray-400 font-medium">
-                Jewellery Garden Control Panel
+                Jewellery ERP Control Panel
               </p>
             </div>
 
