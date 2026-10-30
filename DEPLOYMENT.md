@@ -104,13 +104,13 @@ This guide walks you through deploying **Jewellery Garden** into production:
    | --- | --- | --- |
    | `NEXT_PUBLIC_API_URL` | `https://jewellery-garden-backend.onrender.com` | **Your Render Backend URL** (no trailing slash) |
    | `GEMINI_API_KEY` | *`AIzaSy...`* | (Optional) Google Gemini API Key for AI Concierge Chat |
-   | `NEXT_PUBLIC_FIREBASE_API_KEY` | *(from Firebase Console)* | Optional (defaults baked into client) |
-   | `NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN` | *(from Firebase Console)* | Optional |
-   | `NEXT_PUBLIC_FIREBASE_PROJECT_ID` | *(from Firebase Console)* | Optional |
-   | `NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET` | *(from Firebase Console)* | Optional |
-   | `NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID`| *(from Firebase Console)* | Optional |
-   | `NEXT_PUBLIC_FIREBASE_APP_ID` | *(from Firebase Console)* | Optional |
-   | `NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID` | *(from Firebase Console)* | Optional |
+   | `NEXT_PUBLIC_FIREBASE_API_KEY` | `AIzaSyD89aN5UJB9TgR0zNvygjjaRI-1uSGieQ4` | Firebase Web API Key |
+   | `NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN` | `jewellry-garden.firebaseapp.com` | Firebase Auth Domain |
+   | `NEXT_PUBLIC_FIREBASE_PROJECT_ID` | `jewellry-garden` | Firebase Project ID |
+   | `NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET` | `jewellry-garden.firebasestorage.app` | Firebase Storage Bucket |
+   | `NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID` | `381528213639` | Firebase Messaging Sender ID |
+   | `NEXT_PUBLIC_FIREBASE_APP_ID` | `1:381528213639:web:7d090c4f534ed38ac3d022` | Firebase App ID |
+   | `NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID` | `G-KQB5S7WNFF` | Firebase Analytics ID |
 
 6. Click **Deploy Jewellery Garden**.
 7. Netlify will build the Next.js site and publish it live!
